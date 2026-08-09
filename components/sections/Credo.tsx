@@ -8,8 +8,8 @@ export default function Credo({ credo }: { credo: Site['credo'] }) {
     titulo: grupo.nome,
     conteudo: (
       <div className="space-y-6">
-        {grupo.declaracoes.map((declaracao) => (
-          <div key={declaracao.titulo}>
+        {grupo.declaracoes.map((declaracao, i) => (
+          <div key={i}>
             <h4 className="text-sm font-semibold uppercase tracking-wide text-creme">
               {declaracao.titulo}
             </h4>

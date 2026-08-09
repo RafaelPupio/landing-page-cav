@@ -106,7 +106,10 @@ export const siteSchema = z.object({
     rotulo: z.string().min(1),
     titulo: z.string().min(1),
     intro: z.string().min(1),
-    grupos: z.array(grupoCredoSchema).min(1),
+    grupos: z.array(grupoCredoSchema).min(1).refine(
+      (grupos) => new Set(grupos.map((grupo) => grupo.id)).size === grupos.length,
+      'Há dois grupos do Credo com o mesmo "id" em credo.grupos no site.json. Cada grupo precisa de um "id" único (ex.: "escrituras", "trindade") — abra o arquivo, encontre os dois grupos com o "id" repetido e troque um deles por um valor que não exista em nenhum outro grupo.',
+    ),
   }),
   citacao: z.object({ texto: z.string().min(1) }),
   visita: z.object({
