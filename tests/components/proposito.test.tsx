@@ -24,9 +24,10 @@ describe('Proposito', () => {
     expect(titulos).toEqual(['Visão', 'Valores'])
   })
 
-  it('renderiza um item de lista por item de visão e por valor', () => {
+  it('renderiza os itens de visão e valores, na ordem da prop', () => {
     render(<Proposito proposito={PROPOSITO} />)
-    expect(screen.getAllByRole('listitem')).toHaveLength(5)
+    const itens = screen.getAllByRole('listitem').map((li) => li.textContent)
+    expect(itens).toEqual([...PROPOSITO.visao, ...PROPOSITO.valores])
   })
 
   it('expõe a âncora #proposito', () => {
