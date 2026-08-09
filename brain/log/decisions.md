@@ -164,3 +164,15 @@ Revisão de código encontrou dois achados na Task 6:
    Testes adicionados: `mailto:`, `tel:` e caminho relativo (`/contato`) não recebem `target="_blank"`; URL `https://` de terceiro recebe; e um teste de schema mostrando que `href` fora do formato aceito (`"httpfoo"`) é rejeitado.
 
 `npm test -- tests/components/hero.test.tsx tests/content/schema.test.ts` (15 testes), `npm test` completo (30 testes, 7 arquivos) e `npm run build` passam.
+
+## 2026-08-08 — Task 7 concluída: capítulos de História e Liderança
+
+`components/sections/Historia.tsx` e `components/sections/Lideranca.tsx` — os dois capítulos mais simples da trilha, só texto. Ambos delegam inteiramente a estrutura (`<section id>`, nó da trilha, rótulo em creme, `<h2>` em limão) ao `Capitulo` (Task 5); o componente da task só entra com o conteúdo interno via `children` e as props `id`/`rotulo`/`titulo` vindas de `site.historia`/`site.lideranca` (tipadas com `Site['historia']`/`Site['lideranca']` de `content/schema.ts`). `Historia` mapeia `paragrafos` para um `<p>` por item dentro de um `div` com `space-y-5`; `Lideranca` renderiza `texto` num único `<p>`. Nenhum texto hardcoded — tudo vem de `content/site.json` via props.
+
+Antes de escrever o teste, conferido contra o `Capitulo.tsx` real (não assumido no escuro) que o rótulo também é renderizado como `<p>` — por isso o teste que conta `section#historia p` espera 4 (3 parágrafos de conteúdo + 1 do rótulo), não 3. Contagem bateu: implementação seguiu o brief verbatim (`.superpowers/sdd/task-7-brief.md`), TDD — teste escrito primeiro (`tests/components/textos.test.tsx`), rodado e visto falhando por módulo ausente (`Failed to resolve import "@/components/sections/Historia"`), depois os dois componentes criados e os 3 testes passando.
+
+Texto de corpo em ambos os componentes usa `text-creme/90` (creme mede 7,24:1 sobre o verde escuro, passa AA em qualquer tamanho) — nenhum limão introduzido em parágrafo, conforme a regra de contraste do projeto (limão mede 4,02:1, reprova AA abaixo de 24px).
+
+Nada além de `components/sections/` e `tests/components/` foi tocado; `app/page.tsx` continua fora do escopo desta task — `Historia` e `Lideranca` ainda não são consumidos por nenhuma página (ver [[status]]).
+
+`npm test -- tests/components/textos.test.tsx` (3 testes), `npm test` completo (33 testes, 8 arquivos) e `npm run build` passam.
