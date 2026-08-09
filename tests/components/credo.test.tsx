@@ -50,4 +50,18 @@ describe('Credo', () => {
     expect(container.querySelector('section#credo')).not.toBeNull()
     expect(screen.getByText('Nosso alicerce')).toBeInTheDocument()
   })
+
+  it('mantém o texto de cada declaração dentro do bloco do seu próprio título', () => {
+    render(<Credo credo={CREDO} />)
+    for (const grupo of CREDO.grupos) {
+      for (const declaracao of grupo.declaracoes) {
+        // hidden: true — os painéis do acordeão começam fechados (ver teste acima),
+        // então o h4 fica fora da árvore de acessibilidade padrão até o clique.
+        const heading = screen.getByRole('heading', { level: 4, name: declaracao.titulo, hidden: true })
+        const bloco = heading.closest('div')
+        expect(bloco).not.toBeNull()
+        expect(bloco).toHaveTextContent(declaracao.texto)
+      }
+    }
+  })
 })

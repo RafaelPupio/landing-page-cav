@@ -36,6 +36,13 @@ describe('siteSchema', () => {
     expect(resultado.success).toBe(false)
   })
 
+  it('rejeita dois grupos de credo com o mesmo id', () => {
+    const quebrado = structuredClone(conteudo) as { credo: { grupos: { id: string }[] } }
+    quebrado.credo.grupos[1].id = quebrado.credo.grupos[0].id
+    const resultado = siteSchema.safeParse(quebrado)
+    expect(resultado.success).toBe(false)
+  })
+
   it('exige rótulo em todos os capítulos da trilha', () => {
     for (const capitulo of ['historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita']) {
       const quebrado = structuredClone(conteudo) as unknown as Record<string, Record<string, unknown>>
