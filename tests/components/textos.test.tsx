@@ -10,9 +10,11 @@ describe('Historia', () => {
     paragrafos: ['Primeiro.', 'Segundo.', 'Terceiro.'],
   }
 
-  it('renderiza um parágrafo por item', () => {
-    const { container } = render(<Historia historia={HISTORIA} />)
-    expect(container.querySelectorAll('section#historia p')).toHaveLength(4) // 3 + o rótulo
+  it('renderiza cada parágrafo da prop no documento', () => {
+    render(<Historia historia={HISTORIA} />)
+    HISTORIA.paragrafos.forEach((paragrafo) => {
+      expect(screen.getByText(paragrafo)).toBeInTheDocument()
+    })
   })
 
   it('expõe a âncora #historia e o rótulo', () => {
