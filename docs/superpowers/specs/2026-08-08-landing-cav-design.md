@@ -29,11 +29,11 @@ Pendentes, entram como marcadores em `content/site.json`: WhatsApp/telefone, e-m
 
 ## Layout
 
-**Bento Grid como base, Split Sticky na seção do credo.**
+**Direção D — Capítulos.** Escolhida pelo Rafael em 2026-08-08, depois de comparar quatro maquetes renderizadas com o conteúdo real (`docs/mockups/`).
 
-O bento sobrevive melhor à tela de celular vinda do Instagram: cada card é uma resposta inteira e o endereço é encontrado sem leitura linear. O credo, por ser longo (20 declarações), ganha no desktop um painel lateral fixo com índice e no mobile vira acordeão.
+Fundo verde escuro do topo ao rodapé. Uma linha vertical em limão atravessa a página como um tronco e liga os capítulos: *Abril de 2017 → o que nos move → nossa família → quem conduz → nosso alicerce → e você*. Cada capítulo é uma `<section>` com nó na linha, rótulo e título.
 
-A identidade visual do folder impresso vive nos fundos e separadores — não na estrutura.
+O que essa direção compra: a garagem de 2017 vira argumento, não parágrafo. O que ela custa: quem só quer o horário precisa de mais rolagem que num bento. Mitigação — a faixa de ações rápidas fica logo abaixo do hero, acima da dobra, e o último capítulo é o cartão de visita em creme, o único bloco claro da página.
 
 ### Sistema visual
 
@@ -41,29 +41,35 @@ Extraído do folder:
 
 | Token | Valor |
 |---|---|
-| `verdeEscuro` | `#44581A` |
-| `verdeLimao` | `#A3C63C` |
-| `creme` | `#F7F5EC` |
-| `grafite` | `#1F1F1C` |
+| `verdeEscuro` | `#44581A` — fundo da página |
+| `verdeLimao` | `#A3C63C` — trilha, nós, títulos grandes |
+| `creme` | `#F7F5EC` — todo o texto, botão primário, cartão de visita |
+| `grafite` | `#1F1F1C` — texto sobre creme |
 
-Elementos: blobs orgânicos em SVG inline, círculos sólidos, contornos finos em limão, o motivo `✕✕✕` como separador de seção, grade pontilhada. Tipografia Poppins via `next/font` — títulos bold caixa-alta, corpo light.
+**Regra de contraste, medida e inegociável.** Limão sobre verde escuro dá **4,02:1** — passa o AA de texto grande (3:1), reprova o de texto normal (4,5:1). Creme sobre verde escuro dá **7,24:1**. Portanto limão só na linha da trilha, nos nós, e em texto de 24px ou mais. Rótulos, corpo, botões e títulos pequenos usam creme. O botão primário é **fundo creme com texto verde escuro** — fundo limão reprovaria.
 
-Fotos: slots circulares/orgânicos que hoje renderizam gradientes no estilo do folder. Trocar por foto real = alterar um caminho em `content/site.json`.
+Elementos: blobs orgânicos em SVG inline, círculos, o motivo `✕✕✕`. A grade pontilhada do folder foi cortada — no fundo escuro vira ruído. Tipografia Poppins via `next/font` — títulos bold caixa-alta, corpo light.
+
+Fotos: slots que hoje renderizam gradientes no estilo do folder. Trocar por foto real = alterar um caminho em `content/site.json`.
 
 ### Seções
 
 | # | Âncora | Conteúdo |
 |---|---|---|
 | 1 | `#inicio` | Hero: marca, "Conhecer a Deus e torná-Lo conhecido", CTA "Venha nos visitar" |
-| 2 | — | Ações rápidas (visível sem rolagem no celular): Como chegar · Horários · Instagram · YouTube |
-| 3 | `#historia` | História desde a garagem em Abril/2017 |
-| 4 | `#missao` | Missão, Visão (5 itens), Valores (14 chips) — cards bento de tamanhos desiguais |
-| 5 | `#cuidado` | Conectar – Crescer – Servir, CTA para os Grupos de Conexão |
-| 6 | `#lideranca` | Liderança plural por presbíteros |
-| 7 | `#credo` | "Como Cremos" completo, Split Sticky / acordeão, 6 grupos |
-| 8 | — | Citação em destaque: "Essas crenças são a base do nosso alicerce…" |
-| 9 | `#visita` | Endereço, mapa embutido, horário |
+| 2 | — | Ações rápidas, acima da dobra no celular: Como chegar · Horários · Instagram · YouTube |
+| — | | **A trilha começa aqui** |
+| 3 | `#historia` | *Abril de 2017* — Começou numa garagem |
+| 4 | `#proposito` | *O que nos move* — Missão, Visão (5), Valores (14 chips) |
+| 5 | `#cuidado` | *Nossa família* — Conectar, Crescer, Servir |
+| 6 | `#lideranca` | *Quem conduz* — Liderança plural por presbíteros |
+| 7 | `#credo` | *Nosso alicerce* — "Como Cremos" completo, acordeão em 6 grupos |
+| 8 | `#visita` | *E você* — cartão creme com endereço, horário e mapa |
+| — | | **A trilha termina aqui** |
+| 9 | — | Citação em limão: "Essas crenças são a base do nosso alicerce…" |
 | 10 | — | Rodapé: Instagram, YouTube |
+
+O índice lateral fixo (Split Sticky) do desenho anterior saiu: na trilha, o próprio tronco já dá a orientação de onde a pessoa está.
 
 ### Agrupamento do credo
 
