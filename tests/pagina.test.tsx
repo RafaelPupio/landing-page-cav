@@ -28,7 +28,7 @@ describe('página inicial', () => {
     }
   })
 
-  it('renderiza os 6 capítulos na ordem da trilha', () => {
+  it('renderiza hero e os 6 capítulos na ordem esperada', () => {
     const { container } = render(<Pagina />)
     const ids = Array.from(container.querySelectorAll('section[id]')).map((s) => s.id)
     expect(ids).toEqual(['inicio', 'historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita'])

@@ -13,19 +13,23 @@ import { site } from '@/content/load'
 
 export default function Pagina() {
   return (
-    <main>
-      <Hero hero={site.hero} />
-      <AcoesRapidas acoes={site.acoesRapidas} />
-      <Trilha>
-        <Historia historia={site.historia} />
-        <Proposito proposito={site.proposito} />
-        <Cuidado cuidado={site.cuidado} />
-        <Lideranca lideranca={site.lideranca} />
-        <Credo credo={site.credo} />
-        <Visita visita={site.visita} contato={site.contato} horarios={site.horarios} />
-      </Trilha>
-      <Citacao citacao={site.citacao} />
+    <>
+      <main>
+        <Hero hero={site.hero} />
+        <AcoesRapidas acoes={site.acoesRapidas} />
+        <Trilha>
+          <Historia historia={site.historia} />
+          <Proposito proposito={site.proposito} />
+          <Cuidado cuidado={site.cuidado} />
+          <Lideranca lideranca={site.lideranca} />
+          <Credo credo={site.credo} />
+          <Visita visita={site.visita} contato={site.contato} horarios={site.horarios} />
+        </Trilha>
+        <Citacao citacao={site.citacao} />
+      </main>
+      {/* Fora do <main> de propósito: um <footer> descendente de <main> perde o
+          papel contentinfo e some da navegação por landmarks. */}
       <Rodape nome={site.site.nome} texto={site.rodape.texto} redes={site.redes} />
-    </main>
+    </>
   )
 }

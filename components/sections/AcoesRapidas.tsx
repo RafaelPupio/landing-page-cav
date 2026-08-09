@@ -24,7 +24,7 @@ export default function AcoesRapidas({ acoes }: { acoes: Site['acoesRapidas'] })
               >
                 <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" fill="currentColor">
                   {/* evenodd recorta os subcaminhos internos: sem ele o relógio vira um disco sólido. */}
-                  <path d={ICONES[acao.icone]} fillRule="evenodd" clipRule="evenodd" />
+                  <path d={ICONES[acao.icone]} fillRule="evenodd" />
                 </svg>
                 {acao.rotulo}
               </a>
