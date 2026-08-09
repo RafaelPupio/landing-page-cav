@@ -236,3 +236,17 @@ Implementação seguiu o brief da task verbatim (`.superpowers/sdd/task-9-brief.
 Nada além de `components/sections/` e `tests/components/` foi tocado; `app/page.tsx` continua fora do escopo desta task — `Cuidado` ainda não é consumido por nenhuma página (ver [[status]]).
 
 `npm test -- tests/components/cuidado.test.tsx` (3 testes), `npm test` completo (40 testes, 10 arquivos) e `npm run build` passam.
+
+---
+
+## 2026-08-08 — Correção de revisão da Task 9: texto de cada pilar travado ao seu nome, subtítulo `text-creme/90`
+
+Revisão de código encontrou dois achados em `components/sections/Cuidado.tsx` e `tests/components/cuidado.test.tsx`.
+
+**Achado 1 (Important) — teste não travava a correspondência entre pilar e texto.** Os três testes existentes verificavam a ordem dos nomes e a presença do subtítulo, mas nenhum tocava `pilar.texto`. O revisor provou o buraco: trocando o texto de cada pilar pelo do pilar seguinte (mantendo nomes e ordem intactos), os três testes continuavam passando. Corrigido com um quarto teste que, para cada pilar, localiza o `<h3>` pelo nome (`getByRole('heading', { level: 3, name: pilar.nome })`), sobe até o cartão (`heading.closest('div')`) e verifica que o texto daquele pilar está *dentro* desse cartão (`toHaveTextContent(pilar.texto)`) — travando a correspondência nome↔texto, não só a presença de cada string em algum lugar da página. Confirmado na prática: reproduzi a mutação do revisor (na renderização, cada pilar passou a mostrar `cuidado.pilares[(i + 1) % length].texto`, rotacionando os textos mantendo nomes e ordem), rodei `npm test -- tests/components/cuidado.test.tsx` e vi o novo teste falhar (`Expected element to have text content: Texto conectar. / Received: ConectarGrupos de ConexãoTexto crescer.`) enquanto os três testes antigos continuaram verdes — confirma que só o novo teste fecha o buraco. Desfiz a mutação e confirmei por `git diff` que o componente voltou exatamente ao texto committado antes de rodar a suíte completa de novo.
+
+**Achado 2 (Important) — `text-creme/70` no subtítulo reprovava AA.** Creme a 70% de opacidade sobre o fundo verde escuro dá 4,497:1 de contraste — abaixo do mínimo de 4,5:1 exigido pelo AA para texto normal. O subtítulo é `text-xs` (12px) semibold, que não se qualifica como "texto grande" (limiar 3:1 só valeria a partir de 24px normal ou 18,66px bold), então o limiar aplicável é mesmo 4,5:1. Trocado para `text-creme/90` (6,23:1), alinhando com o resto do projeto — todo texto secundário em `Historia.tsx`, `Lideranca.tsx` e no próprio `Cuidado.tsx` (intro e corpo dos pilares) já usa `/90` ou creme sólido. Busquei `text-creme/70` em todo `components/` e ele só existia neste único lugar (não havia outra ocorrência em texto nem em borda para corrigir).
+
+**Piso de opacidade para texto creme sobre o fundo verde escuro (regra para qualquer componente futuro): `/90` é o mínimo seguro (6,23:1, passa AA até em texto pequeno); `/70` reprova AA (4,497:1, abaixo de 4,5:1). Não usar `text-creme/70` (nem opacidades menores) em texto — só em elementos não textuais como bordas.**
+
+`npm test -- tests/components/cuidado.test.tsx` (4 testes), `npm test` completo (41 testes, 10 arquivos) e `npm run build` passam.
