@@ -29,7 +29,9 @@
   ],
   "redes": {
     "instagram": "https://www.instagram.com/comunidadearvoredavida",
-    "youtube": "https://youtube.com/@ArvoredaVidaLRV"
+    "youtube": "https://youtube.com/@ArvoredaVidaLRV",
+    "instagramRotulo": "Instagram",
+    "youtubeRotulo": "YouTube"
   },
   "hero": {
     "titulo": "Comunidade Árvore da Vida",
@@ -123,6 +125,13 @@
   "citacao": {
     "texto": "Essas crenças são a base do nosso alicerce. São a sustentação de quem somos. Mesmo que não sejam sempre vistas, elas permitem que toda a estrutura esteja sempre segura, forte e firme."
   },
-  "visita": { "rotulo": "E você", "titulo": "Venha nos visitar", "texto": "" },
+  "visita": {
+    "rotulo": "E você",
+    "titulo": "Venha nos visitar",
+    "texto": "",
+    "ctaMapsTexto": "Abrir no Google Maps",
+    "ctaTelefoneTexto": "Telefone",
+    "mapaTitulo": "Mapa"
+  },
   "rodape": { "texto": "" }
 }

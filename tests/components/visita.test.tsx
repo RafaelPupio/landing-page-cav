@@ -20,15 +20,33 @@ const CONTATO = {
 
 const HORARIOS = [
   { rotulo: 'Culto', quando: 'Domingos, 18h', diaSemana: 'Sunday', abre: '18:00', fecha: '20:00' },
+  { rotulo: 'Grupo de Conexão', quando: 'Quartas, 20h', diaSemana: 'Wednesday', abre: '20:00', fecha: '21:30' },
 ]
 
-const VISITA = { rotulo: 'E você', titulo: 'Venha nos visitar', texto: '' }
+const VISITA = {
+  rotulo: 'E você',
+  titulo: 'Venha nos visitar',
+  texto: '',
+  ctaMapsTexto: 'Abrir no Google Maps',
+  ctaTelefoneTexto: 'Telefone',
+  mapaTitulo: 'Mapa',
+}
 
 describe('Visita', () => {
   it('mostra endereço e horário', () => {
     render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
     expect(screen.getByText(/Av\. das Emas, 2240W/)).toBeInTheDocument()
     expect(screen.getByText('Domingos, 18h')).toBeInTheDocument()
+  })
+
+  it('mantém cada horário no bloco do seu próprio rótulo', () => {
+    render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
+    for (const horario of HORARIOS) {
+      const dt = screen.getByText(`${horario.rotulo}:`)
+      const bloco = dt.closest('div')
+      expect(bloco).not.toBeNull()
+      expect(bloco).toHaveTextContent(horario.quando)
+    }
   })
 
   it('omite o botão de telefone quando o campo está vazio', () => {
@@ -42,6 +60,12 @@ describe('Visita', () => {
     )
     expect(screen.queryByTitle('Mapa')).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Abrir no Google Maps/i })).toHaveAttribute('href', CONTATO.mapsUrl)
+  })
+
+  it('usa referrerPolicy "no-referrer" no iframe do mapa, para não vazar a URL da página ao Google', () => {
+    const { container } = render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
+    const iframe = container.querySelector('iframe')
+    expect(iframe).toHaveAttribute('referrerPolicy', 'no-referrer')
   })
 
   it('expõe a âncora #visita', () => {
@@ -63,7 +87,12 @@ describe('Rodape', () => {
       <Rodape
         nome="Comunidade Árvore da Vida"
         texto=""
-        redes={{ instagram: 'https://instagram.com/x', youtube: 'https://youtube.com/y' }}
+        redes={{
+          instagram: 'https://instagram.com/x',
+          youtube: 'https://youtube.com/y',
+          instagramRotulo: 'Instagram',
+          youtubeRotulo: 'YouTube',
+        }}
       />,
     )
     const ig = screen.getByRole('link', { name: 'Instagram' })

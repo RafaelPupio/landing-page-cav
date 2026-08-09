@@ -32,6 +32,8 @@ export const contatoSchema = z.object({
 export const redesSchema = z.object({
   instagram: z.string().url(),
   youtube: z.string().url(),
+  instagramRotulo: z.string().min(1),
+  youtubeRotulo: z.string().min(1),
 })
 
 export const declaracaoSchema = z.object({
@@ -116,6 +118,9 @@ export const siteSchema = z.object({
     rotulo: z.string().min(1),
     titulo: z.string().min(1),
     texto: z.string(),
+    ctaMapsTexto: z.string().min(1),
+    ctaTelefoneTexto: z.string().min(1),
+    mapaTitulo: z.string().min(1),
   }),
   rodape: z.object({ texto: z.string() }),
 })
