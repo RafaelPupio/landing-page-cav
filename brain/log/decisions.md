@@ -49,3 +49,27 @@ Cada grupo recebe seu próprio `Acordeao` de um item só, envolvido por uma `<di
 ## 2026-08-08 — Repositório publicado como privado no GitHub
 
 `RafaelPupio/landing-page-cav`, privado. Deploy na Vercel funciona com repositório privado. Se o Rafael quiser abrir depois, é um clique.
+
+## 2026-08-08 — Layout final: direção D (Capítulos), não Bento
+
+Rafael escolheu D depois de ver as quatro maquetes renderizadas com o conteúdo real (`docs/mockups/`). Reverte a decisão de layout tomada mais cedo hoje.
+
+Fundo verde escuro do topo ao rodapé, com uma trilha vertical em limão ligando os capítulos de Abril/2017 até "venha nos visitar". Custo aceito: mais rolagem até o endereço do que num bento. Mitigação: ações rápidas acima da dobra e cartão de visita em creme, o único bloco claro da página.
+
+Saiu de escopo junto: o índice lateral fixo do credo — na trilha o próprio tronco já orienta.
+
+## 2026-08-08 — Regra de contraste do limão sobre o fundo escuro
+
+Medido: limão `#A3C63C` sobre verde `#44581A` = **4,02:1**. Passa AA de texto grande (3:1), reprova o de texto normal (4,5:1). Creme sobre o mesmo fundo = **7,24:1**.
+
+A maquete D usava limão em rótulos de 10px e no texto do botão — ambos reprovariam. Regra adotada: limão **só** na linha da trilha, nos nós e em texto de 24px ou mais. Todo o resto em creme. Botão primário = fundo creme com texto verde escuro.
+
+Isso vale para qualquer componente novo. Se aparecer limão num texto pequeno, é regressão de acessibilidade.
+
+## 2026-08-08 — Grade pontilhada cortada
+
+Existia no folder impresso e estava no plano anterior. No fundo escuro vira ruído sem informar nada. Removida das primitivas decorativas.
+
+## 2026-08-08 — Implementação numa branch, não na main
+
+Branch `implementacao`. A main fica com documentação estável até o site passar na revisão final.
