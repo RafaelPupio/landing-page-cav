@@ -17,7 +17,7 @@ export default function Visita({
       <div className="rounded-3xl bg-creme p-6 text-grafite md:p-8">
         {visita.texto && <p className="font-light leading-relaxed">{visita.texto}</p>}
 
-        <p className="text-lg font-light">{endereco}</p>
+        <p className="mt-3 text-lg font-light">{endereco}</p>
 
         <dl className="mt-5 space-y-1">
           {horarios.map((horario, i) => (
