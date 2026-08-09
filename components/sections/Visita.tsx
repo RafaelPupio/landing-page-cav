@@ -1,0 +1,62 @@
+import Capitulo from '@/components/ui/Capitulo'
+import type { Site } from '@/content/schema'
+
+export default function Visita({
+  visita,
+  contato,
+  horarios,
+}: {
+  visita: Site['visita']
+  contato: Site['contato']
+  horarios: Site['horarios']
+}) {
+  const endereco = `${contato.logradouro} — ${contato.bairro}, ${contato.cidade}/${contato.estado}`
+
+  return (
+    <Capitulo id="visita" rotulo={visita.rotulo} titulo={visita.titulo}>
+      <div className="rounded-3xl bg-creme p-6 text-grafite md:p-8">
+        {visita.texto && <p className="font-light leading-relaxed">{visita.texto}</p>}
+
+        <p className="text-lg font-light">{endereco}</p>
+
+        <dl className="mt-5 space-y-1">
+          {horarios.map((horario) => (
+            <div key={horario.rotulo} className="flex gap-2">
+              <dt className="font-semibold">{horario.rotulo}:</dt>
+              <dd className="font-light">{horario.quando}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-7 flex flex-wrap gap-3">
+          <a
+            href={contato.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-verde-escuro px-6 py-3 font-semibold text-creme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
+          >
+            Abrir no Google Maps
+          </a>
+          {contato.telefone && (
+            <a
+              href={`tel:${contato.telefone.replace(/\D/g, '')}`}
+              className="rounded-full border border-verde-escuro px-6 py-3 font-semibold text-verde-escuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
+            >
+              Telefone
+            </a>
+          )}
+        </div>
+
+        {contato.mapaEmbedUrl && (
+          <iframe
+            title="Mapa"
+            src={contato.mapaEmbedUrl}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="mt-7 h-64 w-full rounded-2xl border-0"
+          />
+        )}
+      </div>
+    </Capitulo>
+  )
+}
