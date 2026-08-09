@@ -218,3 +218,21 @@ Revisão de código encontrou três achados em `components/sections/Proposito.ts
 **Achado 3 (Minor) — `key={item}` trocado por `key={i}`.** Divergia do padrão já fixado em `Historia.tsx` (Task 7) para o mesmo caso (array de strings estático vindo do JSON), e o schema não impede duplicatas em `visao`/`valores`. Corrigido nas duas listas (`visao` e `valores`).
 
 `npm test -- tests/components/proposito.test.tsx` (4 testes), `npm test` completo (37 testes, 9 arquivos) e `npm run build` passam.
+
+---
+
+## 2026-08-08 — Task 9 concluída: capítulo de Cuidado (Conectar, Crescer, Servir)
+
+`components/sections/Cuidado.tsx` — intro em destaque (`<p>` creme) seguida dos três pilares (`site.cuidado.pilares`, schema exige exatamente 3), cada um num cartão (`rounded-2xl border border-creme/25`) com `<h3>` para o nome do pilar, dentro de `Capitulo` (Task 5). Nenhum texto hardcoded — `intro`, `pilares[].nome`, `pilares[].subtitulo`, `pilares[].texto` todos vêm de `Site['cuidado']`.
+
+Este é o primeiro capítulo cujo schema tem um campo opcional por item de lista: `pilar.subtitulo` é string, mas só "Conectar" tem valor real ("Grupos de Conexão") — "Crescer" e "Servir" têm string vazia. Aplicada a regra de degradação já estabelecida no projeto (campo vazio não renderiza elemento vazio): o `<p>` do subtítulo só é renderizado quando `pilar.subtitulo` é truthy, e carrega o atributo `data-subtitulo` — não para estilo, só para o teste poder contar quantos subtítulos existem (`container.querySelectorAll('[data-subtitulo]')`) sem depender do texto específico, seguindo o brief verbatim.
+
+Seguindo a convenção fixada na Task 8 (teste de lista deve travar conteúdo e ordem, não só contagem), o teste principal usa `getAllByRole('heading', { level: 3 }).map(h => h.textContent)` comparado via `toEqual(['Conectar', 'Crescer', 'Servir'])` — já é sensível à ordem por construção do `toEqual` sobre array. Confirmado na prática, não só por leitura: temporariamente troquei `cuidado.pilares.map(...)` por `[...cuidado.pilares].reverse().map(...)`, rodei a suíte e vi a falha esperada (`expected [ 'Servir', 'Crescer', 'Conectar' ] to deeply equal [ 'Conectar', 'Crescer', 'Servir' ]`), depois desfiz a mutação e a suíte voltou a passar (confirmado por `git diff --stat` vazio no arquivo do componente).
+
+`key={i}` foi usado para o `.map()` dos pilares, seguindo a convenção já fixada em `Historia.tsx`/`Proposito.tsx` para arrays estáticos vindos do JSON. O brief da task (`.superpowers/sdd/task-9-brief.md`) trazia `key={pilar.nome}` no código de exemplo — implementado assim no primeiro commit — mas isso divergia do padrão do projeto, então foi corrigido para `key={i}` num commit seguinte antes de declarar a task pronta.
+
+Implementação seguiu o brief da task verbatim (`.superpowers/sdd/task-9-brief.md`), TDD: teste escrito primeiro (`tests/components/cuidado.test.tsx`), rodado e visto falhando por módulo ausente (`Failed to resolve import "@/components/sections/Cuidado"`), depois o componente criado e os 3 testes passando.
+
+Nada além de `components/sections/` e `tests/components/` foi tocado; `app/page.tsx` continua fora do escopo desta task — `Cuidado` ainda não é consumido por nenhuma página (ver [[status]]).
+
+`npm test -- tests/components/cuidado.test.tsx` (3 testes), `npm test` completo (40 testes, 10 arquivos) e `npm run build` passam.
