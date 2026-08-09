@@ -73,6 +73,25 @@ describe('Visita', () => {
     const { container } = render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
     expect(container.querySelector('section#visita')).not.toBeNull()
   })
+
+  // O preflight do Tailwind zera margem de parágrafo. Com visita.texto vazio (caso
+  // real hoje) os dois <p> irmãos não colam porque só um deles renderiza — mas no
+  // dia em que o Rafael preencher visita.texto pelo /editar, sem uma classe de
+  // espaçamento explícita o texto coincidiria a linha em cima do endereço.
+  it('separa visita.texto do endereço quando o texto está preenchido', () => {
+    render(
+      <Visita
+        visita={{ ...VISITA, texto: 'Fica em frente à praça, portão azul.' }}
+        contato={CONTATO}
+        horarios={HORARIOS}
+      />,
+    )
+    const textoEl = screen.getByText('Fica em frente à praça, portão azul.')
+    const enderecoEl = screen.getByText(/Av\. das Emas, 2240W/)
+    expect(textoEl.tagName).toBe('P')
+    expect(enderecoEl.tagName).toBe('P')
+    expect(enderecoEl.className).toMatch(/\bmt-\d/)
+  })
 })
 
 describe('Citacao', () => {

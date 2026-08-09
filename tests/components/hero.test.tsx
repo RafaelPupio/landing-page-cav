@@ -43,6 +43,18 @@ describe('Hero', () => {
     expect(classes).toContain('md:text-verde-limao')
     expect(classes).not.toContain('text-verde-limao')
   })
+
+  // Trava a opacidade do blob decorativo atrás do subtítulo. Em /25 o verde-escuro
+  // tingido mede 3,97:1 com creme (reprova AA); em /15 mede 5,72:1 (recalculado via
+  // compositing real no navegador — ver brain/log/decisions.md). O fundo tingido é
+  // o mesmo em qualquer ponto do blob, então essa margem vale independente de onde
+  // o subtítulo cair — não depende do comprimento de hero.titulo.
+  it('usa opacidade baixa no blob atrás do subtítulo, para não reprovar contraste se o título encurtar', () => {
+    const { container } = render(<Hero hero={HERO} />)
+    const blob = container.querySelector('svg')
+    expect(blob?.getAttribute('class')).toContain('text-verde-limao/15')
+    expect(blob?.getAttribute('class')).not.toContain('text-verde-limao/25')
+  })
 })
 
 describe('AcoesRapidas', () => {
