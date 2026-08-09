@@ -51,3 +51,9 @@ Três camadas, da mais simples à mais técnica:
 ## Marcadores em aberto
 
 Campos que existem no schema mas estão vazios: `telefone`, `email`, `cep`, `latitude`, `longitude`. A regra de degradação cuida disso — campo vazio não renderiza bloco vazio. Sem telefone, o botão de telefone simplesmente não aparece. Ver [[status]].
+
+## Estado (Task 2, 2026-08-08)
+
+`content/schema.ts`, `content/site.json` e `content/load.ts` existem e passam em `npm test` e `npm run build`. As 20 declarações do credo estão nos 6 grupos descritos acima, texto conferido contra o apêndice.
+
+Pendência a revisar: `content/site.json` contém um `…` dentro da citação de Mateus 28.20 no primeiro capítulo (história) — reticências que já vêm no apêndice-fonte como parte da citação bíblica parcial, não texto cortado por mim. Mantido verbatim; ver [[log/decisions]].
