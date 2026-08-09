@@ -7,8 +7,8 @@ export default function Cuidado({ cuidado }: { cuidado: Site['cuidado'] }) {
       <p className="text-base font-light leading-relaxed text-creme/90">{cuidado.intro}</p>
 
       <div className="mt-8 space-y-6">
-        {cuidado.pilares.map((pilar) => (
-          <div key={pilar.nome} className="rounded-2xl border border-creme/25 p-5">
+        {cuidado.pilares.map((pilar, i) => (
+          <div key={i} className="rounded-2xl border border-creme/25 p-5">
             <h3 className="text-lg font-bold uppercase tracking-wide text-creme">{pilar.nome}</h3>
             {pilar.subtitulo && (
               <p
