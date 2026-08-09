@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comunidade Árvore da Vida — 4 direções de layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde-escuro:#44581A;
+  --verde-limao:#A3C63C;
+  --creme:#F7F5EC;
+  --grafite:#1F1F1C;
+  --fonte:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fonte);background:#E7E4D8;color:var(--grafite);padding:32px 20px 64px}
+
+/* ---------- página de comparação ---------- */
+.topo{max-width:1500px;margin:0 auto 32px}
+.topo h1{font-size:clamp(22px,3vw,32px);font-weight:700;text-transform:uppercase;letter-spacing:-.02em;color:var(--verde-escuro)}
+.topo p{margin-top:8px;font-weight:300;max-width:70ch;line-height:1.6}
+.grade{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;max-width:1500px;margin:0 auto}
+.coluna{width:340px;flex:0 0 auto}
+.rotulo{margin-bottom:12px}
+.rotulo .letra{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--verde-escuro);color:var(--creme);font-size:13px;font-weight:700;margin-right:8px;vertical-align:middle}
+.rotulo strong{font-size:16px;font-weight:600;color:var(--verde-escuro)}
+.rotulo p{font-size:12.5px;font-weight:300;line-height:1.5;margin-top:6px;color:#4a4a44}
+.rotulo em{font-style:normal;font-weight:600;color:var(--verde-escuro)}
+.tela{height:660px;overflow-y:auto;overflow-x:hidden;border-radius:26px;border:8px solid #24240f;background:var(--creme);position:relative;scrollbar-width:thin}
+.tela::-webkit-scrollbar{width:5px}
+.tela::-webkit-scrollbar-thumb{background:#c9c6b6;border-radius:9px}
+.dica{font-size:11px;text-align:center;margin-top:8px;color:#6b6b62;font-weight:300}
+
+/* ---------- comum às maquetes ---------- */
+.m{font-size:14px;line-height:1.55}
+.m h1,.m h2,.m h3{letter-spacing:-.01em}
+.cta{display:inline-block;border-radius:999px;padding:12px 22px;font-size:13px;font-weight:600;text-decoration:none}
+.acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.acao{display:flex;align-items:center;gap:8px;border-radius:14px;padding:11px 12px;font-size:12px;font-weight:600;text-decoration:none}
+.acao svg{flex:0 0 auto}
+.xxx{display:block;margin:22px auto;opacity:.9}
+
+/* ================= A · BENTO ================= */
+.a{padding:0 0 30px}
+.a .hero{position:relative;overflow:hidden;padding:34px 18px 22px}
+.a .hero .blob{position:absolute;right:-70px;top:-90px;width:230px;color:var(--verde-escuro);opacity:.95}
+.a .hero .blob2{position:absolute;left:-90px;bottom:-60px;width:180px;color:var(--verde-limao);opacity:.32}
+.a .hero-in{position:relative}
+.a h1{font-size:29px;font-weight:700;text-transform:uppercase;line-height:1.02;color:var(--verde-escuro)}
+.a .tag{margin-top:12px;font-size:14.5px;font-weight:300;max-width:22ch}
+.a .cta{margin-top:18px;background:var(--verde-escuro);color:var(--creme)}
+.a .acoes{padding:6px 18px 0}
+.a .acao{border:1px solid rgba(68,88,26,.25);background:#fff;color:var(--verde-escuro)}
+.a .bento{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:20px 18px 0}
+.a .card{border-radius:20px;padding:16px}
+.a .c-missao{grid-column:span 2;background:var(--verde-escuro);color:var(--creme)}
+.a .c-missao h2{font-size:17px;font-weight:700;text-transform:uppercase}
+.a .c-missao p{margin-top:9px;font-size:12.5px;font-weight:300;line-height:1.55}
+.a .c-visao{background:var(--verde-limao);color:var(--verde-escuro)}
+.a .c-visao h2{font-size:15px;font-weight:700;text-transform:uppercase}
+.a .c-visao li{list-style:none;font-size:12px;font-weight:400;margin-top:5px}
+.a .c-hist{background:#fff;border:1px solid rgba(68,88,26,.18)}
+.a .c-hist h2{font-size:15px;font-weight:700;text-transform:uppercase;color:var(--verde-limao)}
+.a .c-hist p{font-size:11.5px;font-weight:300;margin-top:7px}
+.a .c-val{grid-column:span 2;background:#fff;border:1px solid rgba(68,88,26,.18)}
+.a .c-val h2{font-size:15px;font-weight:700;text-transform:uppercase;color:var(--verde-limao)}
+.a .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.a .chip{border:1px solid rgba(68,88,26,.3);border-radius:999px;padding:5px 10px;font-size:10.5px;color:var(--verde-escuro)}
+.a .c-end{grid-column:span 2;background:var(--verde-escuro);color:var(--creme)}
+.a .c-end .kicker{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--verde-limao)}
+.a .c-end .grande{font-size:22px;font-weight:700;margin-top:4px}
+.a .c-end .end{font-size:12px;font-weight:300;margin-top:8px;opacity:.92}
+.a .credo{padding:22px 18px 0}
+.a .credo h2{font-size:15px;font-weight:700;text-transform:uppercase;color:var(--verde-limao)}
+.a .lin{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(68,88,26,.2);padding:13px 0;font-size:13px;font-weight:600;color:var(--verde-escuro)}
+.a .lin:last-child{border-bottom:1px solid rgba(68,88,26,.2)}
+
+/* ================= B · EDITORIAL ORGÂNICO ================= */
+.b{padding-bottom:30px}
+.b .hero{position:relative;overflow:hidden;padding:44px 20px 26px;min-height:290px}
+.b .b1{position:absolute;right:-110px;top:-120px;width:300px;color:var(--verde-escuro)}
+.b .b2{position:absolute;left:-120px;top:130px;width:250px;color:var(--verde-limao);opacity:.4}
+.b .anel{position:absolute;right:20px;top:150px;width:150px;height:150px;border:1.5px solid var(--verde-limao);border-radius:50%}
+.b .hero-in{position:relative}
+.b .eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--verde-limao);font-weight:600}
+.b h1{font-size:34px;font-weight:700;text-transform:uppercase;line-height:.98;color:var(--verde-escuro);margin-top:10px}
+.b .tag{margin-top:16px;font-size:14px;font-weight:300;max-width:24ch;line-height:1.6}
+.b .cta{margin-top:22px;background:var(--verde-escuro);color:var(--creme)}
+.b .acoes{padding:18px 20px 0;grid-template-columns:1fr 1fr}
+.b .acao{border-bottom:1px solid rgba(68,88,26,.25);border-radius:0;padding:10px 2px;color:var(--verde-escuro)}
+.b .sec{position:relative;padding:26px 20px 0;overflow:hidden}
+.b .sec h2{font-size:24px;font-weight:700;text-transform:uppercase;color:var(--verde-limao)}
+.b .sec p{margin-top:12px;font-size:13px;font-weight:300;line-height:1.72}
+.b .sec .b3{position:absolute;right:-130px;top:40px;width:230px;color:var(--verde-limao);opacity:.22}
+.b .visao{margin-top:14px;padding-left:0;list-style:none}
+.b .visao li{font-size:13.5px;font-weight:300;padding:6px 0;border-bottom:1px dotted rgba(68,88,26,.35)}
+.b .valores{display:flex;flex-wrap:wrap;gap:0 14px;margin-top:12px}
+.b .valores span{font-size:12.5px;font-weight:300;padding:4px 0}
+.b .valores span::after{content:'·';margin-left:14px;color:var(--verde-limao);font-weight:700}
+.b .valores span:last-child::after{content:''}
+.b .end{margin:26px 20px 0;background:var(--verde-escuro);color:var(--creme);border-radius:0 44px 0 44px;padding:22px}
+.b .end .kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--verde-limao);font-weight:600}
+.b .end .grande{font-size:24px;font-weight:700;margin-top:6px}
+.b .end p{font-size:12.5px;font-weight:300;margin-top:10px;opacity:.92}
+
+/* ================= C · FAIXAS ALTERNADAS ================= */
+.c .faixa{padding:40px 22px;text-align:center}
+.c .f-creme{background:var(--creme)}
+.c .f-escura{background:var(--verde-escuro);color:var(--creme)}
+.c .f-limao{background:var(--verde-limao);color:var(--verde-escuro)}
+.c h1{font-size:32px;font-weight:700;text-transform:uppercase;line-height:1;color:var(--verde-escuro)}
+.c .tag{margin-top:14px;font-size:15px;font-weight:300}
+.c .cta{margin-top:22px;background:var(--verde-escuro);color:var(--creme)}
+.c .f-escura .cta{background:var(--verde-limao);color:var(--verde-escuro)}
+.c .acoes{background:var(--verde-escuro);padding:14px;gap:1px;grid-template-columns:1fr 1fr}
+.c .acao{background:var(--verde-escuro);color:var(--creme);border-radius:0;justify-content:center;flex-direction:column;gap:6px;padding:14px 6px;text-align:center;font-size:11px}
+.c h2{font-size:22px;font-weight:700;text-transform:uppercase}
+.c .f-creme h2{color:var(--verde-limao)}
+.c .faixa p{margin-top:14px;font-size:13px;font-weight:300;line-height:1.7}
+.c .lista{list-style:none;margin-top:16px}
+.c .lista li{font-size:15px;font-weight:600;padding:7px 0}
+.c .f-limao .lista li{border-bottom:1px solid rgba(68,88,26,.25)}
+.c .grande{font-size:30px;font-weight:700;line-height:1.05}
+.c .peq{font-size:12px;font-weight:300;margin-top:12px;opacity:.9}
+
+/* ================= D · CAPÍTULOS ================= */
+.d{background:var(--verde-escuro);color:var(--creme);min-height:100%}
+.d .hero{padding:40px 22px 26px;position:relative;overflow:hidden}
+.d .d1{position:absolute;right:-90px;top:-70px;width:210px;color:var(--verde-limao);opacity:.28}
+.d h1{font-size:30px;font-weight:700;text-transform:uppercase;line-height:1.02;position:relative}
+.d .tag{margin-top:14px;font-size:14px;font-weight:300;color:var(--verde-limao);position:relative}
+.d .cta{margin-top:20px;background:var(--verde-limao);color:var(--verde-escuro);position:relative}
+.d .acoes{padding:0 22px;margin-top:22px}
+.d .acao{border:1px solid rgba(247,245,236,.28);color:var(--creme);background:transparent}
+.d .trilha{position:relative;padding:34px 22px 30px 46px}
+.d .trilha::before{content:'';position:absolute;left:26px;top:34px;bottom:30px;width:2px;background:linear-gradient(180deg,var(--verde-limao),rgba(163,198,60,.15))}
+.d .cap{position:relative;padding-bottom:30px}
+.d .cap::before{content:'';position:absolute;left:-24px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--verde-limao)}
+.d .cap .num{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--verde-limao);font-weight:600}
+.d .cap h2{font-size:19px;font-weight:700;text-transform:uppercase;margin-top:5px}
+.d .cap p{font-size:12.5px;font-weight:300;line-height:1.65;margin-top:8px;opacity:.9}
+.d .cap ul{list-style:none;margin-top:9px}
+.d .cap li{font-size:12.5px;font-weight:300;padding:3px 0;opacity:.9}
+.d .fim{margin:0 22px 30px;background:var(--verde-limao);color:var(--verde-escuro);border-radius:20px;padding:20px}
+.d .fim .kicker{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600}
+.d .fim .grande{font-size:22px;font-weight:700;margin-top:5px}
+.d .fim p{font-size:12px;font-weight:400;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="topo">
+  <h1>Comunidade Árvore da Vida — 4 direções de layout</h1>
+  <p>Mesma paleta do folder, mesmo conteúdo, mesma largura de celular (375px). O que muda é a estrutura. Role dentro de cada tela.</p>
+</div>
+
+<div class="grade">
+
+  <!-- ============ A ============ -->
+  <div class="coluna">
+    <div class="rotulo">
+      <span class="letra">A</span><strong>Bento</strong>
+      <p><em>É o aprovado.</em> Cada card responde uma pergunta inteira. O endereço é o bloco mais pesado da tela — quem só quer saber onde fica, acha sem ler nada.</p>
+    </div>
+    <div class="tela"><div class="m a">
+      <div class="hero">
+        <svg class="blob" viewBox="0 0 260 280" aria-hidden="true"><path d="M154 12c48 8 92 40 106 88 14 48-2 112-44 148-42 36-110 44-158 20C10 244-8 190 3 140 14 90 50 42 92 22c20-10 42-14 62-10Z" fill="currentColor"/></svg>
+        <svg class="blob2" viewBox="0 0 260 280" aria-hidden="true"><path d="M120 0c62 0 118 52 128 116 10 64-26 132-84 156-58 24-138 4-158-56C-14 156 6 76 56 32 76 14 98 0 120 0Z" fill="currentColor"/></svg>
+        <div class="hero-in">
+          <h1>Comunidade<br>Árvore da Vida</h1>
+          <p class="tag">Conhecer a Deus e torná-Lo conhecido</p>
+          <a class="cta" href="#">Venha nos visitar</a>
+        </div>
+      </div>
+      <div class="acoes">
+        <a class="acao" href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Zm0-8.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>Como chegar</a>
+        <a class="acao" href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 10.6V6h-2v7.4l5.2 3.1 1-1.7-4.2-2.2Z"/></svg>Domingos, 18h</a>
+        <a class="acao" href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7.4a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2Zm0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6ZM17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Zm3.4 15a3.4 3.4 0 0 1-3.4 3.4H7A3.4 3.4 0 0 1 3.6 17V7A3.4 3.4 0 0 1 7 3.6h10A3.4 3.4 0 0 1 20.4 7v10Z"/></svg>Instagram</a>
+        <a class="acao" href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15V9l5.2 3L10 15Z"/></svg>YouTube</a>
+      </div>
+      <div class="bento">
+        <div class="card c-missao">
+          <h2>Missão</h2>
+          <p>Revelar o amor do Pai através do evangelho de Jesus, formando discípulos que manifestem este amor, em unidade com o Corpo.</p>
+        </div>
+        <div class="card c-visao">
+          <h2>Visão</h2>
+          <ul><li>Amar a Deus</li><li>Pregar a Cristo</li><li>Servir a todos</li><li>Andar em unidade</li><li>Manifestar o Reino</li></ul>
+        </div>
+        <div class="card c-hist">
+          <h2>História</h2>
+          <p>Nasceu em Abril de 2017, numa garagem, com um grupo apaixonado por Jesus e pelo Seu Reino.</p>
+        </div>
+        <div class="card c-val">
+          <h2>Valores</h2>
+          <div class="chips">
+            <span class="chip">Autoridade da Palavra</span><span class="chip">Honra</span><span class="chip">Discipulado</span><span class="chip">Famílias fortes</span><span class="chip">Adoração</span><span class="chip">Generosidade</span><span class="chip">Cultura do Reino</span>
+          </div>
+        </div>
+        <div class="card c-end">
+          <p class="kicker">Culto</p>
+          <p class="grande">Domingos, 18h</p>
+          <p class="end">Av. das Emas, 2240W — Parque das Emas<br>Lucas do Rio Verde/MT</p>
+        </div>
+      </div>
+      <div class="credo">
+        <h2>Como cremos</h2>
+        <div class="lin">As Escrituras <span>+</span></div>
+        <div class="lin">Deus, Cristo e o Espírito <span>+</span></div>
+        <div class="lin">Queda e salvação <span>+</span></div>
+        <div class="lin">Família e papéis <span>+</span></div>
+        <div class="lin">A Igreja <span>+</span></div>
+      </div>
+    </div></div>
+    <p class="dica">Role dentro da tela ↕</p>
+  </div>
+
+  <!-- ============ B ============ -->
+  <div class="coluna">
+    <div class="rotulo">
+      <span class="letra">B</span><strong>Editorial orgânico</strong>
+      <p>O folder impresso virando web: blobs atravessando as bordas, sem card nenhum, texto respirando. <em>O mais fiel à marca — e o mais lento de escanear.</em></p>
+    </div>
+    <div class="tela"><div class="m b">
+      <div class="hero">
+        <svg class="b1" viewBox="0 0 260 280" aria-hidden="true"><path d="M180 6c40 22 62 76 54 128-8 52-46 102-96 118-50 16-112 0-142-40-30-40-28-108 4-152C32 16 88-6 128 2c18 4 36 0 52 4Z" fill="currentColor"/></svg>
+        <svg class="b2" viewBox="0 0 260 280" aria-hidden="true"><path d="M120 0c62 0 118 52 128 116 10 64-26 132-84 156-58 24-138 4-158-56C-14 156 6 76 56 32 76 14 98 0 120 0Z" fill="currentColor"/></svg>
+        <div class="anel"></div>
+        <div class="hero-in">
+          <p class="eyebrow">Desde Abril de 2017</p>
+          <h1>Comunidade Árvore da Vida</h1>
+          <p class="tag">Conhecer a Deus e torná-Lo conhecido</p>
+          <a class="cta" href="#">Venha nos visitar</a>
+        </div>
+      </div>
+      <div class="acoes">
+        <a class="acao" href="#">Como chegar</a>
+        <a class="acao" href="#">Domingos, 18h</a>
+        <a class="acao" href="#">Instagram</a>
+        <a class="acao" href="#">YouTube</a>
+      </div>
+      <svg class="xxx" width="66" height="18" viewBox="0 0 72 20" aria-hidden="true"><g stroke="#44581A" stroke-width="4" stroke-linecap="round"><line x1="6" y1="4" x2="20" y2="16"/><line x1="20" y1="4" x2="6" y2="16"/><line x1="28" y1="4" x2="42" y2="16"/><line x1="42" y1="4" x2="28" y2="16"/><line x1="50" y1="4" x2="64" y2="16"/><line x1="64" y1="4" x2="50" y2="16"/></g></svg>
+      <div class="sec">
+        <svg class="b3" viewBox="0 0 260 280" aria-hidden="true"><path d="M154 12c48 8 92 40 106 88 14 48-2 112-44 148-42 36-110 44-158 20C10 244-8 190 3 140 14 90 50 42 92 22c20-10 42-14 62-10Z" fill="currentColor"/></svg>
+        <h2>História</h2>
+        <p>A Comunidade Árvore da Vida nasceu em Abril de 2017. Um grupo de pessoas apaixonadas por Jesus e pelo Seu Reino, ligadas em amor, começou a se reunir em uma garagem para adorar e buscar direções de como manifestar esse Reino.</p>
+        <p>Nosso orgulho não é ser da Comunidade Árvore da Vida. Nosso maior orgulho é ser Igreja de Jesus Cristo, o Senhor!</p>
+      </div>
+      <div class="sec">
+        <h2>Missão</h2>
+        <p>Revelar o amor do Pai através do evangelho de Jesus, formando discípulos que manifestem este amor através de milagres, sinais e maravilhas, em unidade com o Corpo.</p>
+      </div>
+      <div class="sec">
+        <h2>Visão</h2>
+        <ul class="visao"><li>Amar a Deus</li><li>Pregar a Cristo</li><li>Servir a todos</li><li>Andar em unidade</li><li>Manifestar o Reino</li></ul>
+      </div>
+      <div class="sec">
+        <h2>Valores</h2>
+        <div class="valores"><span>Autoridade da Palavra</span><span>Honra</span><span>Discipulado</span><span>Famílias fortes</span><span>Adoração</span><span>Generosidade</span><span>Identidade</span></div>
+      </div>
+      <svg class="xxx" width="66" height="18" viewBox="0 0 72 20" aria-hidden="true"><g stroke="#44581A" stroke-width="4" stroke-linecap="round"><line x1="6" y1="4" x2="20" y2="16"/><line x1="20" y1="4" x2="6" y2="16"/><line x1="28" y1="4" x2="42" y2="16"/><line x1="42" y1="4" x2="28" y2="16"/><line x1="50" y1="4" x2="64" y2="16"/><line x1="64" y1="4" x2="50" y2="16"/></g></svg>
+      <div class="end">
+        <p class="kicker">Venha nos visitar</p>
+        <p class="grande">Domingos, 18h</p>
+        <p>Av. das Emas, 2240W — Parque das Emas<br>Lucas do Rio Verde/MT</p>
+      </div>
+    </div></div>
+    <p class="dica">Role dentro da tela ↕</p>
+  </div>
+
+  <!-- ============ C ============ -->
+  <div class="coluna">
+    <div class="rotulo">
+      <span class="letra">C</span><strong>Faixas alternadas</strong>
+      <p>Uma ideia por faixa de largura total, invertendo creme e verde. <em>O mais fácil de ler e o mais fácil de manter — e o menos autoral dos quatro.</em></p>
+    </div>
+    <div class="tela"><div class="m c">
+      <div class="faixa f-creme">
+        <h1>Comunidade Árvore da Vida</h1>
+        <p class="tag">Conhecer a Deus e torná-Lo conhecido</p>
+        <a class="cta" href="#">Venha nos visitar</a>
+      </div>
+      <div class="acoes">
+        <a class="acao" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Zm0-8.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>Como chegar</a>
+        <a class="acao" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 10.6V6h-2v7.4l5.2 3.1 1-1.7-4.2-2.2Z"/></svg>Domingos, 18h</a>
+        <a class="acao" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7.4a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2Zm0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6ZM17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z"/></svg>Instagram</a>
+        <a class="acao" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15V9l5.2 3L10 15Z"/></svg>YouTube</a>
+      </div>
+      <div class="faixa f-escura">
+        <h2>História</h2>
+        <p>Nasceu em Abril de 2017, numa garagem, com um grupo de pessoas apaixonadas por Jesus e pelo Seu Reino. Nosso maior orgulho é ser Igreja de Jesus Cristo.</p>
+      </div>
+      <div class="faixa f-creme">
+        <h2>Missão</h2>
+        <p>Revelar o amor do Pai através do evangelho de Jesus, formando discípulos que manifestem este amor, em unidade com o Corpo.</p>
+      </div>
+      <div class="faixa f-limao">
+        <h2>Visão</h2>
+        <ul class="lista"><li>Amar a Deus</li><li>Pregar a Cristo</li><li>Servir a todos</li><li>Andar em unidade</li><li>Manifestar o Reino</li></ul>
+      </div>
+      <div class="faixa f-creme">
+        <h2>Valores</h2>
+        <p>Autoridade da Palavra de Deus · Disciplina espiritual · Obra consumada da cruz · Honra · Discipulado · Famílias fortes · Generosidade · Adoração</p>
+      </div>
+      <div class="faixa f-escura">
+        <h2>Como cremos</h2>
+        <p>Somos uma Comunidade evangélica fundamentada nas Sagradas Escrituras.</p>
+        <a class="cta" href="#">Ler nosso credo</a>
+      </div>
+      <div class="faixa f-limao">
+        <p class="grande">Domingos<br>18h</p>
+        <p class="peq">Av. das Emas, 2240W — Parque das Emas<br>Lucas do Rio Verde/MT</p>
+      </div>
+    </div></div>
+    <p class="dica">Role dentro da tela ↕</p>
+  </div>
+
+  <!-- ============ D ============ -->
+  <div class="coluna">
+    <div class="rotulo">
+      <span class="letra">D</span><strong>Capítulos</strong>
+      <p>Fundo verde do início ao fim, com uma linha que cresce feito tronco: 2017 → hoje → no que cremos → onde te encontramos. <em>O mais emocional; o mais arriscado de ficar cansativo.</em></p>
+    </div>
+    <div class="tela"><div class="m d">
+      <div class="hero">
+        <svg class="d1" viewBox="0 0 260 280" aria-hidden="true"><path d="M180 6c40 22 62 76 54 128-8 52-46 102-96 118-50 16-112 0-142-40-30-40-28-108 4-152C32 16 88-6 128 2c18 4 36 0 52 4Z" fill="currentColor"/></svg>
+        <h1>Comunidade<br>Árvore da Vida</h1>
+        <p class="tag">Conhecer a Deus e torná-Lo conhecido</p>
+        <a class="cta" href="#">Venha nos visitar</a>
+      </div>
+      <div class="acoes">
+        <a class="acao" href="#">Como chegar</a>
+        <a class="acao" href="#">Domingos, 18h</a>
+        <a class="acao" href="#">Instagram</a>
+        <a class="acao" href="#">YouTube</a>
+      </div>
+      <div class="trilha">
+        <div class="cap">
+          <p class="num">Abril de 2017</p>
+          <h2>Uma garagem</h2>
+          <p>Um grupo de pessoas apaixonadas por Jesus e pelo Seu Reino, ligadas em amor, começou a se reunir para adorar e buscar direções.</p>
+        </div>
+        <div class="cap">
+          <p class="num">Hoje</p>
+          <h2>Uma igreja orgânica</h2>
+          <p>Bíblica e dinâmica. Nosso maior orgulho é ser Igreja de Jesus Cristo, o Senhor.</p>
+        </div>
+        <div class="cap">
+          <p class="num">O que nos move</p>
+          <h2>Missão e visão</h2>
+          <p>Revelar o amor do Pai através do evangelho de Jesus, formando discípulos.</p>
+          <ul><li>Amar a Deus</li><li>Pregar a Cristo</li><li>Servir a todos</li><li>Andar em unidade</li><li>Manifestar o Reino</li></ul>
+        </div>
+        <div class="cap">
+          <p class="num">Nosso alicerce</p>
+          <h2>Como cremos</h2>
+          <p>Somos uma Comunidade evangélica fundamentada nas Sagradas Escrituras — 20 declarações, agrupadas por tema.</p>
+        </div>
+        <div class="cap">
+          <p class="num">E você</p>
+          <h2>Venha nos visitar</h2>
+          <p>Ser igreja é muito mais do que um culto no fim de semana.</p>
+        </div>
+      </div>
+      <div class="fim">
+        <p class="kicker">Culto</p>
+        <p class="grande">Domingos, 18h</p>
+        <p>Av. das Emas, 2240W — Parque das Emas<br>Lucas do Rio Verde/MT</p>
+      </div>
+    </div></div>
+    <p class="dica">Role dentro da tela ↕</p>
+  </div>
+
+</div>
+</body>
+</html>
