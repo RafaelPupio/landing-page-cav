@@ -176,3 +176,17 @@ Texto de corpo em ambos os componentes usa `text-creme/90` (creme mede 7,24:1 so
 Nada além de `components/sections/` e `tests/components/` foi tocado; `app/page.tsx` continua fora do escopo desta task — `Historia` e `Lideranca` ainda não são consumidos por nenhuma página (ver [[status]]).
 
 `npm test -- tests/components/textos.test.tsx` (3 testes), `npm test` completo (33 testes, 8 arquivos) e `npm run build` passam.
+
+## 2026-08-08 — Correção de revisão da Task 7: teste da Historia acoplado à estrutura interna do Capitulo
+
+Revisão de código encontrou um achado (Important) em `tests/components/textos.test.tsx`: o teste "renderiza um parágrafo por item" contava `section#historia p` e esperava 4 (3 parágrafos de conteúdo + 1 do rótulo), porque o `Capitulo` (Task 5) hoje renderiza o rótulo como `<p>`. Problema: se o `Capitulo` trocasse o rótulo para `<span>` — mudança plausível e legítima, e fora do escopo da `Historia` — o teste quebraria sem que a `Historia` tivesse regredido. Testava a estrutura do vizinho, não o componente sob teste.
+
+**Regra geral adotada para o projeto: teste de seção (`Historia`, `Lideranca`, e as seis que vêm depois) não deve fazer suposição sobre como o `Capitulo` renderiza rótulo/título — nem contando elementos que pertencem à estrutura dele, nem qualquer outra premissa sobre sua marcação interna.** O que importa é provar que a prop chega ao DOM (nada hardcoded), não replicar a marcação do `Capitulo`.
+
+**Correção:** trocada a contagem por asserção de conteúdo — itera `HISTORIA.paragrafos` e confere que cada texto está no documento via `screen.getByText`. Teste renomeado para "renderiza cada parágrafo da prop no documento".
+
+Confirmado na prática, não só por leitura de código: `Historia.tsx` foi quebrado de propósito (`paragrafos.slice(0, 1)` em vez de mapear todos), o teste rodou e falhou (`Unable to find an element with the text: Segundo.`), depois desfeito e a suíte voltou a passar.
+
+Varredura pelo resto da suíte por acoplamento semelhante (teste que conta elemento pertencente a componente diferente do que está sob teste): nenhum outro caso encontrado. `hero.test.tsx` conta `getAllByRole('link')` dentro do próprio `AcoesRapidas` (elementos que ele mesmo renderiza, não de um vizinho). `decor.test.tsx` conta `svg` de três primitivas decorativas renderizadas juntas de propósito no mesmo teste — todas sob teste, nenhuma é vizinho de outra. `trilha.test.tsx` testa `Trilha` e `Capitulo` juntos intencionalmente (ambos são o alvo da suíte, não um vizinho incidental).
+
+`npm test -- tests/components/textos.test.tsx` (3 testes), `npm test` completo (33 testes, 8 arquivos) e `npm run build` passam.
