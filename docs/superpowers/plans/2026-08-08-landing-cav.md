@@ -6,11 +6,11 @@
 
 **Architecture:** Next.js App Router com renderização estática. Todo o conteúdo vive em `content/site.json`, validado por Zod na importação — nenhum componente contém texto fixo. As seções são componentes puros que recebem sua fatia do conteúdo por props. O layout é a **direção D — Capítulos**: fundo verde escuro do topo ao rodapé, com uma trilha vertical em limão que atravessa a página e liga os capítulos como um tronco, de Abril de 2017 até "venha nos visitar".
 
-**Tech Stack:** Next.js 15 (App Router), React 19, TypeScript strict, Tailwind CSS v4, Zod, Vitest + Testing Library + jsdom.
+**Tech Stack:** Next.js 16 (App Router), React 19, TypeScript strict, Tailwind CSS v4, Zod, Vitest + Testing Library + jsdom.
 
 ## Global Constraints
 
-- Node.js ≥ 20. O ambiente alvo tem Node v26 e npm 11.
+- Node.js ≥ 20. O ambiente alvo tem Node v26 e npm 11. O `create-next-app@latest` instalou Next.js 16.3.0 — o plano foi escrito citando 15, mas o comando usa `@latest` e o 16 é o que está no projeto.
 - Idioma de toda a interface e do conteúdo: **pt-BR**. `<html lang="pt-BR">`.
 - Tokens de cor exatos: `verdeEscuro #44581A`, `verdeLimao #A3C63C`, `creme #F7F5EC`, `grafite #1F1F1C`.
 - **Regra de contraste, inegociável.** Limão sobre verde escuro mede 4,02:1 — passa em texto grande, reprova em texto pequeno (AA exige 4,5:1). Portanto: limão **somente** na linha da trilha, nos nós, e em títulos de 24px ou maiores. Rótulos, corpo, botões e qualquer texto abaixo de 24px usam creme (7,24:1). Botão primário sobre fundo escuro é **fundo creme com texto verde escuro** — nunca fundo limão com texto pequeno.
