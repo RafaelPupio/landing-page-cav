@@ -1,0 +1,12 @@
+<!--
+  Placeholder — a igreja tem um logo real (emblema circular) que ainda não foi
+  enviado. Este ícone é só um símbolo honesto na paleta da marca (folha/árvore
+  estilizada, limão sobre verde escuro) para o site parar de mostrar o triângulo
+  padrão da Vercel no resultado do Google. Trocar pelo logo real quando o Rafael
+  enviar o arquivo — ver brain/status.md, tabela de bloqueios.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Comunidade Árvore da Vida">
+  <rect width="32" height="32" rx="7" fill="#44581A" />
+  <circle cx="16" cy="12.5" r="8.5" fill="#A3C63C" />
+  <rect x="13.6" y="19" width="4.8" height="8.5" rx="1.6" fill="#A3C63C" />
+</svg>
