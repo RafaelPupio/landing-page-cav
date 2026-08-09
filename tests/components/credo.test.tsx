@@ -51,6 +51,23 @@ describe('Credo', () => {
     expect(screen.getByText('Nosso alicerce')).toBeInTheDocument()
   })
 
+  // Credo instancia um <Acordeao> por grupo (seis, no conteúdo real), cada um com
+  // seu próprio estado — diferente do Acordeao isolado (testado acima em
+  // acordeao.test.tsx), onde abrir um item fecha o anterior. Essa diferença é
+  // intencional (cada grupo precisa de âncora própria), mas é fácil de quebrar
+  // sem perceber: se alguém "simplificar" o Credo para um único Acordeao com
+  // todos os grupos como itens, dois grupos abertos ao mesmo tempo passam a
+  // fechar um ao outro, e ninguém pega isso sem este teste.
+  it('permite dois grupos abertos ao mesmo tempo, porque cada grupo é seu próprio Acordeao', async () => {
+    const user = userEvent.setup()
+    render(<Credo credo={CREDO} />)
+    await user.click(screen.getByRole('button', { name: 'As Escrituras' }))
+    await user.click(screen.getByRole('button', { name: 'Deus, Cristo e o Espírito' }))
+    expect(screen.getByText('CREMOS na inspiração divina.')).toBeVisible()
+    expect(screen.getByText('CREMOS em um único Deus.')).toBeVisible()
+    expect(screen.getByText('CREMOS no Senhor Jesus Cristo.')).toBeVisible()
+  })
+
   it('mantém o texto de cada declaração dentro do bloco do seu próprio título', () => {
     render(<Credo credo={CREDO} />)
     for (const grupo of CREDO.grupos) {

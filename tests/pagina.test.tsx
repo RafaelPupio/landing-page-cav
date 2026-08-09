@@ -46,4 +46,33 @@ describe('página inicial', () => {
       expect(el.className).toMatch(/focus-visible:anel-de-foco(-escuro)?\b/)
     })
   })
+
+  // hidden: true inclui os h4 do Credo, que ficam dentro de painéis de acordeão
+  // fechados por padrão (hidden nativo, não desmontados — Task 5). Sem essa opção
+  // a query só enxergaria até h3 e o teste não provaria nada sobre h4.
+  it('não pula nível na hierarquia de cabeçalhos (h1→h2→h3→h4, nenhum nível pulado)', () => {
+    render(<Pagina />)
+    const niveis = screen
+      .getAllByRole('heading', { hidden: true })
+      .map((h) => Number(h.tagName[1]))
+    expect(niveis[0]).toBe(1)
+    expect(niveis).toContain(4) // prova que os h4 do Credo entraram na checagem
+    for (let i = 1; i < niveis.length; i++) {
+      expect(niveis[i], `heading #${i}: h${niveis[i - 1]} → h${niveis[i]}`).toBeLessThanOrEqual(
+        niveis[i - 1] + 1,
+      )
+    }
+  })
+
+  // Bug real, já corrigido uma vez sem rede de teste (ver comentário em app/page.tsx):
+  // um <footer> descendente de <main> perde o papel de contentinfo e some da
+  // navegação por landmarks.
+  it('o <footer> não é descendente de <main>', () => {
+    const { container } = render(<Pagina />)
+    const main = container.querySelector('main')
+    const footer = container.querySelector('footer')
+    expect(main).not.toBeNull()
+    expect(footer).not.toBeNull()
+    expect(main?.contains(footer)).toBe(false)
+  })
 })
