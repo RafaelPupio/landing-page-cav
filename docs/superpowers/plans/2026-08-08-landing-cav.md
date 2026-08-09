@@ -17,7 +17,7 @@
 - **Regra de contraste, inegociável.** Limão sobre verde escuro mede 4,02:1 — passa em texto grande, reprova em texto pequeno (AA exige 4,5:1). Portanto: limão **somente** na linha da trilha, nos nós, e em títulos de 24px ou maiores. Rótulos, corpo, botões e qualquer texto abaixo de 24px usam creme (7,24:1). Botão primário sobre fundo escuro é **fundo creme com texto verde escuro** — nunca fundo limão com texto pequeno.
 - **Nenhum componente pode conter texto de conteúdo hardcoded.** Todo texto vem por props, originado de `content/site.json`. Rótulos puramente estruturais de acessibilidade (`aria-label` genérico) são a única exceção.
 - Todo o texto de conteúdo é copiado **verbatim** do apêndice de `docs/superpowers/specs/2026-08-08-landing-cav-design.md`. Não reescrever, resumir ou "melhorar" o texto da igreja.
-- Rotas `/editar` e `/api/content` retornam 404 quando `process.env.NODE_ENV === 'production'`.
+- Rotas `/editar` e `/api/content` só existem quando `NODE_ENV === 'development'`; qualquer outro valor retorna 404. A regra é allowlist (fail-closed) e vive em `lib/ambiente.ts`, fonte única para os dois arquivos.
 - Mobile-first: escrever o estilo base para telas pequenas e usar prefixos `md:`/`lg:` para ampliar.
 - Blobs e formas decorativas recebem `aria-hidden="true"`.
 - Commits em português, no estilo `feat: ...`, `test: ...`, `chore: ...`.
@@ -2357,8 +2357,10 @@ import { siteSchema } from '@/content/schema'
 
 const ARQUIVO = path.join(process.cwd(), 'content', 'site.json')
 
+// Allowlist, não denylist: libera SÓ em development. Com NODE_ENV indefinido,
+// 'staging' ou um typo, o comportamento seguro é negar.
 function apenasEmDesenvolvimento(): NextResponse | null {
-  if (process.env.NODE_ENV === 'production') {
+  if (!ehDesenvolvimento()) {
     return new NextResponse(null, { status: 404 })
   }
   return null
@@ -2481,7 +2483,7 @@ import FormularioConteudo from '@/components/editor/FormularioConteudo'
 export const dynamic = 'force-dynamic'
 
 export default function PaginaEditar() {
-  if (process.env.NODE_ENV === 'production') notFound()
+  if (!ehDesenvolvimento()) notFound()
   return <FormularioConteudo />
 }
 ```
