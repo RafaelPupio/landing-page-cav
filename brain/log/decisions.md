@@ -129,3 +129,20 @@ Revisão de código encontrou dois achados na Task 5:
    Testes ajustados: as três asserções que afirmavam `queryByText(...).not.toBeInTheDocument()` para conteúdo fechado ficaram falsas por design após a correção (o conteúdo passou a estar sempre no documento) — trocadas por `toBeVisible`/`not.toBeVisible`, com uma asserção explícita nova de que o conteúdo fechado continua presente no DOM (é essa a garantia de SEO sendo comprada; precisa de teste que trave, senão alguém desfaz sem perceber). Adicionada cobertura da tecla Espaço, que faltava ao lado de Enter no contrato de teclado.
 
 `npm test -- tests/components/acordeao.test.tsx tests/components/trilha.test.tsx` (10 testes), `npm test` completo (20 testes, 6 arquivos) e `npm run build` passam.
+
+## 2026-08-08 — Task 6 concluída: Hero e faixa de Ações Rápidas
+
+`components/sections/Hero.tsx` (`<section id="inicio">`, `Blob` variante 2 decorativo no canto superior direito, `h1` único da página, subtítulo, CTA de âncora) e `components/sections/AcoesRapidas.tsx` (`<nav aria-label="Ações rápidas">` com grade de links — 2 colunas no mobile, 4 no `md:` — um por ação do `content/site.json`: Como chegar, Domingos 18h, Instagram, YouTube, cada um com ícone SVG inline via `currentColor`).
+
+Por que essa faixa importa mais do que a posição sugere: quase todo o tráfego vem do link na bio do Instagram, no celular, e a decisão de ficar ou sair acontece em segundos — as quatro ações precisam estar visíveis sem rolagem. Implementação seguiu o brief da task verbatim (`.superpowers/sdd/task-6-brief.md`), TDD: teste escrito primeiro (`tests/components/hero.test.tsx`), rodado e visto falhando por módulo ausente, depois os dois componentes criados e os 6 testes (26 no total do projeto) passando.
+
+Regra de contraste (limão `#A3C63C` sobre verde escuro `#44581A` mede 4,02:1 — passa AA só para texto grande ≥24px/3:1, reprova texto normal 4,5:1) aplicada em dois lugares distintos aqui, ambos travados por teste:
+
+1. **CTA primário**: fundo creme + texto verde escuro (7,24:1), não fundo limão — fundo limão com o texto de 16px do botão reprovaria. Testado diretamente via `className` (`bg-creme` e `text-verde-escuro`), não só via captura de texto.
+2. **Subtítulo do Hero**: carrega duas classes de cor propositalmente — `text-creme md:text-verde-limao`. Em telas pequenas o subtítulo é 18px (limite 4,5:1, limão reprovaria); a partir de `md:` vira 24px (limite cai para 3:1, limão passa). Não simplificado para uma cor só.
+
+Links externos (`href` começando com `http`) recebem `target="_blank"` e `rel="noopener noreferrer"`; links internos de âncora (`#visita`) não recebem `target` — comportamento determinado dinamicamente por `acao.href.startsWith('http')`, coberto por teste para os dois casos.
+
+Nada além de `components/sections/` e `tests/components/` foi tocado no commit de código; `app/page.tsx` continua fora do escopo desta task — `Hero` e `AcoesRapidas` ainda não são consumidos por nenhuma página (ver [[status]]).
+
+`npm test` (26 testes, 7 arquivos) e `npm run build` passam.
