@@ -1,0 +1,137 @@
+{
+  "tema": {
+    "verdeEscuro": "#44581A",
+    "verdeLimao": "#A3C63C",
+    "creme": "#F7F5EC",
+    "grafite": "#1F1F1C"
+  },
+  "site": {
+    "nome": "Comunidade Árvore da Vida",
+    "url": "https://arvoredavidalrv.com.br",
+    "descricao": "Igreja evangélica em Lucas do Rio Verde/MT. Culto aos domingos, 18h, na Av. das Emas, 2240W. Conheça nossa história, missão e no que cremos.",
+    "tagline": "Conhecer a Deus e torná-Lo conhecido"
+  },
+  "contato": {
+    "logradouro": "Av. das Emas, 2240W",
+    "bairro": "Parque das Emas",
+    "cidade": "Lucas do Rio Verde",
+    "estado": "MT",
+    "cep": "",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Av.+das+Emas+2240W+Parque+das+Emas+Lucas+do+Rio+Verde+MT",
+    "mapaEmbedUrl": "https://maps.google.com/maps?q=Av.%20das%20Emas%202240W%20Lucas%20do%20Rio%20Verde&output=embed",
+    "latitude": "",
+    "longitude": "",
+    "telefone": "",
+    "email": ""
+  },
+  "horarios": [
+    { "rotulo": "Culto", "quando": "Domingos, 18h", "diaSemana": "Sunday", "abre": "18:00", "fecha": "20:00" }
+  ],
+  "redes": {
+    "instagram": "https://www.instagram.com/comunidadearvoredavida",
+    "youtube": "https://youtube.com/@ArvoredaVidaLRV",
+    "instagramRotulo": "Instagram",
+    "youtubeRotulo": "YouTube"
+  },
+  "hero": {
+    "titulo": "Comunidade Árvore da Vida",
+    "subtitulo": "Conhecer a Deus e torná-Lo conhecido",
+    "ctaTexto": "Venha nos visitar",
+    "ctaAncora": "#visita"
+  },
+  "acoesRapidas": [
+    { "rotulo": "Como chegar", "href": "#visita", "icone": "mapa" },
+    { "rotulo": "Domingos, 18h", "href": "#visita", "icone": "relogio" },
+    { "rotulo": "Instagram", "href": "https://www.instagram.com/comunidadearvoredavida", "icone": "instagram" },
+    { "rotulo": "YouTube", "href": "https://youtube.com/@ArvoredaVidaLRV", "icone": "youtube" }
+  ],
+  "historia": {
+    "rotulo": "Abril de 2017",
+    "titulo": "Começou numa garagem",
+    "paragrafos": [
+      "A Comunidade Árvore da Vida nasceu em Abril de 2017. Diante da revelação da Nova Aliança e de tudo que a obra consumada da Cruz nos proporcionou, um grupo de pessoas apaixonadas por Jesus e pelo Seu Reino, ligadas em amor, começou a se reunir em uma garagem para adorar e buscar direções de como manifestar esse Reino através de um Evangelho simples mas cheio de Poder, dando testemunho de Cristo. Esse grupo foi crescendo e debaixo de Uma Palavra da parte de Deus nasceu a Comunidade Árvore da Vida, uma Igreja bíblica, dinâmica e orgânica!",
+      "Nosso orgulho não é ser da Comunidade Árvore da Vida. Nosso maior orgulho é ser Igreja de Jesus Cristo, o Senhor!",
+      "Seguimos na direção mais importante, que é cumprir a Grande Comissão (Mateus 28.19-20) e viver o Grande Mandamento (Marcos 12.30-31) de nosso Senhor Jesus Cristo até a Sua volta. Assim sabemos que todas as demais questões são apenas meios e, por isso, periodicamente, passamos por processos de ajustes e reajustes, conduzidos pelo Senhor. Contudo, seguimos prioritariamente cumprindo o chamado e obedecendo ao Espírito e à Palavra de Deus, sabendo que Jesus nunca disse que seria fácil, mas Ele disse \"… eu estarei sempre com vocês, até o fim dos tempos\" (Mateus 28.20)."
+    ]
+  },
+  "proposito": {
+    "rotulo": "O que nos move",
+    "titulo": "Missão, visão e valores",
+    "missao": "Desejamos revelar o amor do Pai através do evangelho de Jesus, formando discípulos que manifestem este amor através de milagres, sinais e maravilhas, operando nos dons, vivendo uma vida de compaixão e poder, em unidade com o Corpo, envolvendo-se na grande comissão, partindo do princípio de amar a Deus e as pessoas.",
+    "visaoTitulo": "Visão",
+    "visao": ["Amar a Deus", "Pregar a Cristo", "Servir a todos", "Andar em unidade", "Manifestar o Reino"],
+    "valoresTitulo": "Valores",
+    "valores": [
+      "Autoridade da Palavra de Deus", "Disciplina espiritual", "Obra consumada da cruz",
+      "Intimidade com o Espírito Santo", "Bondade imutável de Deus", "Identidade",
+      "Manifestação do sobrenatural", "Cultura do Reino", "Honra", "Discipulado",
+      "Famílias fortes", "Coração ensinável", "Generosidade", "Adoração"
+    ]
+  },
+  "cuidado": {
+    "rotulo": "Nossa família",
+    "titulo": "Cuidado",
+    "intro": "Somos uma família vibrante de crentes cheios de esperança que experimentam profundamente o amor e a presença de Deus e fazem parceria com Jesus para expressar a alegria e o poder de Seu reino em todas as áreas da vida.",
+    "pilares": [
+      { "nome": "Conectar", "subtitulo": "Grupos de Conexão", "texto": "Ser igreja é muito mais do que um Culto no fim de semana. É sobre conectar-se com outras pessoas, crescer em sua fé e construir uma base sólida para você e sua família. Pensando nisso, nossa igreja possui os Grupos de Conexão (GCs). Por meio da estrutura dos Grupos as pessoas podem ser acompanhadas e discipuladas de perto; lá nós conseguimos promover o discipulado pessoal por meio do crescimento mútuo entre líder e liderado, trazendo e criando a conexão entre pessoas. Os grupos existem para as pessoas serem cuidadas, mas além disso, para serem preparadas, viverem milagres em suas vidas pessoais, serem treinadas e preparadas para servir." },
+      { "nome": "Crescer", "subtitulo": "", "texto": "Pensamos em outras formas de colaborar com o crescimento dos membros além do discipulado, que é essencial; eles podem crescer em conhecimento e serem transformados através de aulas, workshops, retiros e treinamentos ao longo do ano. Não importa em que estágio da vida você está, queremos que você esteja em comunhão com pessoas que o encorajam, ajudam você a crescer!" },
+      { "nome": "Servir", "subtitulo": "", "texto": "A igreja não espera cuidar de tudo para fazer algo, mas ela cuida fazendo e faz cuidando. As pessoas que são cuidadas e desenvolvidas nos GCs e que, por serem cuidadas, podem exercer seus dons e talentos de forma específica, são encorajadas a servir como cooperadoras em algum dos nossos departamentos. Acreditamos que uma parte valiosa de ser uma comunidade saudável e florescente é estar sendo ativamente envolvido e adicionando força!" }
+    ]
+  },
+  "lideranca": {
+    "rotulo": "Quem conduz",
+    "titulo": "Liderança",
+    "texto": "Cremos na liderança plural da Igreja, através dos Presbíteros, exemplificada no Novo Testamento."
+  },
+  "credo": {
+    "rotulo": "Nosso alicerce",
+    "titulo": "Como Cremos",
+    "intro": "Somos uma Comunidade evangélica fundamentada nas Sagradas Escrituras. Esse é um resumo de nossas convicções básicas – devendo ser conhecida e abraçada por todos os nossos membros:",
+    "grupos": [
+      { "id": "escrituras", "nome": "As Escrituras", "declaracoes": [
+        { "titulo": "A Bíblia", "texto": "CREMOS na inspiração divina da Bíblia Sagrada (2Tm 3.16-17), que se deu por meio da ação do Espírito Santo, usando homens escolhidos (2Pe 1.21), cujo conteúdo é inalterável (Dt 4.2; Ap 22.18,19) e não atualizável (Mt 24.35), para por meio dela nos conduzir à vida eterna (Jo 5.39). A mesma é nossa única regra de fé e prática, que devemos obedecer (Dt 27.10) e jamais podemos ultrapassar (1Co 4.6; Is 8.20). Sua interpretação depende da concordância e soma de suas declarações (Mt 4.5-7; At 15.15)." }
+      ] },
+      { "id": "trindade", "nome": "Deus, Cristo e o Espírito", "declaracoes": [
+        { "titulo": "Deus", "texto": "CREMOS em um único Deus (Ef 4.6), eterno (Gn 21.33), revelado em três Pessoas distintas que são iguais em poder, glória e majestade: o Pai, o Filho e o Espírito Santo (Mt 28.19; 2Co 13.13); Criador do Universo, de todas as coisas que há nos céus e na terra (Ap 4.11), visíveis e invisíveis (Hb 11.3), e, em especial, a coroa da Sua criação: os seres humanos (Sl 8.3-8), por um ato sobrenatural e imediato, e não por um processo evolutivo (Gn 2.7; Hb 11.3; Ap 4.11)." },
+        { "titulo": "Jesus Cristo", "texto": "CREMOS no Senhor Jesus Cristo, o Filho de Deus (Hb 4.14), plenamente Deus (Fp 2.5-8; Cl 2.9), plenamente Homem (1Tm 2.5), em sua concepção sobrenatural e nascimento virginal (Mt 1.20-25), em sua morte substitutiva e expiatória (Rm 4.24,25), em sua ressurreição corporal dentre os mortos (Lc 24.36-43; At 3.15) e em sua ascensão aos céus (Lc 24.50,51) de onde há de retornar (At 1.10,11) para consumar sua obra redentora (Fp 3.20,21)." },
+        { "titulo": "Espírito Santo", "texto": "CREMOS no Espírito Santo, junto com o Pai e o Filho, que convence os homens do pecado (Jo 16.11), que regenera o pecador conduzindo à experiência do novo nascimento (Jo 3.5; Tt 3.5); habita no corpo dos justificados (1Co 3.16), é chamado de \"o selo da promessa\" e \"a garantia de nossa herança\" (Ef 1.13,14) e guia os filhos de Deus (Jo 16.13; Rm 8.14; 1Jo 2.20,27)." }
+      ] },
+      { "id": "salvacao", "nome": "Queda e salvação", "declaracoes": [
+        { "titulo": "A queda do ser humano", "texto": "CREMOS na queda do ser humano, que se deu por meio de Adão e afetou toda a raça humana (Rm 5.12), destituindo-o da glória de Deus com a qual foi criado (Rm 3.23) e que somente o arrependimento (Lc 24.47) seguido da fé (Ef 2.8) na obra redentora de Jesus Cristo pode salvá-lo da ira divina (Rm 5.9) e condenação ao inferno (Mt 23.33) e torná-lo herdeiro da vida eterna (Tt 3.4-7)." },
+        { "titulo": "Regeneração", "texto": "CREMOS na necessidade da regeneração que se dá pela Palavra de Deus (1Pe 1.23) e obra do Espírito Santo (Tt 3.5), a qual Jesus denominou como novo nascimento (Jo 3.5), obra da graça divina recebida através da fé em Jesus Cristo (Ef 2.8,9). Tal experiência engloba o perdão dos pecados, a justificação e o início de um processo de santificação (1Co 6.11) que deve ser aperfeiçoado ao longo da caminhada cristã (2Co 7.1)." },
+        { "titulo": "Salvação e livre-arbítrio", "texto": "CREMOS que a salvação é disponibilizada a todos (Mt 11.28; 1Tm 2.4; 2Pe 3.9) e que o homem é responsável por suas escolhas e decisões (Js 24.15), exercendo livre-arbítrio, e podendo tanto atender ao chamado divino (1Co 7.17) que se dá por meio da sua Palavra que inspira a fé (Rm 10.17), como também resistir à ação divina (At 7.53; Hb 3.7,8) e rejeitar a oferta redentora (Mt 23.37; Jo 5.40; At 13.46)." },
+        { "titulo": "Batismo em águas", "texto": "CREMOS no batismo ordenado por Jesus (Mt 28.19; Mc 16.16) realizado por imersão em águas (At 8.35-39), que expressa publicamente nossa fé (que se identifica, apropria e confessa) na substituição realizada por Cristo em sua morte, sepultamento, ressurreição (Rm 6.3-5) e posição à direita de Deus (Ef 2.6), sendo o selo da fé na nova aliança assim como a circuncisão o foi na antiga aliança (Cl 2.11,12; Rm 4.11)." },
+        { "titulo": "Batismo no Espírito Santo", "texto": "CREMOS no batismo no Espírito Santo, efetuado por Jesus Cristo (Lc 3.15,16)." },
+        { "titulo": "Dons do Espírito", "texto": "CREMOS nos dons do Espírito Santo, que são distribuídos conforme a Sua vontade (1Co 12.11) para edificação da Igreja (1Co 14.5) e que todo o cristão deve procurá-los com zelo (1Co 12.31)." }
+      ] },
+      { "id": "familia", "nome": "Família e papéis", "declaracoes": [
+        { "titulo": "A família", "texto": "CREMOS na família, como instituição divina, iniciada pelo casamento entre homem e mulher (Mt 19.4-6) e ampliada pela reprodução dos filhos, sendo que o casamento deve ser digno de honra (Hb 13.4), monogâmico (1Tm 3.2), havendo fidelidade entre os cônjuges e exclusividade no ato conjugal (Mt 5.27,28; 1Co 7.1-5). O novo casamento é permitido, caso seja dissolvido mediante a morte de um dos cônjuges (Rm 7.2; 1Co 7.39) ou em caso de adultério da outra parte (Mt 5.31,32; Mt 19.7-9) – embora em tais circunstâncias acreditemos que primeiro se ofereça perdão e se lute pela reconciliação e restauração. Considerando os parâmetros bíblicos da definição de família, interpretamos como pecado tudo o que, além de desobediência às instruções bíblicas (1Jo 3.4), colide com a revelação do plano divino para a família e a vida conjugal determinada pelo Criador, como as práticas sexuais da fornicação (sexo antes do casamento) e adultério (relação com quem não seja o cônjuge), pois desonram o matrimônio (Hb 13.4); a homossexualidade (Rm 1.26,27; Lv 18.22; 1Co 6.9), a bestialidade (relação com animais – Lv 18.23)." },
+        { "titulo": "Papéis do homem e da mulher", "texto": "Os papéis do homem e da mulher são bem definidos em nosso credo e sua importância vai além da questão reprodutiva; o governo do lar é atribuído ao homem, denominado de cabeça (Ef 5.23; 1Co 11.3) e a quem a esposa deve submissão (Ef 5.22-24; 1Pe 3.1), e esse valor se estende ao governo da igreja – onde as esposas não podem exercer autoridade sobre seus maridos (1Tm 2.12), embora possam servir juntamente com eles (1Co 9.5), inclusive no pastorado. A liderança do homem, em contrapartida, deve ser amorosa, sacrificial e servidora (1Pe 3.7; Cl 3.19), tanto em casa quanto na Igreja (1Pe 5.1-3). Tais distinções visam a funcionalidade prática da estrutura familiar e da igreja sem diminuir a importância, enquanto pessoa, das mulheres – da mesma forma que a submissão que os filhos devem aos seus pais (Ef 6.1-3) não lhes diminui valor e nem significa direito dos pais a abuso comportamental no exercício da sua autoridade (Ef 6.4)." }
+      ] },
+      { "id": "igreja", "nome": "A Igreja", "declaracoes": [
+        { "titulo": "Autonomia da igreja local", "texto": "CREMOS na autonomia da igreja local. Ele é a cabeça do corpo formado pelo seu povo – isto é, sua igreja (Cl 1.18). Cremos na Igreja, que é o corpo de Cristo (Ef 1.22,23) e por Ele edificada (Mt 16.18), a universal assembleia dos justos aperfeiçoados (Hb 12.22,23), coluna e fundamento da verdade (1Tm 3.15). Além do aspecto espiritual, essa Igreja também é expressa fisicamente pela congregação dos fiéis (Hb 10.25) em diferentes localidades (Ap 1.11), tendo suas reuniões públicas e nas casas (At 20.20), sem nenhum dia semanal distinto dos demais (Rm 14.5; Cl 2.16,17)." },
+        { "titulo": "Reuniões e ceia", "texto": "Tais ajuntamentos visam a pregação do evangelho (At 5.42), adoração e edificação mútua (1Co 14.26) e celebração da ceia memorial da nova aliança instituída pelo Senhor Jesus – com uso do pão e do fruto da vide (Mt 26.26-29; 1Co 11.23-26). A expressão da fé de seus membros é vista, principalmente, pela obediência das Escrituras (Rm 16.26) e aos mandamentos de Jesus (Mt 28.19; Lc 6.46; Jo 14.21). O posicionamento em prol da verdade (Pv 23.23) e da justiça (Mt 5.6)." },
+        { "titulo": "Caridade", "texto": "A prática da caridade e assistência aos necessitados, que começa por seus membros, também deve se estender a todos, incluindo os de fora da comunidade cristã (Gl 6.10). Nosso credo é uma expressão de obediência que inclui a questão comportamental dos que abraçam a mesma fé e, juntos, almejam andar nela. Não obriga os de fora às mesmas crenças e práticas e nem lhes diminui o valor enquanto pessoas; apenas determina a permanência ou não em nossa comunidade de fé." },
+        { "titulo": "Disciplina", "texto": "CREMOS na prática da disciplina daqueles que compõem a igreja e pecaram, iniciando pela correção pessoal, estendendo-se à exortação com testemunhas, ao confronto público e podendo terminar com a exclusão (Mt 18.15-17; 1Co 5.2,13). Essa última medida se refere a quem se denomina irmão sem que seu comportamento sustente isso (1Co 5.9-13) e visa poupar a congregação de prejuízos espirituais (1Co 12.26) – embora não signifique proibição à assistência aos cultos, envolve deixar de se relacionar (Tt 3.10,11) e afastar de responsabilidades. O propósito da disciplina não é tratar como inimigo (2Ts 3.14,15) mas tentar promover a restauração (2Tm 2.24,25)." },
+        { "titulo": "Sacerdócio de cada crente", "texto": "CREMOS no sacerdócio e ministério de cada crente (Ap 1.6) bem como na responsabilidade de cada membro do Corpo na edificação da obra de Deus (1Co 12.12-27)." }
+      ] },
+      { "id": "ultimas-coisas", "nome": "Generosidade e últimas coisas", "declaracoes": [
+        { "titulo": "Generosidade", "texto": "CREMOS na lei da semeadura e colheita e na generosidade como expressão de quem nós somos em Cristo. Na Nova Aliança, a compreensão da entrega e da contribuição transcende o simples cumprimento de uma regra sobre o pagamento de 10% de dízimos (Mt 5.20). Essa perspectiva vai além de cumprir uma obrigação moral ou legal, pois se baseia na totalidade do princípio do amor e da gratidão a Deus. Ofertas jamais devem ser entregues como uma forma de \"barganha\" com Deus, ou para ser abençoado. Devemos ofertar motivados pelo amor e com uma atitude de fé e obediência, com alegria e gratidão (2Co 9.6-7). A Nova Aliança enfatiza que a motivação para dar deve ser o amor ao próximo e a Deus, e não o medo de retaliação ou a ameaça de uma maldição. É um chamado para viver em liberdade e em resposta ao sacrifício supremo de Jesus, que nos redimiu e nos libertou de toda maldição." },
+        { "titulo": "Ressurreição dos mortos", "texto": "CREMOS na ressurreição dos mortos (Mt 22.23-32) como rudimento da doutrina de Cristo (Hb 6.1,2), sendo que haverá distinção de destino dos ressuscitados para a vida eterna e para juízo eterno (Dn 12.2; Jo 5.29)." },
+        { "titulo": "Juízo vindouro", "texto": "CREMOS no juízo vindouro (Hb 9.27) como rudimento da doutrina de Cristo (Hb 6.1,2), que se dará a partir do regresso de Cristo (Ap 22.12), sendo que haverá julgamento das obras dos santos (2Co 5.10) sem questionar o mérito da salvação (1Co 3.15) e também dos ímpios (Ap 20.12-15), não mais havendo oportunidade de salvação (Mt 25.46) e dando, então, início ao estado eterno onde nada mais será mudado (Ap 21.1-4)." }
+      ] }
+    ]
+  },
+  "citacao": {
+    "texto": "Essas crenças são a base do nosso alicerce. São a sustentação de quem somos. Mesmo que não sejam sempre vistas, elas permitem que toda a estrutura esteja sempre segura, forte e firme."
+  },
+  "visita": {
+    "rotulo": "E você",
+    "titulo": "Venha nos visitar",
+    "texto": "",
+    "ctaMapsTexto": "Abrir no Google Maps",
+    "ctaTelefoneTexto": "Telefone",
+    "mapaTitulo": "Mapa"
+  },
+  "rodape": { "texto": "" }
+}

@@ -6,30 +6,41 @@ Tudo aqui foi extraído do folder impresso que o Rafael enviou. A igreja já tem
 
 | Nome | Hex | Uso |
 |---|---|---|
-| `verdeEscuro` | `#44581A` | Blocos sólidos, texto de corpo sobre creme, botões primários |
-| `verdeLimao` | `#A3C63C` | Títulos de seção, destaques, contornos finos |
-| `creme` | `#F7F5EC` | Fundo da página |
-| `grafite` | `#1F1F1C` | Texto corrido |
+| `verdeEscuro` | `#44581A` | **Fundo da página inteira** (decisão do layout D — Capítulos), botão primário como fundo |
+| `verdeLimao` | `#A3C63C` | Trilha vertical, nós, texto de 24px+ — nunca texto pequeno (ver contraste abaixo) |
+| `creme` | `#F7F5EC` | Texto de corpo sobre o fundo verde escuro; único bloco de fundo claro é o cartão de visita |
+| `grafite` | `#1F1F1C` | Texto sobre fundos claros (ex.: dentro do cartão de visita em creme) |
 
-Vivem em `content/site.json` sob `tema`, viram variáveis CSS (`--verde-escuro` etc.) via `lib/tema.ts` aplicado no `<body>`, e o Tailwind os expõe como `bg-verde-escuro`, `text-verde-limao` e afins pelo bloco `@theme inline` em `app/globals.css`.
+Atualizado na Task 3 para refletir a decisão de layout D (fundo escuro do topo ao rodapé) — o texto antigo desta tabela ainda descrevia `creme` como fundo geral, herdado da fase anterior à escolha de layout.
+
+Vivem em `content/site.json` sob `tema`, viram variáveis CSS (`--verde-escuro` etc.) via `lib/tema.ts::variaveisDeTema()` aplicado como `style` no `<body>` (`app/layout.tsx`), e o Tailwind os expõe como `bg-verde-escuro`, `text-verde-limao` e afins pelo bloco `@theme inline` em `app/globals.css`. O `body` já nasce com `background-color: var(--verde-escuro)` e `color: var(--creme)` no CSS global — não depende de uma classe Tailwind ser aplicada em `page.tsx` para o fundo escuro aparecer.
 
 **Trocar uma cor no JSON repinta o site inteiro.** Esse é o ponto — foi desenhado assim para que ninguém precise caçar hex espalhado por componente.
 
 ## Cuidado de contraste
 
-`verdeLimao` sobre `creme` é um par de contraste baixo. Serve para títulos grandes e elementos decorativos, **não** para texto corrido. Se aparecer numa linha de corpo em algum componente novo, é regressão de acessibilidade.
+O par que importa é **limão sobre verde escuro**, porque o verde escuro é o fundo da página inteira. Medido:
+
+| Par | Razão | Veredito |
+|---|---|---|
+| `verdeLimao` sobre `verdeEscuro` | **4,02:1** | Passa AA de texto grande (3:1). **Reprova** AA de texto normal (4,5:1) |
+| `creme` sobre `verdeEscuro` | **7,24:1** | Passa com folga em qualquer tamanho |
+
+Daí a regra: limão **só** na linha da trilha, nos nós e em texto de 24px ou mais. Rótulos, corpo, títulos pequenos e texto de botão usam creme. O botão primário é fundo creme com texto verde escuro — fundo limão com texto de 16px reprovaria.
+
+Se aparecer limão num texto abaixo de 24px em algum componente novo, é regressão de acessibilidade. Ver [[log/decisions]] para a medição original.
 
 ## Elementos gráficos
 
 Do folder, todos reproduzidos em SVG inline (nada de imagem raster, nada de request externo):
 
-- **Blobs orgânicos** — três variantes de path, em `components/decor/Blob.tsx`. No impresso eles sangram para fora da página; na web, `overflow-hidden` na seção com o blob posicionado parcialmente fora reproduz o efeito.
-- **Círculos sólidos** — verde escuro e limão, três tamanhos.
-- **Contornos finos em limão** — arcos de traço fino.
-- **`✕✕✕`** — o motivo de três xis, em `components/ui/SeparadorXXX.tsx`, separando seções.
-- **Grade pontilhada** — pequenos pontos em padrão SVG.
+- **Blobs orgânicos** — três variantes de path, em `components/decor/Blob.tsx`, único elemento decorativo do folder que chegou a ser usado por uma seção real (`Hero.tsx`, atrás do subtítulo). No impresso eles sangram para fora da página; na web, `overflow-hidden` na seção com o blob posicionado parcialmente fora reproduz o efeito. Opacidade do blob do Hero calibrada em `/15` (não `/25`) na revisão final de 2026-08-09 — em `/25` o verde-escuro tingido reduz demais o contraste do texto creme que pode cair atrás dele; ver [[log/decisions]] 2026-08-09.
+- ~~Círculos sólidos~~ e ~~contornos finos em limão~~ e ~~`✕✕✕`~~ (`components/decor/Circulo.tsx`, `components/ui/SeparadorXXX.tsx`) — chegaram a ser implementados junto com o `Blob` na Task 4, mas nenhuma seção real (Task 6 em diante) acabou consumindo essas duas peças; removidas como código morto na revisão final de 2026-08-09 (só eram exercitadas pelos próprios testes, cobertura de mentira). Se a decoração do círculo/xis fizer falta visualmente algum dia, reimplementar a partir do folder impresso, não recuperar do histórico do git sem revisitar o design.
+- ~~Grade pontilhada~~ — cortada na direção D: no fundo escuro vira ruído sem informar nada.
 
 Toda decoração leva `aria-hidden="true"` e `focusable="false"`. Leitor de tela não deve encontrar nada disso.
+
+**A trilha em si (a linha vertical em limão) não é decorativa — é estrutura.** Implementada na Task 5 como `components/ui/Trilha.tsx` (a linha, via pseudo-elemento posicionado) e `components/ui/Capitulo.tsx` (cada `<section>` com âncora própria, nó redondo em limão sobre a linha, rótulo em creme, `<h2>` em limão ≥24px). Os offsets `left-[1.6rem]`/`md:left-[2.6rem]` da linha e `-left-8`/`md:-left-10` do nó do capítulo são acoplados — mudar um sem o outro faz o nó flutuar fora da linha. `components/ui/Chip.tsx` (contorno creme translúcido, usado em listas de valores/crenças) e `components/ui/Acordeao.tsx` (único client component até agora; um item aberto por vez, `aria-expanded`/`aria-controls`, operável por teclado) completam o kit de primitivas de interface. Nenhuma seção real ainda consome essas quatro peças — isso é Task 6+.
 
 ## Tipografia
 

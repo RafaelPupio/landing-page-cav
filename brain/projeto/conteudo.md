@@ -44,10 +44,16 @@ No desktop, um índice em painel fixo (`lg:sticky`) à esquerda. No celular, só
 
 Três camadas, da mais simples à mais técnica:
 
-1. **`/editar` com `npm run dev`** — formulário no navegador, um campo por item, botão salvar. Grava direto no `site.json`. Só existe em desenvolvimento (`notFound()` em produção); em produção seria um buraco de segurança aberto para qualquer visitante.
+1. **`/editar` com `npm run dev`** — formulário no navegador (`components/editor/FormularioConteudo.tsx`), um campo por item (caminho tipo `visita.titulo` acima da caixa de texto), botão salvar. Grava direto no `site.json` via `PUT /api/content` (`app/api/content/route.ts`), que valida com `siteSchema` antes de gravar e devolve os erros em português se algo estiver errado. Construído na Task 14. Só existe em desenvolvimento — tanto a página quanto a API devolvem 404 se `NODE_ENV === 'production'`; em produção seria um buraco de segurança aberto para qualquer visitante (checagem coberta por `tests/editor/rota.test.ts`).
 2. **Editar `content/site.json` à mão** — JSON puro, sem código. Se errar, o build avisa qual campo.
 3. **Fase 2, se pedirem:** Decap CMS por cima do mesmo JSON — login pelo GitHub, edição pelo celular, sem rodar nada. Não está no escopo atual.
 
 ## Marcadores em aberto
 
 Campos que existem no schema mas estão vazios: `telefone`, `email`, `cep`, `latitude`, `longitude`. A regra de degradação cuida disso — campo vazio não renderiza bloco vazio. Sem telefone, o botão de telefone simplesmente não aparece. Ver [[status]].
+
+## Estado (Task 2, 2026-08-08)
+
+`content/schema.ts`, `content/site.json` e `content/load.ts` existem e passam em `npm test` e `npm run build`. As 20 declarações do credo estão nos 6 grupos descritos acima, texto conferido contra o apêndice.
+
+Pendência a revisar: `content/site.json` contém um `…` dentro da citação de Mateus 28.20 no primeiro capítulo (história) — reticências que já vêm no apêndice-fonte como parte da citação bíblica parcial, não texto cortado por mim. Mantido verbatim; ver [[log/decisions]].
