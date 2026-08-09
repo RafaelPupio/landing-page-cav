@@ -44,11 +44,11 @@ describe('Hero', () => {
     expect(classes).not.toContain('text-verde-limao')
   })
 
-  // Trava a opacidade do blob decorativo atrás do subtítulo. Em /25 o verde-escuro
-  // tingido mede 3,97:1 com creme (reprova AA); em /15 mede 5,72:1 (recalculado via
-  // compositing real no navegador — ver brain/log/decisions.md). O fundo tingido é
-  // o mesmo em qualquer ponto do blob, então essa margem vale independente de onde
-  // o subtítulo cair — não depende do comprimento de hero.titulo.
+  // Trava a opacidade do blob decorativo atrás do subtítulo. O fundo tingido é
+  // uniforme em qualquer ponto do blob, então a margem vale independente de onde o
+  // subtítulo cair — não depende do comprimento de hero.titulo. Medido: /25 dá
+  // 4,84:1 com creme (já passa AA) e /15 dá 5,72:1. Ficamos em /15 pela folga; se
+  // alguém precisar de um blob mais forte, /25 continua dentro da regra.
   it('usa opacidade baixa no blob atrás do subtítulo, para não reprovar contraste se o título encurtar', () => {
     const { container } = render(<Hero hero={HERO} />)
     const blob = container.querySelector('svg')
