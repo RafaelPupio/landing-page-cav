@@ -948,7 +948,7 @@ export default function Trilha({ children }: { children: ReactNode }) {
     <div className="relative mx-auto max-w-3xl px-6 py-10 md:px-10">
       <div
         aria-hidden="true"
-        className="absolute left-[1.6rem] top-14 bottom-14 w-px bg-gradient-to-b from-verde-limao via-verde-limao/60 to-transparent md:left-[2.6rem]"
+        className="absolute left-[1.875rem] top-14 bottom-14 w-px bg-gradient-to-b from-verde-limao via-verde-limao/60 to-transparent md:left-[2.875rem]"
       />
       <div className="pl-8 md:pl-10">{children}</div>
     </div>
@@ -1041,16 +1041,15 @@ export default function Acordeao({ itens }: { itens: ItemAcordeao[] }) {
                 </span>
               </button>
             </h3>
-            {estaAberto && (
-              <div
-                role="region"
-                id={`painel-${item.id}`}
-                aria-labelledby={`gatilho-${item.id}`}
-                className="pb-8"
-              >
-                {item.conteudo}
-              </div>
-            )}
+            <div
+              role="region"
+              id={`painel-${item.id}`}
+              aria-labelledby={`gatilho-${item.id}`}
+              hidden={!estaAberto}
+              className="pb-8"
+            >
+              {item.conteudo}
+            </div>
           </div>
         )
       })}
@@ -1617,13 +1616,15 @@ describe('Credo', () => {
     expect(container.querySelector('#credo-trindade')).not.toBeNull()
   })
 
-  it('mantém as declarações fechadas até o clique', async () => {
+  it('mantém as declarações fechadas até o clique, mas presentes no DOM', async () => {
     const user = userEvent.setup()
     render(<Credo credo={CREDO} />)
-    expect(screen.queryByText('CREMOS em um único Deus.')).not.toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'Deus, Cristo e o Espírito' }))
+    // Presente no HTML mesmo fechado — é o que permite ao Google indexar o credo.
     expect(screen.getByText('CREMOS em um único Deus.')).toBeInTheDocument()
-    expect(screen.getByText('CREMOS no Senhor Jesus Cristo.')).toBeInTheDocument()
+    expect(screen.getByText('CREMOS em um único Deus.')).not.toBeVisible()
+    await user.click(screen.getByRole('button', { name: 'Deus, Cristo e o Espírito' }))
+    expect(screen.getByText('CREMOS em um único Deus.')).toBeVisible()
+    expect(screen.getByText('CREMOS no Senhor Jesus Cristo.')).toBeVisible()
   })
 
   it('renderiza o título de cada declaração aberta como h4', async () => {
