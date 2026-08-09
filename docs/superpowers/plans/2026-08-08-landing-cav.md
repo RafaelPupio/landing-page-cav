@@ -4,18 +4,20 @@
 
 **Goal:** Publicar uma landing page única da Comunidade Árvore da Vida que seja encontrável no Google e sirva como destino do link da bio do Instagram, apresentando identidade, informações práticas e o credo completo.
 
-**Architecture:** Next.js App Router com renderização estática. Todo o conteúdo vive em `content/site.json`, validado por Zod na importação — nenhum componente contém texto fixo. As seções são componentes puros que recebem sua fatia do conteúdo por props. Layout bento no corpo da página, com a seção do credo em painel lateral fixo (desktop) / acordeão (mobile).
+**Architecture:** Next.js App Router com renderização estática. Todo o conteúdo vive em `content/site.json`, validado por Zod na importação — nenhum componente contém texto fixo. As seções são componentes puros que recebem sua fatia do conteúdo por props. O layout é a **direção D — Capítulos**: fundo verde escuro do topo ao rodapé, com uma trilha vertical em limão que atravessa a página e liga os capítulos como um tronco, de Abril de 2017 até "venha nos visitar".
 
-**Tech Stack:** Next.js 15 (App Router), React 19, TypeScript strict, Tailwind CSS v4, Zod, Vitest + Testing Library + jsdom.
+**Tech Stack:** Next.js 16 (App Router), React 19, TypeScript strict, Tailwind CSS v4, Zod, Vitest + Testing Library + jsdom.
 
 ## Global Constraints
 
-- Node.js ≥ 20. O ambiente alvo tem Node v26 e npm 11.
+- Node.js ≥ 20. O ambiente alvo tem Node v26 e npm 11. O `create-next-app@latest` instalou Next.js 16.3.0 — o plano foi escrito citando 15, mas o comando usa `@latest` e o 16 é o que está no projeto.
 - Idioma de toda a interface e do conteúdo: **pt-BR**. `<html lang="pt-BR">`.
 - Tokens de cor exatos: `verdeEscuro #44581A`, `verdeLimao #A3C63C`, `creme #F7F5EC`, `grafite #1F1F1C`.
+- **Piso de opacidade para texto:** `text-creme/90` (6,23:1) é o mínimo sobre o fundo verde escuro. `/70` mede 4,497:1 e reprova AA.
+- **Regra de contraste, inegociável.** Limão sobre verde escuro mede 4,02:1 — passa em texto grande, reprova em texto pequeno (AA exige 4,5:1). Portanto: limão **somente** na linha da trilha, nos nós, e em títulos de 24px ou maiores. Rótulos, corpo, botões e qualquer texto abaixo de 24px usam creme (7,24:1). Botão primário sobre fundo escuro é **fundo creme com texto verde escuro** — nunca fundo limão com texto pequeno.
 - **Nenhum componente pode conter texto de conteúdo hardcoded.** Todo texto vem por props, originado de `content/site.json`. Rótulos puramente estruturais de acessibilidade (`aria-label` genérico) são a única exceção.
 - Todo o texto de conteúdo é copiado **verbatim** do apêndice de `docs/superpowers/specs/2026-08-08-landing-cav-design.md`. Não reescrever, resumir ou "melhorar" o texto da igreja.
-- Rotas `/editar` e `/api/content` retornam 404 quando `process.env.NODE_ENV === 'production'`.
+- Rotas `/editar` e `/api/content` só existem quando `NODE_ENV === 'development'`; qualquer outro valor retorna 404. A regra é allowlist (fail-closed) e vive em `lib/ambiente.ts`, fonte única para os dois arquivos.
 - Mobile-first: escrever o estilo base para telas pequenas e usar prefixos `md:`/`lg:` para ampliar.
 - Blobs e formas decorativas recebem `aria-hidden="true"`.
 - Commits em português, no estilo `feat: ...`, `test: ...`, `chore: ...`.
@@ -35,13 +37,13 @@
 
 - [ ] **Step 1: Criar o projeto Next.js**
 
-Rodar na raiz do repositório (a pasta já contém `docs/` e `.git`, então usar `.` como destino):
+Rodar na raiz do repositório (a pasta já contém `docs/`, `brain/` e `.git`, então usar `.` como destino):
 
 ```bash
 npx create-next-app@latest . --typescript --tailwind --app --eslint --src-dir=false --import-alias="@/*" --turbopack --no-install
 ```
 
-Quando perguntar sobre sobrescrever arquivos existentes, aceitar — `docs/` e `.git` não são tocados.
+Quando perguntar sobre sobrescrever arquivos existentes, aceitar — `docs/`, `brain/`, `CLAUDE.md` e `.git` não são tocados. Se o gerador reclamar de diretório não vazio e abortar, criar em `.tmp-scaffold` e mover o conteúdo para a raiz.
 
 - [ ] **Step 2: Instalar dependências**
 
@@ -128,14 +130,17 @@ git commit -m "chore: scaffold Next.js 15 + Tailwind v4 + Vitest"
 
 **Files:**
 - Create: `content/schema.ts`, `content/site.json`, `content/load.ts`
+- Modify: `tsconfig.json` (adicionar `resolveJsonModule`)
 - Test: `tests/content/schema.test.ts`
 
 **Interfaces:**
 - Consumes: nada.
 - Produces:
-  - `siteSchema: ZodType<Site>` e `type Site` (de `content/schema.ts`)
-  - `site: Site` — default export nomeado de `content/load.ts`, já validado
-  - Tipos de seção exportados: `Tema`, `Contato`, `Horario`, `Redes`, `Hero`, `SecaoTexto`, `Cuidado`, `Credo`, `GrupoCredo`, `Declaracao`, `Visita`
+  - `siteSchema` e `type Site` (de `content/schema.ts`)
+  - `site: Site` — export nomeado de `content/load.ts`, já validado
+  - Tipos exportados: `Tema`, `Contato`, `Horario`, `Redes`, `GrupoCredo`, `Declaracao`
+
+Cada capítulo da trilha tem um **rótulo** (`rotulo`) — a marca temporal ou temática que aparece acima do título, tipo "Abril de 2017" ou "Nosso alicerce". É conteúdo, não decoração, então vive no JSON.
 
 - [ ] **Step 1: Escrever o schema**
 
@@ -154,7 +159,8 @@ export const temaSchema = z.object({
 export const horarioSchema = z.object({
   rotulo: z.string().min(1),
   quando: z.string().min(1),
-  diaSemana: z.string().min(1), // formato schema.org, ex.: "Sunday"
+  // O schema.org exige o dia em inglês; "Domingo" faria o Google descartar o horário em silêncio.
+  diaSemana: z.enum(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']),
   abre: z.string().regex(/^\d{2}:\d{2}$/),
   fecha: z.string().regex(/^\d{2}:\d{2}$/),
 })
@@ -212,13 +218,21 @@ export const siteSchema = z.object({
     icone: z.enum(['mapa', 'relogio', 'instagram', 'youtube']),
   })).min(1),
   historia: z.object({
+    rotulo: z.string().min(1),
     titulo: z.string().min(1),
     paragrafos: z.array(z.string().min(1)).min(1),
   }),
-  missao: z.object({ titulo: z.string().min(1), texto: z.string().min(1) }),
-  visao: z.object({ titulo: z.string().min(1), itens: z.array(z.string().min(1)).min(1) }),
-  valores: z.object({ titulo: z.string().min(1), itens: z.array(z.string().min(1)).min(1) }),
+  proposito: z.object({
+    rotulo: z.string().min(1),
+    titulo: z.string().min(1),
+    missao: z.string().min(1),
+    visaoTitulo: z.string().min(1),
+    visao: z.array(z.string().min(1)).min(1),
+    valoresTitulo: z.string().min(1),
+    valores: z.array(z.string().min(1)).min(1),
+  }),
   cuidado: z.object({
+    rotulo: z.string().min(1),
     titulo: z.string().min(1),
     intro: z.string().min(1),
     pilares: z.array(z.object({
@@ -227,14 +241,23 @@ export const siteSchema = z.object({
       texto: z.string().min(1),
     })).length(3),
   }),
-  lideranca: z.object({ titulo: z.string().min(1), texto: z.string().min(1) }),
+  lideranca: z.object({
+    rotulo: z.string().min(1),
+    titulo: z.string().min(1),
+    texto: z.string().min(1),
+  }),
   credo: z.object({
+    rotulo: z.string().min(1),
     titulo: z.string().min(1),
     intro: z.string().min(1),
     grupos: z.array(grupoCredoSchema).min(1),
   }),
   citacao: z.object({ texto: z.string().min(1) }),
-  visita: z.object({ titulo: z.string().min(1), texto: z.string() }),
+  visita: z.object({
+    rotulo: z.string().min(1),
+    titulo: z.string().min(1),
+    texto: z.string(),
+  }),
   rodape: z.object({ texto: z.string() }),
 })
 
@@ -282,6 +305,14 @@ describe('siteSchema', () => {
     ;(quebrado.cuidado as { pilares: unknown[] }).pilares.pop()
     expect(siteSchema.safeParse(quebrado).success).toBe(false)
   })
+
+  it('exige rótulo em todos os capítulos da trilha', () => {
+    for (const capitulo of ['historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita']) {
+      const quebrado = structuredClone(conteudo) as Record<string, Record<string, unknown>>
+      delete quebrado[capitulo].rotulo
+      expect(siteSchema.safeParse(quebrado).success, `${capitulo} sem rótulo`).toBe(false)
+    }
+  })
 })
 ```
 
@@ -292,7 +323,7 @@ Expected: FAIL — `Cannot find module '@/content/site.json'`.
 
 - [ ] **Step 4: Criar `content/site.json`**
 
-Preencher com o conteúdo **verbatim** do apêndice do spec (`docs/superpowers/specs/2026-08-08-landing-cav-design.md`). Estrutura, com o texto longo abreviado aqui como `…` — no arquivo real vai o texto inteiro:
+Preencher com o conteúdo **verbatim** do apêndice do spec (`docs/superpowers/specs/2026-08-08-landing-cav-design.md`). Estrutura abaixo, com o texto longo abreviado como `…` — **no arquivo real vai o texto inteiro, e nenhum `…` pode sobrar**:
 
 ```json
 {
@@ -341,21 +372,22 @@ Preencher com o conteúdo **verbatim** do apêndice do spec (`docs/superpowers/s
     { "rotulo": "YouTube", "href": "https://youtube.com/@ArvoredaVidaLRV", "icone": "youtube" }
   ],
   "historia": {
-    "titulo": "História",
+    "rotulo": "Abril de 2017",
+    "titulo": "Começou numa garagem",
     "paragrafos": [
       "A Comunidade Árvore da Vida nasceu em Abril de 2017. …",
       "Nosso orgulho não é ser da Comunidade Árvore da Vida. …",
       "Seguimos na direção mais importante, que é cumprir a Grande Comissão …"
     ]
   },
-  "missao": { "titulo": "Missão", "texto": "Desejamos revelar o amor do Pai …" },
-  "visao": {
-    "titulo": "Visão",
-    "itens": ["Amar a Deus", "Pregar a Cristo", "Servir a todos", "Andar em unidade", "Manifestar o Reino"]
-  },
-  "valores": {
-    "titulo": "Valores",
-    "itens": [
+  "proposito": {
+    "rotulo": "O que nos move",
+    "titulo": "Missão, visão e valores",
+    "missao": "Desejamos revelar o amor do Pai …",
+    "visaoTitulo": "Visão",
+    "visao": ["Amar a Deus", "Pregar a Cristo", "Servir a todos", "Andar em unidade", "Manifestar o Reino"],
+    "valoresTitulo": "Valores",
+    "valores": [
       "Autoridade da Palavra de Deus", "Disciplina espiritual", "Obra consumada da cruz",
       "Intimidade com o Espírito Santo", "Bondade imutável de Deus", "Identidade",
       "Manifestação do sobrenatural", "Cultura do Reino", "Honra", "Discipulado",
@@ -363,6 +395,7 @@ Preencher com o conteúdo **verbatim** do apêndice do spec (`docs/superpowers/s
     ]
   },
   "cuidado": {
+    "rotulo": "Nossa família",
     "titulo": "Cuidado",
     "intro": "Somos uma família vibrante de crentes cheios de esperança …",
     "pilares": [
@@ -372,10 +405,12 @@ Preencher com o conteúdo **verbatim** do apêndice do spec (`docs/superpowers/s
     ]
   },
   "lideranca": {
+    "rotulo": "Quem conduz",
     "titulo": "Liderança",
     "texto": "Cremos na liderança plural da Igreja, através dos Presbíteros, exemplificada no Novo Testamento."
   },
   "credo": {
+    "rotulo": "Nosso alicerce",
     "titulo": "Como Cremos",
     "intro": "Somos uma Comunidade evangélica fundamentada nas Sagradas Escrituras. …",
     "grupos": [
@@ -414,17 +449,17 @@ Preencher com o conteúdo **verbatim** do apêndice do spec (`docs/superpowers/s
   "citacao": {
     "texto": "Essas crenças são a base do nosso alicerce. São a sustentação de quem somos. Mesmo que não sejam sempre vistas, elas permitem que toda a estrutura esteja sempre segura, forte e firme."
   },
-  "visita": { "titulo": "Venha nos visitar", "texto": "" },
+  "visita": { "rotulo": "E você", "titulo": "Venha nos visitar", "texto": "" },
   "rodape": { "texto": "" }
 }
 ```
 
-Antes de seguir, conferir que os 20 títulos de declaração batem com os 20 do apêndice e que nenhum `…` sobrou no arquivo.
+Antes de seguir, conferir que os 20 títulos de declaração batem com os 20 do apêndice e que nenhum `…` sobrou.
 
 - [ ] **Step 5: Rodar o teste para vê-lo passar**
 
 Run: `npm test -- tests/content/schema.test.ts`
-Expected: PASS — 4 testes.
+Expected: PASS — 5 testes.
 
 - [ ] **Step 6: Criar o carregador validado**
 
@@ -446,7 +481,7 @@ if (!resultado.success) {
 export const site: Site = resultado.data
 ```
 
-Habilitar import de JSON em `tsconfig.json` (dentro de `compilerOptions`):
+Adicionar em `tsconfig.json`, dentro de `compilerOptions`:
 
 ```json
 "resolveJsonModule": true
@@ -466,16 +501,18 @@ git commit -m "feat: conteúdo do site em JSON validado por Zod"
 
 ---
 
-### Task 3: Tokens de tema e estilos globais
+### Task 3: Tokens de tema e estilos globais no fundo escuro
 
 **Files:**
-- Modify: `app/globals.css`, `app/layout.tsx`
 - Create: `lib/tema.ts`
+- Modify: `app/globals.css`, `app/layout.tsx`
 - Test: `tests/lib/tema.test.ts`
 
 **Interfaces:**
 - Consumes: `site.tema` (Task 2).
-- Produces: `variaveisDeTema(tema: Tema): React.CSSProperties` — retorna um objeto de estilo com as custom properties `--verde-escuro`, `--verde-limao`, `--creme`, `--grafite`.
+- Produces: `variaveisDeTema(tema: Tema): CSSProperties` — objeto de estilo com `--verde-escuro`, `--verde-limao`, `--creme`, `--grafite`.
+
+A página inteira vive no verde escuro. O `body` recebe `background: var(--verde-escuro)` e `color: var(--creme)`.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -551,8 +588,8 @@ html {
 }
 
 body {
-  background-color: var(--creme);
-  color: var(--grafite);
+  background-color: var(--verde-escuro);
+  color: var(--creme);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -603,7 +640,7 @@ Expected: PASS; build conclui.
 
 ```bash
 git add -A
-git commit -m "feat: tokens de tema como variáveis CSS e fonte Poppins"
+git commit -m "feat: tokens de tema, fundo escuro e fonte Poppins"
 ```
 
 ---
@@ -611,18 +648,19 @@ git commit -m "feat: tokens de tema como variáveis CSS e fonte Poppins"
 ### Task 4: Primitivas decorativas
 
 **Files:**
-- Create: `components/decor/Blob.tsx`, `components/decor/Circulo.tsx`, `components/decor/GradePontilhada.tsx`, `components/ui/SeparadorXXX.tsx`
+- Create: `components/decor/Blob.tsx`, `components/decor/Circulo.tsx`, `components/ui/SeparadorXXX.tsx`
 - Test: `tests/components/decor.test.tsx`
 
 **Interfaces:**
-- Consumes: classes Tailwind dos tokens (Task 3).
+- Consumes: nada além de CSS.
 - Produces:
   - `<Blob variante={1|2|3} className?: string />`
-  - `<Circulo tamanho={'sm'|'md'|'lg'} cor={'escuro'|'limao'} className?: string />`
-  - `<GradePontilhada className?: string />`
+  - `<Circulo tamanho={'sm'|'md'|'lg'} cor={'escuro'|'limao'|'creme'} className?: string />`
   - `<SeparadorXXX />`
 
   Todos renderizam SVG com `aria-hidden="true"` e `focusable="false"`.
+
+A grade pontilhada do folder não entra: no fundo escuro ela vira ruído. Menos um acessório.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -633,7 +671,6 @@ import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import Blob from '@/components/decor/Blob'
 import Circulo from '@/components/decor/Circulo'
-import GradePontilhada from '@/components/decor/GradePontilhada'
 import SeparadorXXX from '@/components/ui/SeparadorXXX'
 
 describe('primitivas decorativas', () => {
@@ -641,13 +678,12 @@ describe('primitivas decorativas', () => {
     const { container } = render(
       <>
         <Blob variante={1} />
-        <Circulo tamanho="md" cor="escuro" />
-        <GradePontilhada />
+        <Circulo tamanho="md" cor="limao" />
         <SeparadorXXX />
       </>,
     )
     const svgs = container.querySelectorAll('svg')
-    expect(svgs.length).toBe(4)
+    expect(svgs.length).toBe(3)
     svgs.forEach((svg) => expect(svg).toHaveAttribute('aria-hidden', 'true'))
   })
 
@@ -663,7 +699,7 @@ describe('primitivas decorativas', () => {
 Run: `npm test -- tests/components/decor.test.tsx`
 Expected: FAIL — módulos não encontrados.
 
-- [ ] **Step 3: Implementar as primitivas**
+- [ ] **Step 3: Implementar**
 
 Criar `components/decor/Blob.tsx`:
 
@@ -682,12 +718,7 @@ export default function Blob({
   className?: string
 }) {
   return (
-    <svg
-      viewBox="0 0 260 280"
-      aria-hidden="true"
-      focusable="false"
-      className={className}
-    >
+    <svg viewBox="0 0 260 280" aria-hidden="true" focusable="false" className={className}>
       <path d={CAMINHOS[variante]} fill="currentColor" />
     </svg>
   )
@@ -698,6 +729,11 @@ Criar `components/decor/Circulo.tsx`:
 
 ```tsx
 const TAMANHOS = { sm: 16, md: 32, lg: 56 } as const
+const CORES = {
+  escuro: 'var(--verde-escuro)',
+  limao: 'var(--verde-limao)',
+  creme: 'var(--creme)',
+} as const
 
 export default function Circulo({
   tamanho,
@@ -705,11 +741,10 @@ export default function Circulo({
   className = '',
 }: {
   tamanho: keyof typeof TAMANHOS
-  cor: 'escuro' | 'limao'
+  cor: keyof typeof CORES
   className?: string
 }) {
   const d = TAMANHOS[tamanho]
-  const fill = cor === 'escuro' ? 'var(--verde-escuro)' : 'var(--verde-limao)'
   return (
     <svg
       width={d}
@@ -719,31 +754,7 @@ export default function Circulo({
       focusable="false"
       className={className}
     >
-      <circle cx="50" cy="50" r="50" fill={fill} />
-    </svg>
-  )
-}
-```
-
-Criar `components/decor/GradePontilhada.tsx`:
-
-```tsx
-export default function GradePontilhada({ className = '' }: { className?: string }) {
-  return (
-    <svg
-      width="72"
-      height="24"
-      viewBox="0 0 72 24"
-      aria-hidden="true"
-      focusable="false"
-      className={className}
-    >
-      <defs>
-        <pattern id="grade-pontilhada" width="12" height="12" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="2" fill="var(--verde-escuro)" />
-        </pattern>
-      </defs>
-      <rect width="72" height="24" fill="url(#grade-pontilhada)" />
+      <circle cx="50" cy="50" r="50" fill={CORES[cor]} />
     </svg>
   )
 }
@@ -760,7 +771,7 @@ export default function SeparadorXXX() {
       viewBox="0 0 72 20"
       aria-hidden="true"
       focusable="false"
-      className="mx-auto my-10 text-verde-escuro"
+      className="mx-auto my-10 text-verde-limao"
     >
       {[6, 28, 50].map((x) => (
         <g key={x} stroke="currentColor" strokeWidth="4" strokeLinecap="round">
@@ -782,39 +793,86 @@ Expected: PASS — 2 testes.
 
 ```bash
 git add -A
-git commit -m "feat: primitivas decorativas (blob, círculo, grade, separador xxx)"
+git commit -m "feat: primitivas decorativas (blob, círculo, separador xxx)"
 ```
 
 ---
 
-### Task 5: Primitivas de interface — Card, Chip e Acordeão
+### Task 5: Primitivas de interface — Trilha, Capítulo, Chip e Acordeão
 
 **Files:**
-- Create: `components/ui/Card.tsx`, `components/ui/Chip.tsx`, `components/ui/Acordeao.tsx`
-- Test: `tests/components/acordeao.test.tsx`, `tests/components/card.test.tsx`
+- Create: `components/ui/Trilha.tsx`, `components/ui/Capitulo.tsx`, `components/ui/Chip.tsx`, `components/ui/Acordeao.tsx`
+- Test: `tests/components/trilha.test.tsx`, `tests/components/acordeao.test.tsx`
 
 **Interfaces:**
 - Consumes: tokens (Task 3).
 - Produces:
-  - `<Card tom={'creme'|'escuro'|'limao'} className?: string>{children}</Card>` — `<article>` com cantos arredondados.
-  - `<Chip>{children}</Chip>` — `<li>` estilizado.
-  - `<Acordeao itens={{ id: string; titulo: string; conteudo: ReactNode }[]} />` — client component, um item aberto por vez, `aria-expanded`/`aria-controls` corretos, operável por Enter e Espaço.
+  - `<Trilha>{children}</Trilha>` — o tronco. Renderiza a linha vertical em limão via pseudo-elemento e recua o conteúdo à direita dela.
+  - `<Capitulo id rotulo titulo>{children}</Capitulo>` — `<section>` com âncora, nó na linha, rótulo em creme, `<h2>` grande em limão (≥24px, dentro da regra de contraste).
+  - `<Chip>{children}</Chip>` — `<li>` com contorno creme translúcido.
+  - `<Acordeao itens={{ id, titulo, conteudo }[]} />` — client component, um item aberto por vez, `aria-expanded`/`aria-controls`, operável por Enter e Espaço.
+
+**Regra de contraste aplicada aqui:** o `rotulo` do capítulo é texto pequeno, então é **creme**, não limão. O `<h2>` é `text-2xl` (24px) ou maior, então pode ser limão.
 
 - [ ] **Step 1: Escrever os testes**
 
-Criar `tests/components/card.test.tsx`:
+Criar `tests/components/trilha.test.tsx`:
 
 ```tsx
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import Card from '@/components/ui/Card'
+import Trilha from '@/components/ui/Trilha'
+import Capitulo from '@/components/ui/Capitulo'
 import Chip from '@/components/ui/Chip'
 
-describe('Card', () => {
-  it('renderiza o conteúdo e aplica o tom', () => {
-    render(<Card tom="escuro">Missão</Card>)
-    const card = screen.getByText('Missão')
-    expect(card).toHaveClass('bg-verde-escuro')
+describe('Trilha e Capitulo', () => {
+  it('renderiza cada capítulo como section com a própria âncora', () => {
+    const { container } = render(
+      <Trilha>
+        <Capitulo id="historia" rotulo="Abril de 2017" titulo="Começou numa garagem">
+          <p>Texto.</p>
+        </Capitulo>
+      </Trilha>,
+    )
+    const secao = container.querySelector('section#historia')
+    expect(secao).not.toBeNull()
+    expect(secao?.tagName).toBe('SECTION')
+  })
+
+  it('usa o título como h2 e o rótulo como texto de apoio', () => {
+    render(
+      <Trilha>
+        <Capitulo id="c" rotulo="Nosso alicerce" titulo="Como Cremos">
+          <p>Texto.</p>
+        </Capitulo>
+      </Trilha>,
+    )
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Como Cremos')
+    expect(screen.getByText('Nosso alicerce')).toBeInTheDocument()
+  })
+
+  it('mantém o rótulo em creme, não em limão — limão reprova contraste em texto pequeno', () => {
+    render(
+      <Trilha>
+        <Capitulo id="c" rotulo="Abril de 2017" titulo="Título">
+          <p>Texto.</p>
+        </Capitulo>
+      </Trilha>,
+    )
+    const rotulo = screen.getByText('Abril de 2017')
+    expect(rotulo.className).toContain('text-creme')
+    expect(rotulo.className).not.toContain('text-verde-limao')
+  })
+
+  it('renderiza os filhos do capítulo', () => {
+    render(
+      <Trilha>
+        <Capitulo id="c" rotulo="R" titulo="T">
+          <p>Conteúdo interno</p>
+        </Capitulo>
+      </Trilha>,
+    )
+    expect(screen.getByText('Conteúdo interno')).toBeInTheDocument()
   })
 })
 
@@ -877,35 +935,57 @@ describe('Acordeao', () => {
 
 - [ ] **Step 2: Rodar os testes para vê-los falhar**
 
-Run: `npm test -- tests/components/acordeao.test.tsx tests/components/card.test.tsx`
+Run: `npm test -- tests/components/trilha.test.tsx tests/components/acordeao.test.tsx`
 Expected: FAIL — módulos não encontrados.
 
-- [ ] **Step 3: Implementar Card e Chip**
+- [ ] **Step 3: Implementar Trilha, Capitulo e Chip**
 
-Criar `components/ui/Card.tsx`:
+Criar `components/ui/Trilha.tsx`:
 
 ```tsx
 import type { ReactNode } from 'react'
 
-const TONS = {
-  creme: 'bg-creme text-grafite',
-  escuro: 'bg-verde-escuro text-creme',
-  limao: 'bg-verde-limao text-verde-escuro',
-} as const
+export default function Trilha({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative mx-auto max-w-3xl px-6 py-10 md:px-10">
+      <div
+        aria-hidden="true"
+        className="absolute left-[1.875rem] top-14 bottom-14 w-px bg-gradient-to-b from-verde-limao via-verde-limao/60 to-transparent md:left-[2.875rem]"
+      />
+      <div className="pl-8 md:pl-10">{children}</div>
+    </div>
+  )
+}
+```
 
-export default function Card({
-  tom,
-  className = '',
+Criar `components/ui/Capitulo.tsx`:
+
+```tsx
+import type { ReactNode } from 'react'
+
+export default function Capitulo({
+  id,
+  rotulo,
+  titulo,
   children,
 }: {
-  tom: keyof typeof TONS
-  className?: string
+  id: string
+  rotulo: string
+  titulo: string
   children: ReactNode
 }) {
   return (
-    <article className={`rounded-3xl p-6 md:p-8 ${TONS[tom]} ${className}`}>
-      {children}
-    </article>
+    <section id={id} className="relative scroll-mt-12 pb-16">
+      <span
+        aria-hidden="true"
+        className="absolute -left-8 top-2 block h-3 w-3 rounded-full bg-verde-limao md:-left-10"
+      />
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-creme">{rotulo}</p>
+      <h2 className="mt-2 text-2xl font-bold uppercase leading-tight text-verde-limao md:text-3xl">
+        {titulo}
+      </h2>
+      <div className="mt-5">{children}</div>
+    </section>
   )
 }
 ```
@@ -917,7 +997,7 @@ import type { ReactNode } from 'react'
 
 export default function Chip({ children }: { children: ReactNode }) {
   return (
-    <li className="rounded-full border border-verde-escuro/30 px-4 py-2 text-sm text-verde-escuro">
+    <li className="rounded-full border border-creme/35 px-4 py-2 text-sm text-creme">
       {children}
     </li>
   )
@@ -943,7 +1023,7 @@ export default function Acordeao({ itens }: { itens: ItemAcordeao[] }) {
   const [aberto, setAberto] = useState<string | null>(null)
 
   return (
-    <div className="divide-y divide-verde-escuro/20 border-y border-verde-escuro/20">
+    <div className="divide-y divide-creme/20 border-y border-creme/20">
       {itens.map((item) => {
         const estaAberto = aberto === item.id
         return (
@@ -955,24 +1035,23 @@ export default function Acordeao({ itens }: { itens: ItemAcordeao[] }) {
                 aria-expanded={estaAberto}
                 aria-controls={`painel-${item.id}`}
                 onClick={() => setAberto(estaAberto ? null : item.id)}
-                className="flex w-full items-center justify-between gap-4 py-5 text-left text-lg font-semibold text-verde-escuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
+                className="flex w-full items-center justify-between gap-4 py-5 text-left text-base font-semibold text-creme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-creme"
               >
                 {item.titulo}
-                <span aria-hidden="true" className="text-2xl leading-none">
+                <span aria-hidden="true" className="text-2xl leading-none text-verde-limao">
                   {estaAberto ? '−' : '+'}
                 </span>
               </button>
             </h3>
-            {estaAberto && (
-              <div
-                role="region"
-                id={`painel-${item.id}`}
-                aria-labelledby={`gatilho-${item.id}`}
-                className="pb-8"
-              >
-                {item.conteudo}
-              </div>
-            )}
+            <div
+              role="region"
+              id={`painel-${item.id}`}
+              aria-labelledby={`gatilho-${item.id}`}
+              hidden={!estaAberto}
+              className="pb-8"
+            >
+              {item.conteudo}
+            </div>
           </div>
         )
       })}
@@ -983,14 +1062,14 @@ export default function Acordeao({ itens }: { itens: ItemAcordeao[] }) {
 
 - [ ] **Step 5: Rodar os testes para vê-los passar**
 
-Run: `npm test -- tests/components/acordeao.test.tsx tests/components/card.test.tsx`
-Expected: PASS — 6 testes.
+Run: `npm test -- tests/components/trilha.test.tsx tests/components/acordeao.test.tsx`
+Expected: PASS — 9 testes.
 
 - [ ] **Step 6: Commit**
 
 ```bash
 git add -A
-git commit -m "feat: primitivas de interface — card, chip e acordeão acessível"
+git commit -m "feat: trilha, capítulo, chip e acordeão acessível"
 ```
 
 ---
@@ -1002,10 +1081,10 @@ git commit -m "feat: primitivas de interface — card, chip e acordeão acessív
 - Test: `tests/components/hero.test.tsx`
 
 **Interfaces:**
-- Consumes: `site.hero`, `site.acoesRapidas`, `Blob`, `Circulo` (Task 4).
-- Produces:
-  - `<Hero hero={site['hero']} />`
-  - `<AcoesRapidas acoes={site['acoesRapidas']} />`
+- Consumes: `site.hero`, `site.acoesRapidas`, `Blob` (Task 4).
+- Produces: `<Hero hero={site['hero']} />`, `<AcoesRapidas acoes={site['acoesRapidas']} />`
+
+**Regra de contraste aplicada aqui:** o CTA primário tem **fundo creme e texto verde escuro** (7,24:1). Fundo limão com texto pequeno mediria 4,02:1 e reprovaria.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -1034,6 +1113,13 @@ describe('Hero', () => {
     render(<Hero hero={HERO} />)
     expect(screen.getByRole('link', { name: HERO.ctaTexto })).toHaveAttribute('href', '#visita')
   })
+
+  it('usa fundo creme no CTA — fundo limão reprovaria contraste em texto pequeno', () => {
+    render(<Hero hero={HERO} />)
+    const cta = screen.getByRole('link', { name: HERO.ctaTexto })
+    expect(cta.className).toContain('bg-creme')
+    expect(cta.className).toContain('text-verde-escuro')
+  })
 })
 
 describe('AcoesRapidas', () => {
@@ -1053,6 +1139,11 @@ describe('AcoesRapidas', () => {
     expect(externo).toHaveAttribute('target', '_blank')
     expect(externo).toHaveAttribute('rel', 'noopener noreferrer')
   })
+
+  it('não põe target em links internos de âncora', () => {
+    render(<AcoesRapidas acoes={ACOES} />)
+    expect(screen.getByRole('link', { name: /Como chegar/ })).not.toHaveAttribute('target')
+  })
 })
 ```
 
@@ -1067,25 +1158,25 @@ Criar `components/sections/Hero.tsx`:
 
 ```tsx
 import Blob from '@/components/decor/Blob'
-import Circulo from '@/components/decor/Circulo'
 import type { Site } from '@/content/schema'
 
 export default function Hero({ hero }: { hero: Site['hero'] }) {
   return (
-    <section id="inicio" className="relative overflow-hidden px-6 pt-20 pb-16 md:pt-28">
-      <Blob variante={1} className="pointer-events-none absolute -right-24 -top-32 w-80 text-verde-escuro/90 md:w-[28rem]" />
-      <Blob variante={3} className="pointer-events-none absolute -left-32 bottom-0 w-72 text-verde-limao/40" />
-      <div className="relative mx-auto max-w-4xl">
-        <Circulo tamanho="md" cor="limao" className="mb-6" />
-        <h1 className="text-4xl font-bold uppercase leading-tight tracking-tight text-verde-escuro md:text-6xl">
+    <section id="inicio" className="relative overflow-hidden px-6 pt-20 pb-14 md:pt-28">
+      <Blob
+        variante={2}
+        className="pointer-events-none absolute -right-28 -top-32 w-80 text-verde-limao/25 md:w-[30rem]"
+      />
+      <div className="relative mx-auto max-w-3xl">
+        <h1 className="text-4xl font-bold uppercase leading-[1.02] tracking-tight text-creme md:text-6xl">
           {hero.titulo}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg font-light text-grafite md:text-2xl">
+        <p className="mt-6 max-w-2xl text-lg font-light text-creme md:text-2xl md:text-verde-limao">
           {hero.subtitulo}
         </p>
         <a
           href={hero.ctaAncora}
-          className="mt-10 inline-block rounded-full bg-verde-escuro px-8 py-4 text-base font-semibold text-creme transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
+          className="mt-10 inline-block rounded-full bg-creme px-8 py-4 text-base font-semibold text-verde-escuro transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-creme"
         >
           {hero.ctaTexto}
         </a>
@@ -1094,6 +1185,8 @@ export default function Hero({ hero }: { hero: Site['hero'] }) {
   )
 }
 ```
+
+O subtítulo é creme em telas pequenas (18px exige 4,5:1) e vira limão só a partir de `md:`, onde chega a 24px e o limite cai para 3:1. É por isso que ele carrega as duas classes de cor.
 
 - [ ] **Step 4: Implementar as Ações Rápidas**
 
@@ -1111,8 +1204,8 @@ const ICONES: Record<Site['acoesRapidas'][number]['icone'], string> = {
 
 export default function AcoesRapidas({ acoes }: { acoes: Site['acoesRapidas'] }) {
   return (
-    <nav aria-label="Ações rápidas" className="px-6 pb-16">
-      <ul className="mx-auto grid max-w-4xl grid-cols-2 gap-3 md:grid-cols-4">
+    <nav aria-label="Ações rápidas" className="px-6 pb-8">
+      <ul className="mx-auto grid max-w-3xl grid-cols-2 gap-3 md:grid-cols-4">
         {acoes.map((acao) => {
           const externo = acao.href.startsWith('http')
           return (
@@ -1120,7 +1213,7 @@ export default function AcoesRapidas({ acoes }: { acoes: Site['acoesRapidas'] })
               <a
                 href={acao.href}
                 {...(externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="flex h-full flex-col items-start gap-3 rounded-2xl border border-verde-escuro/20 bg-white/60 p-4 text-sm font-semibold text-verde-escuro transition hover:border-verde-escuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
+                className="flex h-full flex-col items-start gap-3 rounded-2xl border border-creme/30 p-4 text-sm font-semibold text-creme transition hover:border-creme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-creme"
               >
                 <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" fill="currentColor">
                   <path d={ICONES[acao.icone]} />
@@ -1139,7 +1232,7 @@ export default function AcoesRapidas({ acoes }: { acoes: Site['acoesRapidas'] })
 - [ ] **Step 5: Rodar o teste para vê-lo passar**
 
 Run: `npm test -- tests/components/hero.test.tsx`
-Expected: PASS — 4 testes.
+Expected: PASS — 6 testes.
 
 - [ ] **Step 6: Commit**
 
@@ -1150,15 +1243,17 @@ git commit -m "feat: hero e faixa de ações rápidas"
 
 ---
 
-### Task 7: História e Liderança
+### Task 7: Capítulos de História e Liderança
 
 **Files:**
 - Create: `components/sections/Historia.tsx`, `components/sections/Lideranca.tsx`
 - Test: `tests/components/textos.test.tsx`
 
 **Interfaces:**
-- Consumes: `site.historia`, `site.lideranca`, `Blob`, `SeparadorXXX`.
+- Consumes: `site.historia`, `site.lideranca`, `Capitulo` (Task 5).
 - Produces: `<Historia historia={site['historia']} />`, `<Lideranca lideranca={site['lideranca']} />`
+
+Ambos renderizam um `<Capitulo>` — a âncora e o `<h2>` vêm de lá, não do componente de seção.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -1171,23 +1266,31 @@ import Historia from '@/components/sections/Historia'
 import Lideranca from '@/components/sections/Lideranca'
 
 describe('Historia', () => {
-  const HISTORIA = { titulo: 'História', paragrafos: ['Primeiro.', 'Segundo.', 'Terceiro.'] }
+  const HISTORIA = {
+    rotulo: 'Abril de 2017',
+    titulo: 'Começou numa garagem',
+    paragrafos: ['Primeiro.', 'Segundo.', 'Terceiro.'],
+  }
 
   it('renderiza um parágrafo por item', () => {
     const { container } = render(<Historia historia={HISTORIA} />)
-    expect(container.querySelectorAll('p')).toHaveLength(3)
+    expect(container.querySelectorAll('section#historia p')).toHaveLength(4) // 3 + o rótulo
   })
 
-  it('expõe a âncora #historia', () => {
+  it('expõe a âncora #historia e o rótulo', () => {
     const { container } = render(<Historia historia={HISTORIA} />)
-    expect(container.querySelector('#historia')).not.toBeNull()
+    expect(container.querySelector('section#historia')).not.toBeNull()
+    expect(screen.getByText('Abril de 2017')).toBeInTheDocument()
   })
 })
 
 describe('Lideranca', () => {
-  it('renderiza título e texto', () => {
-    render(<Lideranca lideranca={{ titulo: 'Liderança', texto: 'Presbíteros.' }} />)
+  it('renderiza título como h2, rótulo e texto', () => {
+    render(
+      <Lideranca lideranca={{ rotulo: 'Quem conduz', titulo: 'Liderança', texto: 'Presbíteros.' }} />,
+    )
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Liderança')
+    expect(screen.getByText('Quem conduz')).toBeInTheDocument()
     expect(screen.getByText('Presbíteros.')).toBeInTheDocument()
   })
 })
@@ -1203,24 +1306,18 @@ Expected: FAIL — módulos não encontrados.
 Criar `components/sections/Historia.tsx`:
 
 ```tsx
-import Blob from '@/components/decor/Blob'
+import Capitulo from '@/components/ui/Capitulo'
 import type { Site } from '@/content/schema'
 
 export default function Historia({ historia }: { historia: Site['historia'] }) {
   return (
-    <section id="historia" className="relative overflow-hidden px-6 py-16">
-      <Blob variante={2} className="pointer-events-none absolute -left-40 top-10 w-96 text-verde-limao/25" />
-      <div className="relative mx-auto max-w-3xl">
-        <h2 className="text-3xl font-bold uppercase text-verde-limao md:text-4xl">
-          {historia.titulo}
-        </h2>
-        <div className="mt-6 space-y-5 text-base font-light leading-relaxed text-grafite md:text-lg">
-          {historia.paragrafos.map((paragrafo, i) => (
-            <p key={i}>{paragrafo}</p>
-          ))}
-        </div>
+    <Capitulo id="historia" rotulo={historia.rotulo} titulo={historia.titulo}>
+      <div className="space-y-5 text-base font-light leading-relaxed text-creme/90">
+        {historia.paragrafos.map((paragrafo, i) => (
+          <p key={i}>{paragrafo}</p>
+        ))}
       </div>
-    </section>
+    </Capitulo>
   )
 }
 ```
@@ -1228,16 +1325,14 @@ export default function Historia({ historia }: { historia: Site['historia'] }) {
 Criar `components/sections/Lideranca.tsx`:
 
 ```tsx
+import Capitulo from '@/components/ui/Capitulo'
 import type { Site } from '@/content/schema'
 
 export default function Lideranca({ lideranca }: { lideranca: Site['lideranca'] }) {
   return (
-    <section id="lideranca" className="px-6 py-16">
-      <div className="mx-auto max-w-3xl rounded-3xl bg-verde-escuro p-8 text-creme md:p-12">
-        <h2 className="text-3xl font-bold uppercase md:text-4xl">{lideranca.titulo}</h2>
-        <p className="mt-4 text-lg font-light leading-relaxed">{lideranca.texto}</p>
-      </div>
-    </section>
+    <Capitulo id="lideranca" rotulo={lideranca.rotulo} titulo={lideranca.titulo}>
+      <p className="text-base font-light leading-relaxed text-creme/90">{lideranca.texto}</p>
+    </Capitulo>
   )
 }
 ```
@@ -1251,133 +1346,136 @@ Expected: PASS — 3 testes.
 
 ```bash
 git add -A
-git commit -m "feat: seções de história e liderança"
+git commit -m "feat: capítulos de história e liderança"
 ```
 
 ---
 
-### Task 8: Missão, Visão e Valores em grade bento
+### Task 8: Capítulo de Propósito — missão, visão e valores
 
 **Files:**
-- Create: `components/sections/MissaoVisaoValores.tsx`
-- Test: `tests/components/missao.test.tsx`
+- Create: `components/sections/Proposito.tsx`
+- Test: `tests/components/proposito.test.tsx`
 
 **Interfaces:**
-- Consumes: `site.missao`, `site.visao`, `site.valores`, `Card`, `Chip`.
-- Produces: `<MissaoVisaoValores missao={…} visao={…} valores={…} />`
+- Consumes: `site.proposito`, `Capitulo`, `Chip`.
+- Produces: `<Proposito proposito={site['proposito']} />`
+
+Um capítulo só, com três blocos internos: a missão em destaque, a visão e os valores. A visão é `<ul>`, não `<ol>` — ninguém confirmou que a ordem dos cinco compromissos carrega hierarquia, e uma lista ordenada faria o leitor de tela anunciar "item 1 de 5", afirmando algo que não sabemos. Os `<h3>` de visão e valores são texto pequeno, logo **creme**.
 
 - [ ] **Step 1: Escrever o teste**
 
-Criar `tests/components/missao.test.tsx`:
+Criar `tests/components/proposito.test.tsx`:
 
 ```tsx
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import MissaoVisaoValores from '@/components/sections/MissaoVisaoValores'
+import Proposito from '@/components/sections/Proposito'
 
-const PROPS = {
-  missao: { titulo: 'Missão', texto: 'Revelar o amor do Pai.' },
-  visao: { titulo: 'Visão', itens: ['Amar a Deus', 'Pregar a Cristo'] },
-  valores: { titulo: 'Valores', itens: ['Honra', 'Adoração', 'Generosidade'] },
+const PROPOSITO = {
+  rotulo: 'O que nos move',
+  titulo: 'Missão, visão e valores',
+  missao: 'Revelar o amor do Pai.',
+  visaoTitulo: 'Visão',
+  visao: ['Amar a Deus', 'Pregar a Cristo'],
+  valoresTitulo: 'Valores',
+  valores: ['Honra', 'Adoração', 'Generosidade'],
 }
 
-describe('MissaoVisaoValores', () => {
-  it('renderiza os três títulos como h2', () => {
-    render(<MissaoVisaoValores {...PROPS} />)
-    const titulos = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)
-    expect(titulos).toEqual(['Missão', 'Visão', 'Valores'])
+describe('Proposito', () => {
+  it('renderiza o título do capítulo como h2', () => {
+    render(<Proposito proposito={PROPOSITO} />)
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Missão, visão e valores')
   })
 
-  it('renderiza um item de lista por valor e por item de visão', () => {
-    render(<MissaoVisaoValores {...PROPS} />)
+  it('renderiza visão e valores como h3', () => {
+    render(<Proposito proposito={PROPOSITO} />)
+    const titulos = screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)
+    expect(titulos).toEqual(['Visão', 'Valores'])
+  })
+
+  it('renderiza um item de lista por item de visão e por valor', () => {
+    render(<Proposito proposito={PROPOSITO} />)
     expect(screen.getAllByRole('listitem')).toHaveLength(5)
   })
 
-  it('expõe a âncora #missao', () => {
-    const { container } = render(<MissaoVisaoValores {...PROPS} />)
-    expect(container.querySelector('#missao')).not.toBeNull()
+  it('expõe a âncora #proposito', () => {
+    const { container } = render(<Proposito proposito={PROPOSITO} />)
+    expect(container.querySelector('section#proposito')).not.toBeNull()
   })
 })
 ```
 
 - [ ] **Step 2: Rodar o teste para vê-lo falhar**
 
-Run: `npm test -- tests/components/missao.test.tsx`
+Run: `npm test -- tests/components/proposito.test.tsx`
 Expected: FAIL — módulo não encontrado.
 
 - [ ] **Step 3: Implementar**
 
-Criar `components/sections/MissaoVisaoValores.tsx`:
+Criar `components/sections/Proposito.tsx`:
 
 ```tsx
-import Card from '@/components/ui/Card'
+import Capitulo from '@/components/ui/Capitulo'
 import Chip from '@/components/ui/Chip'
-import GradePontilhada from '@/components/decor/GradePontilhada'
 import type { Site } from '@/content/schema'
 
-export default function MissaoVisaoValores({
-  missao,
-  visao,
-  valores,
-}: {
-  missao: Site['missao']
-  visao: Site['visao']
-  valores: Site['valores']
-}) {
+export default function Proposito({ proposito }: { proposito: Site['proposito'] }) {
   return (
-    <section id="missao" className="px-6 py-16">
-      <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-3 md:grid-rows-2">
-        <Card tom="escuro" className="md:col-span-2 md:row-span-2 flex flex-col justify-between">
-          <h2 className="text-3xl font-bold uppercase md:text-4xl">{missao.titulo}</h2>
-          <p className="mt-6 text-lg font-light leading-relaxed md:text-xl">{missao.texto}</p>
-          <GradePontilhada className="mt-8 opacity-60" />
-        </Card>
+    <Capitulo id="proposito" rotulo={proposito.rotulo} titulo={proposito.titulo}>
+      <p className="text-lg font-light leading-relaxed text-creme md:text-xl">
+        {proposito.missao}
+      </p>
 
-        <Card tom="limao">
-          <h2 className="text-2xl font-bold uppercase">{visao.titulo}</h2>
-          <ul className="mt-4 space-y-1 text-base font-light">
-            {visao.itens.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </Card>
+      <h3 className="mt-10 text-sm font-semibold uppercase tracking-[0.18em] text-creme">
+        {proposito.visaoTitulo}
+      </h3>
+      <ul className="mt-4 space-y-2">
+        {proposito.visao.map((item, i) => (
+          <li
+            key={i}
+            className="border-b border-creme/15 pb-2 text-base font-light text-creme/90"
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
 
-        <Card tom="creme" className="border border-verde-escuro/20">
-          <h2 className="text-2xl font-bold uppercase text-verde-limao">{valores.titulo}</h2>
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {valores.itens.map((item) => (
-              <Chip key={item}>{item}</Chip>
-            ))}
-          </ul>
-        </Card>
-      </div>
-    </section>
+      <h3 className="mt-10 text-sm font-semibold uppercase tracking-[0.18em] text-creme">
+        {proposito.valoresTitulo}
+      </h3>
+      <ul className="mt-4 flex flex-wrap gap-2">
+        {proposito.valores.map((item, i) => (
+          <Chip key={i}>{item}</Chip>
+        ))}
+      </ul>
+    </Capitulo>
   )
 }
 ```
 
 - [ ] **Step 4: Rodar o teste para vê-lo passar**
 
-Run: `npm test -- tests/components/missao.test.tsx`
-Expected: PASS — 3 testes.
+Run: `npm test -- tests/components/proposito.test.tsx`
+Expected: PASS — 4 testes.
 
 - [ ] **Step 5: Commit**
 
 ```bash
 git add -A
-git commit -m "feat: missão, visão e valores em grade bento"
+git commit -m "feat: capítulo de propósito (missão, visão, valores)"
 ```
 
 ---
 
-### Task 9: Seção Cuidado — Conectar, Crescer, Servir
+### Task 9: Capítulo de Cuidado — Conectar, Crescer, Servir
 
 **Files:**
 - Create: `components/sections/Cuidado.tsx`
 - Test: `tests/components/cuidado.test.tsx`
 
 **Interfaces:**
-- Consumes: `site.cuidado`, `Card`, `SeparadorXXX`.
+- Consumes: `site.cuidado`, `Capitulo`.
 - Produces: `<Cuidado cuidado={site['cuidado']} />`
 
 - [ ] **Step 1: Escrever o teste**
@@ -1390,6 +1488,7 @@ import { describe, expect, it } from 'vitest'
 import Cuidado from '@/components/sections/Cuidado'
 
 const CUIDADO = {
+  rotulo: 'Nossa família',
   titulo: 'Cuidado',
   intro: 'Somos uma família vibrante.',
   pilares: [
@@ -1409,13 +1508,13 @@ describe('Cuidado', () => {
   it('mostra o subtítulo apenas quando preenchido', () => {
     const { container } = render(<Cuidado cuidado={CUIDADO} />)
     expect(screen.getByText('Grupos de Conexão')).toBeInTheDocument()
-    // Conectar tem subtítulo; Crescer e Servir não. Logo, um único elemento de subtítulo.
+    // só Conectar tem subtítulo
     expect(container.querySelectorAll('[data-subtitulo]')).toHaveLength(1)
   })
 
   it('expõe a âncora #cuidado', () => {
     const { container } = render(<Cuidado cuidado={CUIDADO} />)
-    expect(container.querySelector('#cuidado')).not.toBeNull()
+    expect(container.querySelector('section#cuidado')).not.toBeNull()
   })
 })
 ```
@@ -1430,39 +1529,31 @@ Expected: FAIL — módulo não encontrado.
 Criar `components/sections/Cuidado.tsx`:
 
 ```tsx
-import Card from '@/components/ui/Card'
-import SeparadorXXX from '@/components/ui/SeparadorXXX'
+import Capitulo from '@/components/ui/Capitulo'
 import type { Site } from '@/content/schema'
 
 export default function Cuidado({ cuidado }: { cuidado: Site['cuidado'] }) {
   return (
-    <section id="cuidado" className="px-6 py-16">
-      <div className="mx-auto max-w-5xl">
-        <h2 className="text-3xl font-bold uppercase text-verde-limao md:text-4xl">
-          {cuidado.titulo}
-        </h2>
-        <p className="mt-4 max-w-3xl text-lg font-light leading-relaxed text-grafite">
-          {cuidado.intro}
-        </p>
-        <SeparadorXXX />
-        <div className="grid gap-4 md:grid-cols-3">
-          {cuidado.pilares.map((pilar) => (
-            <Card key={pilar.nome} tom="creme" className="border border-verde-escuro/20">
-              <h3 className="text-2xl font-bold uppercase text-verde-limao">{pilar.nome}</h3>
-              {pilar.subtitulo && (
-                <p
-                  data-subtitulo
-                  className="mt-1 text-sm font-semibold uppercase tracking-wide text-verde-escuro"
-                >
-                  {pilar.subtitulo}
-                </p>
-              )}
-              <p className="mt-4 text-base font-light leading-relaxed">{pilar.texto}</p>
-            </Card>
-          ))}
-        </div>
+    <Capitulo id="cuidado" rotulo={cuidado.rotulo} titulo={cuidado.titulo}>
+      <p className="text-base font-light leading-relaxed text-creme/90">{cuidado.intro}</p>
+
+      <div className="mt-8 space-y-6">
+        {cuidado.pilares.map((pilar, i) => (
+          <div key={i} className="rounded-2xl border border-creme/25 p-5">
+            <h3 className="text-lg font-bold uppercase tracking-wide text-creme">{pilar.nome}</h3>
+            {pilar.subtitulo && (
+              <p
+                data-subtitulo
+                className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-creme/90"
+              >
+                {pilar.subtitulo}
+              </p>
+            )}
+            <p className="mt-3 text-sm font-light leading-relaxed text-creme/90">{pilar.texto}</p>
+          </div>
+        ))}
       </div>
-    </section>
+    </Capitulo>
   )
 }
 ```
@@ -1476,22 +1567,22 @@ Expected: PASS — 3 testes.
 
 ```bash
 git add -A
-git commit -m "feat: seção cuidado (conectar, crescer, servir)"
+git commit -m "feat: capítulo de cuidado (conectar, crescer, servir)"
 ```
 
 ---
 
-### Task 10: Credo — Split Sticky no desktop, acordeão no mobile
+### Task 10: Capítulo do Credo
 
 **Files:**
 - Create: `components/sections/Credo.tsx`
 - Test: `tests/components/credo.test.tsx`
 
 **Interfaces:**
-- Consumes: `site.credo`, `Acordeao` e `ItemAcordeao` (Task 5).
+- Consumes: `site.credo`, `Capitulo`, `Acordeao` e `ItemAcordeao` (Task 5).
 - Produces: `<Credo credo={site['credo']} />`
 
-O componente renderiza **um único conjunto de dados** em dois arranjos: um `<nav>` de índice visível só a partir de `lg:` (posicionado com `lg:sticky`) e o acordeão sempre presente. O índice usa links de âncora para os `id`s dos grupos — sem JavaScript adicional, o que mantém a seção funcional mesmo antes da hidratação.
+Cada grupo vira uma `<div id="credo-<id>">` com seu próprio `Acordeao` de um item. A âncora é responsabilidade do `Credo`, não do `Acordeao` — mantém o acordeão genérico. Custo aceito: grupos vizinhos não se fecham entre si.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -1504,6 +1595,7 @@ import { describe, expect, it } from 'vitest'
 import Credo from '@/components/sections/Credo'
 
 const CREDO = {
+  rotulo: 'Nosso alicerce',
   titulo: 'Como Cremos',
   intro: 'Somos uma Comunidade evangélica.',
   grupos: [
@@ -1520,30 +1612,34 @@ const CREDO = {
 }
 
 describe('Credo', () => {
-  it('lista todos os grupos no índice de navegação', () => {
-    render(<Credo credo={CREDO} />)
-    const indice = screen.getByRole('navigation', { name: /grupos de crenças/i })
-    expect(indice).toHaveTextContent('As Escrituras')
-    expect(indice).toHaveTextContent('Deus, Cristo e o Espírito')
+  it('cria uma âncora por grupo', () => {
+    const { container } = render(<Credo credo={CREDO} />)
+    expect(container.querySelector('#credo-escrituras')).not.toBeNull()
+    expect(container.querySelector('#credo-trindade')).not.toBeNull()
   })
 
-  it('aponta cada link do índice para o id do grupo', () => {
-    render(<Credo credo={CREDO} />)
-    expect(screen.getByRole('link', { name: 'As Escrituras' })).toHaveAttribute('href', '#credo-escrituras')
-  })
-
-  it('mantém as declarações fechadas até o clique', async () => {
+  it('mantém as declarações fechadas até o clique, mas presentes no DOM', async () => {
     const user = userEvent.setup()
     render(<Credo credo={CREDO} />)
-    expect(screen.queryByText('CREMOS em um único Deus.')).not.toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'Deus, Cristo e o Espírito' }))
+    // Presente no HTML mesmo fechado — é o que permite ao Google indexar o credo.
     expect(screen.getByText('CREMOS em um único Deus.')).toBeInTheDocument()
-    expect(screen.getByText('CREMOS no Senhor Jesus Cristo.')).toBeInTheDocument()
+    expect(screen.getByText('CREMOS em um único Deus.')).not.toBeVisible()
+    await user.click(screen.getByRole('button', { name: 'Deus, Cristo e o Espírito' }))
+    expect(screen.getByText('CREMOS em um único Deus.')).toBeVisible()
+    expect(screen.getByText('CREMOS no Senhor Jesus Cristo.')).toBeVisible()
   })
 
-  it('expõe a âncora #credo', () => {
+  it('renderiza o título de cada declaração aberta como h4', async () => {
+    const user = userEvent.setup()
+    render(<Credo credo={CREDO} />)
+    await user.click(screen.getByRole('button', { name: 'As Escrituras' }))
+    expect(screen.getByRole('heading', { level: 4 })).toHaveTextContent('A Bíblia')
+  })
+
+  it('expõe a âncora #credo e o rótulo', () => {
     const { container } = render(<Credo credo={CREDO} />)
-    expect(container.querySelector('#credo')).not.toBeNull()
+    expect(container.querySelector('section#credo')).not.toBeNull()
+    expect(screen.getByText('Nosso alicerce')).toBeInTheDocument()
   })
 })
 ```
@@ -1558,6 +1654,7 @@ Expected: FAIL — módulo não encontrado.
 Criar `components/sections/Credo.tsx`:
 
 ```tsx
+import Capitulo from '@/components/ui/Capitulo'
 import Acordeao, { type ItemAcordeao } from '@/components/ui/Acordeao'
 import type { Site } from '@/content/schema'
 
@@ -1567,10 +1664,12 @@ export default function Credo({ credo }: { credo: Site['credo'] }) {
     titulo: grupo.nome,
     conteudo: (
       <div className="space-y-6">
-        {grupo.declaracoes.map((declaracao) => (
-          <div key={declaracao.titulo}>
-            <h4 className="text-base font-semibold text-verde-escuro">{declaracao.titulo}</h4>
-            <p className="mt-2 text-base font-light leading-relaxed text-grafite">
+        {grupo.declaracoes.map((declaracao, i) => (
+          <div key={i}>
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-creme">
+              {declaracao.titulo}
+            </h4>
+            <p className="mt-2 text-sm font-light leading-relaxed text-creme/90">
               {declaracao.texto}
             </p>
           </div>
@@ -1580,46 +1679,19 @@ export default function Credo({ credo }: { credo: Site['credo'] }) {
   }))
 
   return (
-    <section id="credo" className="px-6 py-16">
-      <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[16rem_1fr]">
-        <nav aria-label="Grupos de crenças" className="hidden lg:block">
-          <div className="lg:sticky lg:top-10">
-            <h2 className="text-3xl font-bold uppercase text-verde-limao">{credo.titulo}</h2>
-            <ul className="mt-6 space-y-2 text-sm">
-              {credo.grupos.map((grupo) => (
-                <li key={grupo.id}>
-                  <a
-                    href={`#credo-${grupo.id}`}
-                    className="text-verde-escuro underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
-                  >
-                    {grupo.nome}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </nav>
-
-        <div>
-          <h2 className="text-3xl font-bold uppercase text-verde-limao lg:hidden">
-            {credo.titulo}
-          </h2>
-          <p className="mt-4 mb-8 text-base font-light leading-relaxed text-grafite">
-            {credo.intro}
-          </p>
-          {itens.map((item) => (
-            <div key={item.id} id={`credo-${item.id}`} className="scroll-mt-10">
-              <Acordeao itens={[item]} />
-            </div>
-          ))}
+    <Capitulo id="credo" rotulo={credo.rotulo} titulo={credo.titulo}>
+      <p className="mb-8 text-base font-light leading-relaxed text-creme/90">{credo.intro}</p>
+      {itens.map((item) => (
+        <div key={item.id} id={`credo-${item.id}`} className="scroll-mt-12">
+          <Acordeao itens={[item]} />
         </div>
-      </div>
-    </section>
+      ))}
+    </Capitulo>
   )
 }
 ```
 
-A âncora `#credo-<id>` é responsabilidade do `Credo`, não do `Acordeao` — por isso cada grupo recebe seu próprio `Acordeao` de um item só, envolvido por uma `<div>` com o `id`. Isso mantém o `Acordeao` genérico e reutilizável, ao custo de perder o fechamento automático entre grupos vizinhos. O terceiro teste desta task valida que a declaração continua fechada até o clique, que é o comportamento que importa aqui.
+O `<h4>` da declaração é creme, não limão: em `text-sm` o limão reprovaria AA. O limão aparece nesta seção só no `+`/`−` do acordeão, que é decorativo.
 
 - [ ] **Step 4: Rodar o teste para vê-lo passar**
 
@@ -1630,7 +1702,7 @@ Expected: PASS — 4 testes.
 
 ```bash
 git add -A
-git commit -m "feat: seção como cremos com índice fixo e acordeão"
+git commit -m "feat: capítulo do credo com acordeão por grupo"
 ```
 
 ---
@@ -1642,13 +1714,17 @@ git commit -m "feat: seção como cremos com índice fixo e acordeão"
 - Test: `tests/components/visita.test.tsx`
 
 **Interfaces:**
-- Consumes: `site.citacao`, `site.visita`, `site.contato`, `site.horarios`, `site.redes`, `site.site`.
+- Consumes: `site.citacao`, `site.visita`, `site.contato`, `site.horarios`, `site.redes`, `site.site`, `Capitulo`.
 - Produces:
   - `<Citacao citacao={site['citacao']} />`
   - `<Visita visita={…} contato={…} horarios={…} />`
   - `<Rodape nome={…} redes={…} texto={…} />`
 
+A `Visita` é o último capítulo e o momento de chegada: **cartão creme com texto grafite**, invertendo o fundo escuro da página. Alto contraste, e visualmente diz "acabou a jornada, é aqui".
+
 Regra de degradação (do spec): campo vazio não renderiza bloco vazio. `contato.telefone === ''` → sem botão de telefone. `contato.mapaEmbedUrl === ''` → só o link "Abrir no Google Maps".
+
+A citação usa limão em texto grande (≥24px), o único lugar onde limão é permitido em texto.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -1679,28 +1755,31 @@ const HORARIOS = [
   { rotulo: 'Culto', quando: 'Domingos, 18h', diaSemana: 'Sunday', abre: '18:00', fecha: '20:00' },
 ]
 
+const VISITA = { rotulo: 'E você', titulo: 'Venha nos visitar', texto: '' }
+
 describe('Visita', () => {
   it('mostra endereço e horário', () => {
-    render(<Visita visita={{ titulo: 'Venha nos visitar', texto: '' }} contato={CONTATO} horarios={HORARIOS} />)
+    render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
     expect(screen.getByText(/Av\. das Emas, 2240W/)).toBeInTheDocument()
     expect(screen.getByText('Domingos, 18h')).toBeInTheDocument()
   })
 
   it('omite o botão de telefone quando o campo está vazio', () => {
-    render(<Visita visita={{ titulo: 'Venha nos visitar', texto: '' }} contato={CONTATO} horarios={HORARIOS} />)
+    render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
     expect(screen.queryByRole('link', { name: /telefone/i })).not.toBeInTheDocument()
   })
 
   it('cai para o link do Maps quando não há embed', () => {
     render(
-      <Visita
-        visita={{ titulo: 'Venha nos visitar', texto: '' }}
-        contato={{ ...CONTATO, mapaEmbedUrl: '' }}
-        horarios={HORARIOS}
-      />,
+      <Visita visita={VISITA} contato={{ ...CONTATO, mapaEmbedUrl: '' }} horarios={HORARIOS} />,
     )
     expect(screen.queryByTitle('Mapa')).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Abrir no Google Maps/i })).toHaveAttribute('href', CONTATO.mapsUrl)
+  })
+
+  it('expõe a âncora #visita', () => {
+    const { container } = render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
+    expect(container.querySelector('section#visita')).not.toBeNull()
   })
 })
 
@@ -1712,7 +1791,7 @@ describe('Citacao', () => {
 })
 
 describe('Rodape', () => {
-  it('linka Instagram e YouTube', () => {
+  it('linka Instagram e YouTube em nova aba', () => {
     render(
       <Rodape
         nome="Comunidade Árvore da Vida"
@@ -1720,7 +1799,9 @@ describe('Rodape', () => {
         redes={{ instagram: 'https://instagram.com/x', youtube: 'https://youtube.com/y' }}
       />,
     )
-    expect(screen.getByRole('link', { name: 'Instagram' })).toHaveAttribute('href', 'https://instagram.com/x')
+    const ig = screen.getByRole('link', { name: 'Instagram' })
+    expect(ig).toHaveAttribute('href', 'https://instagram.com/x')
+    expect(ig).toHaveAttribute('rel', 'noopener noreferrer')
     expect(screen.getByRole('link', { name: 'YouTube' })).toHaveAttribute('href', 'https://youtube.com/y')
   })
 })
@@ -1740,7 +1821,7 @@ import type { Site } from '@/content/schema'
 
 export default function Citacao({ citacao }: { citacao: Site['citacao'] }) {
   return (
-    <section className="px-6 py-16">
+    <section className="px-6 py-12">
       <blockquote className="mx-auto max-w-3xl text-2xl font-bold leading-snug text-verde-limao md:text-4xl">
         {citacao.texto}
       </blockquote>
@@ -1752,6 +1833,7 @@ export default function Citacao({ citacao }: { citacao: Site['citacao'] }) {
 Criar `components/sections/Visita.tsx`:
 
 ```tsx
+import Capitulo from '@/components/ui/Capitulo'
 import type { Site } from '@/content/schema'
 
 export default function Visita({
@@ -1766,41 +1848,38 @@ export default function Visita({
   const endereco = `${contato.logradouro} — ${contato.bairro}, ${contato.cidade}/${contato.estado}`
 
   return (
-    <section id="visita" className="px-6 py-16">
-      <div className="mx-auto grid max-w-5xl gap-6 rounded-3xl bg-verde-escuro p-8 text-creme md:grid-cols-2 md:p-12">
-        <div>
-          <h2 className="text-3xl font-bold uppercase md:text-4xl">{visita.titulo}</h2>
-          {visita.texto && <p className="mt-4 font-light leading-relaxed">{visita.texto}</p>}
+    <Capitulo id="visita" rotulo={visita.rotulo} titulo={visita.titulo}>
+      <div className="rounded-3xl bg-creme p-6 text-grafite md:p-8">
+        {visita.texto && <p className="font-light leading-relaxed">{visita.texto}</p>}
 
-          <p className="mt-8 text-lg font-light">{endereco}</p>
+        <p className="text-lg font-light">{endereco}</p>
 
-          <dl className="mt-6 space-y-1">
-            {horarios.map((horario) => (
-              <div key={horario.rotulo} className="flex gap-2">
-                <dt className="font-semibold">{horario.rotulo}:</dt>
-                <dd className="font-light">{horario.quando}</dd>
-              </div>
-            ))}
-          </dl>
+        <dl className="mt-5 space-y-1">
+          {horarios.map((horario) => (
+            <div key={horario.rotulo} className="flex gap-2">
+              <dt className="font-semibold">{horario.rotulo}:</dt>
+              <dd className="font-light">{horario.quando}</dd>
+            </div>
+          ))}
+        </dl>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+        <div className="mt-7 flex flex-wrap gap-3">
+          <a
+            href={contato.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-verde-escuro px-6 py-3 font-semibold text-creme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
+          >
+            Abrir no Google Maps
+          </a>
+          {contato.telefone && (
             <a
-              href={contato.mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full bg-verde-limao px-6 py-3 font-semibold text-verde-escuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-creme"
+              href={`tel:${contato.telefone.replace(/\D/g, '')}`}
+              className="rounded-full border border-verde-escuro px-6 py-3 font-semibold text-verde-escuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
             >
-              Abrir no Google Maps
+              Telefone
             </a>
-            {contato.telefone && (
-              <a
-                href={`tel:${contato.telefone.replace(/\D/g, '')}`}
-                className="rounded-full border border-creme px-6 py-3 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-creme"
-              >
-                Telefone
-              </a>
-            )}
-          </div>
+          )}
         </div>
 
         {contato.mapaEmbedUrl && (
@@ -1809,11 +1888,11 @@ export default function Visita({
             src={contato.mapaEmbedUrl}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            className="h-72 w-full rounded-2xl border-0 md:h-full"
+            className="mt-7 h-64 w-full rounded-2xl border-0"
           />
         )}
       </div>
-    </section>
+    </Capitulo>
   )
 }
 ```
@@ -1833,11 +1912,11 @@ export default function Rodape({
   redes: Site['redes']
 }) {
   return (
-    <footer className="px-6 py-12">
-      <div className="mx-auto flex max-w-5xl flex-col gap-4 border-t border-verde-escuro/20 pt-8 md:flex-row md:items-center md:justify-between">
-        <p className="text-sm font-semibold uppercase tracking-wide text-verde-escuro">{nome}</p>
-        {texto && <p className="text-sm font-light text-grafite">{texto}</p>}
-        <ul className="flex gap-6 text-sm font-semibold text-verde-escuro">
+    <footer className="px-6 pb-12">
+      <div className="mx-auto flex max-w-3xl flex-col gap-4 border-t border-creme/20 pt-8 md:flex-row md:items-center md:justify-between">
+        <p className="text-sm font-semibold uppercase tracking-wide text-creme">{nome}</p>
+        {texto && <p className="text-sm font-light text-creme/80">{texto}</p>}
+        <ul className="flex gap-6 text-sm font-semibold text-creme">
           <li>
             <a href={redes.instagram} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:underline">
               Instagram
@@ -1858,13 +1937,13 @@ export default function Rodape({
 - [ ] **Step 4: Rodar o teste para vê-lo passar**
 
 Run: `npm test -- tests/components/visita.test.tsx`
-Expected: PASS — 5 testes.
+Expected: PASS — 6 testes.
 
 - [ ] **Step 5: Commit**
 
 ```bash
 git add -A
-git commit -m "feat: citação, seção de visita e rodapé"
+git commit -m "feat: citação, capítulo de visita e rodapé"
 ```
 
 ---
@@ -1876,8 +1955,8 @@ git commit -m "feat: citação, seção de visita e rodapé"
 - Test: `tests/pagina.test.tsx`
 
 **Interfaces:**
-- Consumes: todas as seções (Tasks 6–11) e `site` (Task 2).
-- Produces: `/` renderizando as 10 seções na ordem do spec.
+- Consumes: todas as seções (Tasks 6–11), `Trilha` (Task 5) e `site` (Task 2).
+- Produces: `/` renderizando hero, ações rápidas, a trilha com 6 capítulos, citação e rodapé.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -1897,16 +1976,22 @@ describe('página inicial', () => {
 
   it('expõe todas as âncoras de seção', () => {
     const { container } = render(<Pagina />)
-    for (const ancora of ['inicio', 'historia', 'missao', 'cuidado', 'lideranca', 'credo', 'visita']) {
+    for (const ancora of ['inicio', 'historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita']) {
       expect(container.querySelector(`#${ancora}`), `âncora #${ancora}`).not.toBeNull()
     }
   })
 
   it('renderiza os 14 valores do conteúdo real', () => {
     render(<Pagina />)
-    for (const valor of site.valores.itens) {
+    for (const valor of site.proposito.valores) {
       expect(screen.getByText(valor)).toBeInTheDocument()
     }
+  })
+
+  it('renderiza os 6 capítulos na ordem da trilha', () => {
+    const { container } = render(<Pagina />)
+    const ids = Array.from(container.querySelectorAll('section[id]')).map((s) => s.id)
+    expect(ids).toEqual(['inicio', 'historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita'])
   })
 })
 ```
@@ -1914,7 +1999,7 @@ describe('página inicial', () => {
 - [ ] **Step 2: Rodar o teste para vê-lo falhar**
 
 Run: `npm test -- tests/pagina.test.tsx`
-Expected: FAIL — a página ainda é a do scaffold, sem as âncoras.
+Expected: FAIL — a página ainda é a do scaffold.
 
 - [ ] **Step 3: Implementar**
 
@@ -1923,15 +2008,15 @@ Substituir `app/page.tsx` por:
 ```tsx
 import Hero from '@/components/sections/Hero'
 import AcoesRapidas from '@/components/sections/AcoesRapidas'
+import Trilha from '@/components/ui/Trilha'
 import Historia from '@/components/sections/Historia'
-import MissaoVisaoValores from '@/components/sections/MissaoVisaoValores'
+import Proposito from '@/components/sections/Proposito'
 import Cuidado from '@/components/sections/Cuidado'
 import Lideranca from '@/components/sections/Lideranca'
 import Credo from '@/components/sections/Credo'
 import Citacao from '@/components/sections/Citacao'
 import Visita from '@/components/sections/Visita'
 import Rodape from '@/components/sections/Rodape'
-import SeparadorXXX from '@/components/ui/SeparadorXXX'
 import { site } from '@/content/load'
 
 export default function Pagina() {
@@ -1939,15 +2024,15 @@ export default function Pagina() {
     <main>
       <Hero hero={site.hero} />
       <AcoesRapidas acoes={site.acoesRapidas} />
-      <Historia historia={site.historia} />
-      <SeparadorXXX />
-      <MissaoVisaoValores missao={site.missao} visao={site.visao} valores={site.valores} />
-      <Cuidado cuidado={site.cuidado} />
-      <Lideranca lideranca={site.lideranca} />
-      <SeparadorXXX />
-      <Credo credo={site.credo} />
+      <Trilha>
+        <Historia historia={site.historia} />
+        <Proposito proposito={site.proposito} />
+        <Cuidado cuidado={site.cuidado} />
+        <Lideranca lideranca={site.lideranca} />
+        <Credo credo={site.credo} />
+        <Visita visita={site.visita} contato={site.contato} horarios={site.horarios} />
+      </Trilha>
       <Citacao citacao={site.citacao} />
-      <Visita visita={site.visita} contato={site.contato} horarios={site.horarios} />
       <Rodape nome={site.site.nome} texto={site.rodape.texto} redes={site.redes} />
     </main>
   )
@@ -1961,13 +2046,13 @@ Expected: todos os testes passam; build conclui com `/` estática.
 
 - [ ] **Step 5: Verificar no navegador**
 
-Subir o dev server e conferir em 375px e 1280px de largura: hero legível, ações rápidas acima da dobra no celular, acordeão do credo abrindo, índice lateral fixo aparecendo só no desktop, mapa carregando.
+Subir o dev server e conferir em 375px e 1280px: hero legível, ações rápidas acima da dobra no celular, linha da trilha contínua ligando todos os nós, acordeão do credo abrindo, cartão creme da visita destacando do fundo, mapa carregando.
 
 - [ ] **Step 6: Commit**
 
 ```bash
 git add -A
-git commit -m "feat: montagem da página com todas as seções"
+git commit -m "feat: montagem da página com a trilha de capítulos"
 ```
 
 ---
@@ -1981,7 +2066,7 @@ git commit -m "feat: montagem da página com todas as seções"
 
 **Interfaces:**
 - Consumes: `site` (Task 2).
-- Produces: `dadosDaIgreja(site: Site): Record<string, unknown>` — objeto JSON-LD tipo `Church`; `<JsonLd dados={…} />` — injeta `<script type="application/ld+json">`.
+- Produces: `dadosDaIgreja(site: Site): Record<string, unknown>`; `<JsonLd dados={…} />`.
 
 - [ ] **Step 1: Escrever o teste**
 
@@ -2023,6 +2108,11 @@ describe('dadosDaIgreja', () => {
 
   it('aponta sameAs para Instagram e YouTube', () => {
     expect(dados.sameAs).toEqual([site.redes.instagram, site.redes.youtube])
+  })
+
+  it('omite campos opcionais vazios', () => {
+    expect(dados).not.toHaveProperty('telephone')
+    expect(dados).not.toHaveProperty('geo')
   })
 
   it('gera um objeto serializável em JSON', () => {
@@ -2089,7 +2179,8 @@ export default function JsonLd({ dados }: { dados: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(dados) }}
+      // Escapa < para que um "</script>" digitado em algum campo não feche a tag antes da hora.
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(dados).replace(/</g, '\\u003c') }}
     />
   )
 }
@@ -2098,11 +2189,11 @@ export default function JsonLd({ dados }: { dados: Record<string, unknown> }) {
 - [ ] **Step 4: Rodar o teste para vê-lo passar**
 
 Run: `npm test -- tests/seo/jsonld.test.ts`
-Expected: PASS — 5 testes.
+Expected: PASS — 6 testes.
 
 - [ ] **Step 5: Completar os metadados e injetar o JSON-LD**
 
-Em `app/layout.tsx`, substituir o bloco `metadata` e adicionar o `JsonLd` dentro do `<body>`, antes de `{children}`:
+Em `app/layout.tsx`, substituir o bloco `metadata` por:
 
 ```tsx
 export const metadata: Metadata = {
@@ -2129,7 +2220,7 @@ export const metadata: Metadata = {
 }
 ```
 
-Adicionar o import `import JsonLd from '@/components/seo/JsonLd'` e `import { dadosDaIgreja } from '@/lib/jsonld'`, e dentro do `<body>`:
+Adicionar os imports `import JsonLd from '@/components/seo/JsonLd'` e `import { dadosDaIgreja } from '@/lib/jsonld'`, e dentro do `<body>`, antes de `{children}`:
 
 ```tsx
         <JsonLd dados={dadosDaIgreja(site)} />
@@ -2164,8 +2255,15 @@ export default function robots(): MetadataRoute.Robots {
 
 - [ ] **Step 7: Verificar o HTML gerado**
 
-Run: `npm run build && npm start` e, em outro terminal, `curl -s localhost:3000 | grep -o 'application/ld+json'`
-Expected: uma ocorrência. Conferir também que `curl -s localhost:3000/robots.txt` e `/sitemap.xml` respondem.
+A porta 3000 e a 8787 estão ocupadas nesta máquina; o `.claude/launch.json` fixa a **4321**.
+
+Run: `PORT=4321 npm run dev` e, em outro terminal:
+
+```bash
+curl -s localhost:4321/ | grep -c '<script type="application/ld+json"'
+```
+
+Expected: `1`. Conte a **tag**, não a string solta — `grep -c 'application/ld+json'` retorna 2 porque a segunda ocorrência está dentro do payload RSC serializado do Next, que não é um bloco de dados estruturados. Conferir também que `/robots.txt` e `/sitemap.xml` respondem.
 
 - [ ] **Step 8: Commit**
 
@@ -2259,8 +2357,10 @@ import { siteSchema } from '@/content/schema'
 
 const ARQUIVO = path.join(process.cwd(), 'content', 'site.json')
 
+// Allowlist, não denylist: libera SÓ em development. Com NODE_ENV indefinido,
+// 'staging' ou um typo, o comportamento seguro é negar.
 function apenasEmDesenvolvimento(): NextResponse | null {
-  if (process.env.NODE_ENV === 'production') {
+  if (!ehDesenvolvimento()) {
     return new NextResponse(null, { status: 404 })
   }
   return null
@@ -2335,7 +2435,7 @@ export default function FormularioConteudo() {
       .then(setConteudo)
   }, [])
 
-  if (!conteudo) return <p>Carregando…</p>
+  if (!conteudo) return <p className="p-8">Carregando…</p>
 
   const campos = achatar(conteudo as Valor)
 
@@ -2352,20 +2452,20 @@ export default function FormularioConteudo() {
   }
 
   return (
-    <form onSubmit={salvar} className="mx-auto max-w-3xl space-y-4 p-8">
+    <form onSubmit={salvar} className="mx-auto max-w-3xl space-y-4 bg-creme p-8 text-grafite">
       <h1 className="text-2xl font-bold">Editar conteúdo do site</h1>
       {campos.map(([caminho, valor]) => (
         <label key={caminho} className="block">
-          <span className="block text-xs font-mono text-gray-600">{caminho}</span>
+          <span className="block font-mono text-xs text-grafite/70">{caminho}</span>
           <textarea
             name={caminho}
             defaultValue={valor}
             rows={valor.length > 120 ? 5 : 1}
-            className="w-full rounded border p-2 text-sm"
+            className="w-full rounded border border-grafite/30 p-2 text-sm"
           />
         </label>
       ))}
-      <button type="submit" className="rounded bg-verde-escuro px-6 py-3 font-semibold text-creme">
+      <button type="submit" className="rounded-full bg-verde-escuro px-6 py-3 font-semibold text-creme">
         Salvar
       </button>
       {mensagem && <p role="status">{mensagem}</p>}
@@ -2383,14 +2483,14 @@ import FormularioConteudo from '@/components/editor/FormularioConteudo'
 export const dynamic = 'force-dynamic'
 
 export default function PaginaEditar() {
-  if (process.env.NODE_ENV === 'production') notFound()
+  if (!ehDesenvolvimento()) notFound()
   return <FormularioConteudo />
 }
 ```
 
 - [ ] **Step 6: Verificar manualmente**
 
-Rodar `npm run dev`, abrir `/editar`, mudar o texto de `visita.texto`, salvar, conferir que `content/site.json` mudou e que `/` reflete a mudança.
+Rodar `npm run dev`, abrir `/editar`, mudar `visita.texto`, salvar, conferir que `content/site.json` mudou e que `/` reflete a mudança.
 
 Depois: `npm run build && npm start`, e conferir que `/editar` responde 404.
 
@@ -2414,7 +2514,8 @@ Registrado aqui para não virar surpresa:
 
 - **Registro do domínio** (`arvoredavidalrv.com.br` no Registro.br) e **deploy na Vercel** — dependem de contas da igreja e de decisão do Rafael.
 - **Perfil da Empresa no Google** — ação fora do código, mas é o que mais afeta a busca local.
-- **Fotos reais** — os slots existem; substituir quando os arquivos chegarem.
+- **Fotos reais** — nenhum arquivo recebido.
 - **Preenchimento dos marcadores** — WhatsApp, e-mail, CEP, coordenadas, horários de GCs.
-- **Imagem de Open Graph** — precisa de uma arte 1200×630; hoje o card do link fica sem imagem.
+- **Imagem de Open Graph** — precisa de arte 1200×630; hoje o card do link fica sem imagem.
+- **Animação de scroll na trilha** — a direção D pede que a linha "cresça" conforme a rolagem. Fica para depois do site no ar: exige JS, precisa respeitar `prefers-reduced-motion`, e a página funciona sem isso.
 - **Decap CMS** sobre o mesmo `site.json`, para edição pelo celular.

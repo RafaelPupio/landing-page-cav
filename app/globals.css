@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-verde-escuro: var(--verde-escuro);
+  --color-verde-limao: var(--verde-limao);
+  --color-creme: var(--creme);
+  --color-grafite: var(--grafite);
+  --font-sans: var(--font-poppins);
+}
+
+/* Anel de foco padrão do projeto — todo elemento interativo usa
+   `focus-visible:anel-de-foco`, nunca o outline default do navegador.
+   Fica creme por padrão (a maioria dos elementos fica sobre o fundo verde
+   escuro da página). O cartão de visita inverte o fundo para creme, então
+   os dois botões dentro dele usam `anel-de-foco-escuro` — um anel creme ali
+   ficaria quase invisível sobre o próprio cartão creme. */
+@utility anel-de-foco {
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: var(--color-creme);
+}
+
+@utility anel-de-foco-escuro {
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: var(--color-verde-escuro);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--verde-escuro);
+  color: var(--creme);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

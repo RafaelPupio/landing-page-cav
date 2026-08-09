@@ -1,7 +1,7 @@
 # LandingPageCav — ponto de entrada do Claude
 
 Landing page da Comunidade Árvore da Vida (igreja em Lucas do Rio Verde/MT).
-Next.js 15 + Tailwind v4, página única, conteúdo em `content/site.json`.
+Next.js 16 + Tailwind v4, página única, conteúdo em `content/site.json`.
 
 **Comece toda tarefa lendo `brain/INDEX.md`** (hub pequeno), e depois abra APENAS
 a nota que a tarefa precisa. Nunca leia o vault inteiro nem o spec completo sem
