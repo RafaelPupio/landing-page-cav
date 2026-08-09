@@ -13,7 +13,7 @@ export default function Cuidado({ cuidado }: { cuidado: Site['cuidado'] }) {
             {pilar.subtitulo && (
               <p
                 data-subtitulo
-                className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-creme/70"
+                className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-creme/90"
               >
                 {pilar.subtitulo}
               </p>
