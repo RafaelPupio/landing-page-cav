@@ -1,0 +1,74 @@
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+import Visita from '@/components/sections/Visita'
+import Citacao from '@/components/sections/Citacao'
+import Rodape from '@/components/sections/Rodape'
+
+const CONTATO = {
+  logradouro: 'Av. das Emas, 2240W',
+  bairro: 'Parque das Emas',
+  cidade: 'Lucas do Rio Verde',
+  estado: 'MT',
+  cep: '',
+  mapsUrl: 'https://maps.example/x',
+  mapaEmbedUrl: 'https://maps.example/embed',
+  latitude: '',
+  longitude: '',
+  telefone: '',
+  email: '',
+}
+
+const HORARIOS = [
+  { rotulo: 'Culto', quando: 'Domingos, 18h', diaSemana: 'Sunday', abre: '18:00', fecha: '20:00' },
+]
+
+const VISITA = { rotulo: 'E você', titulo: 'Venha nos visitar', texto: '' }
+
+describe('Visita', () => {
+  it('mostra endereço e horário', () => {
+    render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
+    expect(screen.getByText(/Av\. das Emas, 2240W/)).toBeInTheDocument()
+    expect(screen.getByText('Domingos, 18h')).toBeInTheDocument()
+  })
+
+  it('omite o botão de telefone quando o campo está vazio', () => {
+    render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
+    expect(screen.queryByRole('link', { name: /telefone/i })).not.toBeInTheDocument()
+  })
+
+  it('cai para o link do Maps quando não há embed', () => {
+    render(
+      <Visita visita={VISITA} contato={{ ...CONTATO, mapaEmbedUrl: '' }} horarios={HORARIOS} />,
+    )
+    expect(screen.queryByTitle('Mapa')).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Abrir no Google Maps/i })).toHaveAttribute('href', CONTATO.mapsUrl)
+  })
+
+  it('expõe a âncora #visita', () => {
+    const { container } = render(<Visita visita={VISITA} contato={CONTATO} horarios={HORARIOS} />)
+    expect(container.querySelector('section#visita')).not.toBeNull()
+  })
+})
+
+describe('Citacao', () => {
+  it('renderiza como blockquote', () => {
+    const { container } = render(<Citacao citacao={{ texto: 'Essas crenças são a base.' }} />)
+    expect(container.querySelector('blockquote')).toHaveTextContent('Essas crenças são a base.')
+  })
+})
+
+describe('Rodape', () => {
+  it('linka Instagram e YouTube em nova aba', () => {
+    render(
+      <Rodape
+        nome="Comunidade Árvore da Vida"
+        texto=""
+        redes={{ instagram: 'https://instagram.com/x', youtube: 'https://youtube.com/y' }}
+      />,
+    )
+    const ig = screen.getByRole('link', { name: 'Instagram' })
+    expect(ig).toHaveAttribute('href', 'https://instagram.com/x')
+    expect(ig).toHaveAttribute('rel', 'noopener noreferrer')
+    expect(screen.getByRole('link', { name: 'YouTube' })).toHaveAttribute('href', 'https://youtube.com/y')
+  })
+})
