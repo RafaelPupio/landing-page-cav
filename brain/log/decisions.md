@@ -96,7 +96,9 @@ Achado a registrar: um `…` sobrevive em `content/site.json` (dentro da citaç�
 
 ## 2026-08-08 — Task 4 concluída: primitivas decorativas
 
-`components/decor/Blob.tsx` (3 variantes de path, `fill="currentColor"`, cor herdada de classe Tailwind no consumidor), `components/decor/Circulo.tsx` (3 tamanhos, cor via `var(--verde-escuro|--verde-limao|--creme)` direto no atributo `fill` — não dá para usar classe Tailwind de cor de texto/fundo num `fill` de SVG) e `components/ui/SeparadorXXX.tsx` (três X em `stroke="currentColor"`, cor fixa `text-verde-limao`). Todos os três SVGs levam `aria-hidden="true"` e `focusable="false"`, coberto por teste em `tests/components/decor.test.tsx`.
+`components/decor/Blob.tsx` (3 variantes de path, `fill="currentColor"`, cor herdada de classe Tailwind no consumidor), `components/decor/Circulo.tsx` (3 tamanhos, cor via `var(--verde-escuro|--verde-limao|--creme)` direto no atributo `fill`) e `components/ui/SeparadorXXX.tsx` (três X em `stroke="currentColor"`, cor fixa `text-verde-limao`). Todos os três SVGs levam `aria-hidden="true"` e `focusable="false"`, coberto por teste em `tests/components/decor.test.tsx`.
+
+A diferença entre `Circulo` (fill fixo via variável CSS) e `Blob`/`SeparadorXXX` (`currentColor`) não é técnica — dá para usar classe Tailwind de cor num `fill` de SVG, e o `SeparadorXXX` já faz exatamente isso (`className="text-verde-limao"` + `stroke="currentColor"`). É desenho de API: `Circulo` recebe `cor` como prop obrigatória e por isso define sua própria cor; `Blob` e `SeparadorXXX` não têm prop de cor e herdam do contexto via `currentColor`, deixando o consumidor decidir.
 
 A grade pontilhada do folder impresso, já cortada do escopo (ver decisão acima), não foi reintroduzida — confirmado que nenhum destes três componentes a implementa.
 
