@@ -276,3 +276,22 @@ Revisão de código encontrou três achados em `components/sections/Credo.tsx`, 
 Nada além de `components/sections/Credo.tsx`, `tests/components/credo.test.tsx`, `content/schema.ts` e `tests/content/schema.test.ts` foi tocado.
 
 `npm test -- tests/components/credo.test.tsx tests/content/schema.test.ts` (12 testes), `npm test` completo (47 testes, 11 arquivos) e `npm run build` passam.
+
+## 2026-08-08 — Task 11 concluída: Citação, capítulo de Visita (cartão creme invertido) e Rodapé
+
+`components/sections/Citacao.tsx` — fora da trilha (não usa `Capitulo`), um `<blockquote>` centralizado em `text-2xl`/`md:text-4xl` limão em negrito. É o único lugar da página inteira onde o limão aparece em texto: abaixo de 24px (ou 18,66px em negrito) o limão mede 4,02:1 sobre o fundo verde escuro e reprova AA, mas a partir de 24px o limiar de "texto grande" cai para 3:1 e o limão passa. Não reduzir esse tamanho sem reabrir a conta de contraste.
+
+`components/sections/Visita.tsx` — último capítulo da trilha, dentro de `Capitulo` (Task 5), mas o corpo é um cartão `bg-creme`/`text-grafite`: o único bloco claro da página inteira, invertendo o fundo escuro que domina o resto do layout. Intencional — marca visualmente o fim da jornada ("chegou, é aqui"). Dentro do cartão o contraste grafite `#1F1F1C` sobre creme `#F7F5EC` é altíssimo (sem risco de AA); o botão "Abrir no Google Maps" é a única inversão dentro da inversão (fundo verde escuro/texto creme dentro do cartão claro) — conferido à mão, 7,24:1, bem acima do piso.
+
+Duas aplicações da regra de degradação do projeto (campo vazio não renderiza bloco vazio), ambas cobertas por teste em `tests/components/visita.test.tsx`:
+- `contato.telefone === ''` → nenhum botão de telefone é renderizado (`{contato.telefone && (...)}`).
+- `contato.mapaEmbedUrl === ''` → nenhum `<iframe>` (`{contato.mapaEmbedUrl && (...)}`), sobra só o link "Abrir no Google Maps" apontando para `contato.mapsUrl`.
+Os dois casos batem com o `content/site.json` real de hoje: `contato.telefone` é `""` (telefone da igreja ainda não recebido, ver [[status]]), então o botão de telefone hoje não aparece na página — só `mapaEmbedUrl` já vem preenchido no JSON atual, então esse segundo caminho só foi exercitado pelo teste (fixture com `mapaEmbedUrl: ''`), não pelo conteúdo real.
+
+`components/sections/Rodape.tsx` — também fora da trilha, `<footer>` com nome do site, texto opcional (`{texto && (...)}`, hoje vazio em `site.json`) e links de Instagram/YouTube, ambos `target="_blank" rel="noopener noreferrer"`. Texto secundário em `text-creme/80`: medido à mão em 5,32:1 sobre o fundo verde escuro, acima do piso de AA (4,5:1) mesmo sem chegar ao piso de `/90` fixado na Task 9 — mantido como no brief porque já passa, sem necessidade de subir a opacidade.
+
+**Observação de inconsistência (não corrigida, por instrução explícita do brief a manter o código verbatim):** os rótulos "Abrir no Google Maps", "Telefone", "Instagram", "YouTube" e o `title="Mapa"` do iframe estão hardcoded em `Visita.tsx`/`Rodape.tsx`, quebrando a regra dura do projeto "nenhum texto hardcoded em componente — tudo passa por `content/site.json`" (`CLAUDE.md`, regra 2; `brain/INDEX.md`, regra dura 2). Nenhum desses cinco textos existe hoje em `content/site.json`/`content/schema.ts`. Fica registrado para uma limpeza futura (mover para o schema como rótulos de UI) caso o projeto quera fechar esse desvio.
+
+Implementação seguiu `.superpowers/sdd/task-11-brief.md` verbatim, TDD: `tests/components/visita.test.tsx` (6 testes, cobrindo `Visita`, `Citacao` e `Rodape`) escrito primeiro, rodado e visto falhando por módulo ausente (`Failed to resolve import "@/components/sections/Citacao"`), depois os três componentes criados e os 6 testes passando sem nenhum ajuste em relação ao código do brief. Nada além de `components/sections/` e `tests/components/` foi tocado; `app/page.tsx` continua fora do escopo desta task — nenhuma das três seções é consumida por nenhuma página ainda (ver [[status]]).
+
+`npm test -- tests/components/visita.test.tsx` (6 testes), `npm test` completo (53 testes, 12 arquivos) e `npm run build` passam.
