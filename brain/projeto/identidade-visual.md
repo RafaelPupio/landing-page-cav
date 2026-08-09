@@ -34,10 +34,8 @@ Se aparecer limão num texto abaixo de 24px em algum componente novo, é regress
 
 Do folder, todos reproduzidos em SVG inline (nada de imagem raster, nada de request externo):
 
-- **Blobs orgânicos** — três variantes de path, em `components/decor/Blob.tsx`. No impresso eles sangram para fora da página; na web, `overflow-hidden` na seção com o blob posicionado parcialmente fora reproduz o efeito.
-- **Círculos sólidos** — verde escuro e limão, três tamanhos.
-- **Contornos finos em limão** — arcos de traço fino.
-- **`✕✕✕`** — o motivo de três xis, em `components/ui/SeparadorXXX.tsx`, separando seções.
+- **Blobs orgânicos** — três variantes de path, em `components/decor/Blob.tsx`, único elemento decorativo do folder que chegou a ser usado por uma seção real (`Hero.tsx`, atrás do subtítulo). No impresso eles sangram para fora da página; na web, `overflow-hidden` na seção com o blob posicionado parcialmente fora reproduz o efeito. Opacidade do blob do Hero calibrada em `/15` (não `/25`) na revisão final de 2026-08-09 — em `/25` o verde-escuro tingido reduz demais o contraste do texto creme que pode cair atrás dele; ver [[log/decisions]] 2026-08-09.
+- ~~Círculos sólidos~~ e ~~contornos finos em limão~~ e ~~`✕✕✕`~~ (`components/decor/Circulo.tsx`, `components/ui/SeparadorXXX.tsx`) — chegaram a ser implementados junto com o `Blob` na Task 4, mas nenhuma seção real (Task 6 em diante) acabou consumindo essas duas peças; removidas como código morto na revisão final de 2026-08-09 (só eram exercitadas pelos próprios testes, cobertura de mentira). Se a decoração do círculo/xis fizer falta visualmente algum dia, reimplementar a partir do folder impresso, não recuperar do histórico do git sem revisitar o design.
 - ~~Grade pontilhada~~ — cortada na direção D: no fundo escuro vira ruído sem informar nada.
 
 Toda decoração leva `aria-hidden="true"` e `focusable="false"`. Leitor de tela não deve encontrar nada disso.
