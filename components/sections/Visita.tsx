@@ -33,14 +33,14 @@ export default function Visita({
             href={contato.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full bg-verde-escuro px-6 py-3 font-semibold text-creme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
+            className="rounded-full bg-verde-escuro px-6 py-3 font-semibold text-creme focus-visible:anel-de-foco-escuro"
           >
             {visita.ctaMapsTexto}
           </a>
           {contato.telefone && (
             <a
               href={`tel:${contato.telefone.replace(/\D/g, '')}`}
-              className="rounded-full border border-verde-escuro px-6 py-3 font-semibold text-verde-escuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
+              className="rounded-full border border-verde-escuro px-6 py-3 font-semibold text-verde-escuro focus-visible:anel-de-foco-escuro"
             >
               {visita.ctaTelefoneTexto}
             </a>

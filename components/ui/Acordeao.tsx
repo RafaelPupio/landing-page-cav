@@ -24,7 +24,7 @@ export default function Acordeao({ itens }: { itens: ItemAcordeao[] }) {
                 aria-expanded={estaAberto}
                 aria-controls={`painel-${item.id}`}
                 onClick={() => setAberto(estaAberto ? null : item.id)}
-                className="flex w-full items-center justify-between gap-4 py-5 text-left text-base font-semibold text-creme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-creme"
+                className="flex w-full items-center justify-between gap-4 py-5 text-left text-base font-semibold text-creme focus-visible:anel-de-foco"
               >
                 {item.titulo}
                 <span aria-hidden="true" className="text-2xl leading-none text-verde-limao">

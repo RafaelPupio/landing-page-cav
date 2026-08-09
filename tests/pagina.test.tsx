@@ -33,4 +33,17 @@ describe('página inicial', () => {
     const ids = Array.from(container.querySelectorAll('section[id]')).map((s) => s.id)
     expect(ids).toEqual(['inicio', 'historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita'])
   })
+
+  // Já foi esquecido uma vez: os links do rodapé ficaram sem anel de foco algum
+  // tempo, caindo no outline default do navegador. Trava para todo elemento
+  // interativo da página, não só o rodapé, para não repetir o esquecimento em
+  // outro lugar.
+  it('todo elemento interativo usa a utility anel-de-foco/anel-de-foco-escuro, nunca o outline default', () => {
+    render(<Pagina />)
+    const interativos = [...screen.getAllByRole('link'), ...screen.getAllByRole('button')]
+    expect(interativos.length).toBeGreaterThan(0)
+    interativos.forEach((el) => {
+      expect(el.className).toMatch(/focus-visible:anel-de-foco(-escuro)?\b/)
+    })
+  })
 })
