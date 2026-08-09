@@ -68,6 +68,15 @@ describe('AcoesRapidas', () => {
     expect(screen.getByRole('link', { name: /Como chegar/ })).not.toHaveAttribute('target')
   })
 
+  // Sem fill-rule evenodd os subcaminhos internos não são recortados e o ícone
+  // de relógio renderiza como um disco sólido. Só aparece no navegador, nunca no jsdom.
+  it('recorta os subcaminhos dos ícones com fill-rule evenodd', () => {
+    const { container } = render(<AcoesRapidas acoes={ACOES} />)
+    const paths = container.querySelectorAll('svg path')
+    expect(paths.length).toBe(ACOES.length)
+    paths.forEach((path) => expect(path).toHaveAttribute('fill-rule', 'evenodd'))
+  })
+
   // Regra de "externo" é regex explícita (^https?://), não startsWith('http') —
   // cobre os formatos de href que o schema aceita, para não reintroduzir a
   // heurística frágil por acidente.
