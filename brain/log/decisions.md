@@ -420,3 +420,13 @@ Relatório completo em `.superpowers/sdd/revisao-final-report.md` (não versiona
 **Grupo 4 — buracos de teste no que é difícil de testar.** `Credo` instancia seis `Acordeao` (um por grupo) pra dar âncora própria a cada um; consequência é que dois grupos podem ficar abertos ao mesmo tempo, diferente do `Acordeao` isolado (que fecha o anterior ao abrir outro — contrato mantido em teste à parte). Teste novo em `credo.test.tsx` prova o comportamento real na página, não só o do componente isolado. `app/layout.tsx`/`robots.ts`/`sitemap.ts` não tinham nenhum teste apesar de SEO ser o objetivo declarado do projeto — `tests/seo/metadata.test.tsx` novo, com um mock de `next/font/google` em `vitest.setup.ts` (só função dentro do pipeline de build do Next; sem o mock, importar `app/layout.tsx` no Vitest quebrava com `TypeError: Poppins is not a function`). Dois testes novos em `pagina.test.tsx`: hierarquia de cabeçalhos sem salto de nível (h1→h2→h3→h4, incluindo os h4 escondidos do Credo — passou de primeira, a estrutura já estava certa, o teste é rede de segurança) e `<footer>` fora de `<main>` (bug real já corrigido, agora com teste). `tests/smoke.test.tsx` (componente inventado que não existe no app) removido.
 
 **Verificação final**: `npm test` — 97 testes, 15 arquivos, todos verdes. `npm run build`, `npm run lint`, `npx tsc --noEmit` limpos. `npm run build && PORT=4321 npm start` + `curl`: `/editar` → 404, `/api/content` (GET e PUT) → 404, `/` → 200, `/icon.svg` → 200 `image/svg+xml`. Servidor derrubado, porta 4321 confirmada livre.
+
+## 2026-08-09 — Correção: o contraste do blob do Hero em /25 já passava
+
+A revisão final de branch afirmou que o blob a `text-verde-limao/25` tingia o fundo para `#717F4E`, dando 3,97:1 com creme e reprovando AA. Eu repassei esse número na instrução da correção sem verificar.
+
+Estava errado. Composição alfa simples de `#A3C63C` a 25% sobre `#44581A` dá `#5C7422`, e creme sobre isso mede **4,84:1** — já dentro do AA. O subagente que aplicou a correção mediu `4,89:1` no navegador, discordou do enunciado em vez de aceitá-lo, e registrou a divergência. Ele estava certo.
+
+O blob ficou em `/15` (5,72:1) assim mesmo: a folga é gratuita e o teste trava o valor. Mas **não havia armadilha latente** — encurtar `hero.titulo` pelo `/editar` nunca teria reprovado o contraste. Os comentários em `Hero.tsx` e `tests/components/hero.test.tsx` foram corrigidos para não deixar o número errado gravado no código.
+
+Lição para as próximas: número de contraste vindo de revisão se recalcula antes de virar instrução. A conta leva dez segundos.
