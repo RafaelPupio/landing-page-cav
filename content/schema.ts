@@ -1,4 +1,11 @@
 import { z } from 'zod'
+import { pt } from 'zod/locales'
+
+// Mensagens padrão do Zod (quando um campo não define uma mensagem customizada,
+// como "string vazia" ou "número esperado") saem em português. Sem isso, quem
+// edita o site pelo formulário em /editar veria erros em inglês do tipo
+// "Too small: expected string to have >=1 characters".
+z.config(pt())
 
 export const temaSchema = z.object({
   verdeEscuro: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
