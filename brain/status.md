@@ -2,7 +2,7 @@
 
 ## Onde estamos
 
-**Fase: implementação em andamento (branch `implementacao`). Task 6 de 14 concluída.**
+**Fase: implementação em andamento (branch `implementacao`). Task 7 de 14 concluída.**
 
 - [x] Brainstorming e design aprovados pelo Rafael
 - [x] Spec escrito, com o conteúdo integral do folder transcrito no apêndice
@@ -15,14 +15,15 @@
 - [x] Task 4 — primitivas decorativas: `components/decor/Blob.tsx`, `components/decor/Circulo.tsx`, `components/ui/SeparadorXXX.tsx`, todas `aria-hidden="true"`/`focusable="false"`
 - [x] Task 5 — primitivas de interface: `components/ui/Trilha.tsx`, `components/ui/Capitulo.tsx`, `components/ui/Chip.tsx`, `components/ui/Acordeao.tsx` (único client component até agora). Achados de revisão corrigidos: offset da linha da Trilha alinhado ao centro do nó (`1.875rem`/`md:2.875rem`) e painel do Acordeão passou a ficar sempre montado no DOM, escondido via `hidden` nativo (não desmontado) — ver [[log/decisions]] 2026-08-08.
 - [x] Task 6 — topo da página: `components/sections/Hero.tsx` (`h1`, subtítulo, CTA de âncora, `Blob` decorativo) e `components/sections/AcoesRapidas.tsx` (nav com um link por ação — Como chegar, Domingos 18h, Instagram, YouTube — ícones SVG inline). Achados de revisão corrigidos: teste travando a regra de contraste do subtítulo (creme no mobile / limão só a partir do md:) e regra de link externo trocada de `startsWith('http')` para regex `^https?://`, com `content/schema.ts` validando o formato de `href` de `acoesRapidas` — ver [[log/decisions]] 2026-08-08.
-- [ ] Tasks 7–14 — demais seções, SEO, editor
+- [x] Task 7 — capítulos `components/sections/Historia.tsx` e `components/sections/Lideranca.tsx`, ambos só conteúdo (texto em creme) dentro de `Capitulo` (Task 5), que já fornece `<section id>`, nó da trilha, rótulo e `<h2>` — ver [[log/decisions]] 2026-08-08.
+- [ ] Tasks 8–14 — demais seções, SEO, editor
 - [ ] Deploy
 
 ## Próximo passo
 
-Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 7. Cada task termina com testes verdes e um commit.
+Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 8. Cada task termina com testes verdes e um commit.
 
-`app/page.tsx` ainda é o placeholder do `create-next-app` — a Task 6 criou `Hero` e `AcoesRapidas` mas não os monta em nenhuma página (fora de escopo da task). Nem essas duas peças novas, nem as primitivas decorativas da Task 4, nem as de interface da Task 5 (`Trilha`/`Capitulo`/`Chip`/`Acordeao`) são consumidas em nenhuma página ainda. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que uma task futura monte o layout real com `app/page.tsx`.
+`app/page.tsx` ainda é o placeholder do `create-next-app` — nenhuma seção criada até agora (`Hero`, `AcoesRapidas`, `Historia`, `Lideranca`), nem as primitivas decorativas da Task 4, nem as de interface da Task 5 (`Trilha`/`Capitulo`/`Chip`/`Acordeao`), é consumida em nenhuma página ainda. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que uma task futura monte o layout real com `app/page.tsx`.
 
 ## Bloqueios reais
 
