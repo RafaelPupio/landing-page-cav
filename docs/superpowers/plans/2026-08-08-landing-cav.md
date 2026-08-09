@@ -159,7 +159,8 @@ export const temaSchema = z.object({
 export const horarioSchema = z.object({
   rotulo: z.string().min(1),
   quando: z.string().min(1),
-  diaSemana: z.string().min(1), // formato schema.org, ex.: "Sunday"
+  // O schema.org exige o dia em inglês; "Domingo" faria o Google descartar o horário em silêncio.
+  diaSemana: z.enum(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']),
   abre: z.string().regex(/^\d{2}:\d{2}$/),
   fecha: z.string().regex(/^\d{2}:\d{2}$/),
 })
@@ -2178,7 +2179,8 @@ export default function JsonLd({ dados }: { dados: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(dados) }}
+      // Escapa < para que um "</script>" digitado em algum campo não feche a tag antes da hora.
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(dados).replace(/</g, '\\u003c') }}
     />
   )
 }
@@ -2253,8 +2255,15 @@ export default function robots(): MetadataRoute.Robots {
 
 - [ ] **Step 7: Verificar o HTML gerado**
 
-Run: `npm run build && npm start` e, em outro terminal, `curl -s localhost:3000 | grep -c 'application/ld+json'`
-Expected: `1`. Conferir também que `/robots.txt` e `/sitemap.xml` respondem.
+A porta 3000 e a 8787 estão ocupadas nesta máquina; o `.claude/launch.json` fixa a **4321**.
+
+Run: `PORT=4321 npm run dev` e, em outro terminal:
+
+```bash
+curl -s localhost:4321/ | grep -c '<script type="application/ld+json"'
+```
+
+Expected: `1`. Conte a **tag**, não a string solta — `grep -c 'application/ld+json'` retorna 2 porque a segunda ocorrência está dentro do payload RSC serializado do Next, que não é um bloco de dados estruturados. Conferir também que `/robots.txt` e `/sitemap.xml` respondem.
 
 - [ ] **Step 8: Commit**
 
