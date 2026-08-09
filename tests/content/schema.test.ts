@@ -29,6 +29,13 @@ describe('siteSchema', () => {
     expect(siteSchema.safeParse(quebrado).success).toBe(false)
   })
 
+  it('rejeita href de acoesRapidas fora dos formatos aceitos (âncora, caminho, URL, mailto, tel)', () => {
+    const quebrado = structuredClone(conteudo) as { acoesRapidas: { href: string }[] }
+    quebrado.acoesRapidas[0].href = 'httpfoo'
+    const resultado = siteSchema.safeParse(quebrado)
+    expect(resultado.success).toBe(false)
+  })
+
   it('exige rótulo em todos os capítulos da trilha', () => {
     for (const capitulo of ['historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita']) {
       const quebrado = structuredClone(conteudo) as unknown as Record<string, Record<string, unknown>>

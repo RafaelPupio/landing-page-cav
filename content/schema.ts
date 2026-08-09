@@ -64,7 +64,13 @@ export const siteSchema = z.object({
   }),
   acoesRapidas: z.array(z.object({
     rotulo: z.string().min(1),
-    href: z.string().min(1),
+    // Link interno sempre como "#ancora" ou "/caminho" — nunca com o domínio completo
+    // (ex.: "https://arvoredavidalrv.com.br/algo"), senão o link do próprio site é tratado
+    // como externo e abre numa aba nova por engano.
+    href: z.string().regex(
+      /^(#[^\s]+|\/[^\s]*|https?:\/\/[^\s]+|mailto:[^\s]+|tel:[^\s]+)$/,
+      'Link inválido em "acoesRapidas". Use um dos formatos aceitos: âncora interna (ex.: #visita), caminho interno (ex.: /contato), link completo (ex.: https://exemplo.com.br), e-mail (ex.: mailto:contato@exemplo.com.br) ou telefone (ex.: tel:+5511999999999).',
+    ),
     icone: z.enum(['mapa', 'relogio', 'instagram', 'youtube']),
   })).min(1),
   historia: z.object({

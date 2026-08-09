@@ -12,7 +12,9 @@ export default function AcoesRapidas({ acoes }: { acoes: Site['acoesRapidas'] })
     <nav aria-label="Ações rápidas" className="px-6 pb-8">
       <ul className="mx-auto grid max-w-3xl grid-cols-2 gap-3 md:grid-cols-4">
         {acoes.map((acao) => {
-          const externo = acao.href.startsWith('http')
+          // Regra explícita (não heurística): só URL absoluta http(s) abre em nova aba.
+          // `startsWith('http')` casaria também com algo como "httpfoo".
+          const externo = /^https?:\/\//.test(acao.href)
           return (
             <li key={acao.rotulo}>
               <a
