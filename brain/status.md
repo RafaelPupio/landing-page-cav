@@ -2,7 +2,7 @@
 
 ## Onde estamos
 
-**Fase: implementação em andamento (branch `implementacao`). Task 10 de 14 concluída.**
+**Fase: implementação em andamento (branch `implementacao`). Task 11 de 14 concluída.**
 
 - [x] Brainstorming e design aprovados pelo Rafael
 - [x] Spec escrito, com o conteúdo integral do folder transcrito no apêndice
@@ -19,13 +19,14 @@
 - [x] Task 8 — capítulo `components/sections/Proposito.tsx` (missão em destaque, visão e valores como `<ul>`, valores com `Chip`), dentro de `Capitulo` (Task 5). `<h3>` de Visão e Valores em creme, nunca limão — ver [[log/decisions]] 2026-08-08. Achados de revisão corrigidos: teste travando ordem/conteúdo dos itens (não só contagem), visão trocada de `<ol>` para `<ul>` (ordem não confirmada como significativa — pendente checar com a liderança da igreja) e `key={i}` no lugar de `key={item}` — ver [[log/decisions]] 2026-08-08.
 - [x] Task 9 — capítulo `components/sections/Cuidado.tsx` (intro + três pilares Conectar/Crescer/Servir, cada um em `<h3>` dentro de um cartão com borda), dentro de `Capitulo` (Task 5). Único capítulo até agora cujo schema tem campo opcionalmente vazio por item de lista (`pilar.subtitulo`): a regra de degradação do projeto (campo vazio não renderiza elemento vazio) foi aplicada com `{pilar.subtitulo && (...)}`, e o `<p>` resultante carrega `data-subtitulo` para o teste contar subtítulos sem depender do texto — ver [[log/decisions]] 2026-08-08. Achados de revisão corrigidos: teste travando o texto de cada pilar dentro do bloco do seu próprio `<h3>` (não bastava checar presença dos três textos em qualquer lugar) e subtítulo trocado de `text-creme/70` (reprova AA, 4,497:1) para `text-creme/90` (6,23:1) — ver [[log/decisions]] 2026-08-08.
 - [x] Task 10 — capítulo `components/sections/Credo.tsx`, as 20 declarações doutrinárias (`site.credo.grupos`, 6 grupos) em acordeão (`Acordeao`, Task 5), dentro de `Capitulo` (Task 5). Cada grupo vira uma `<div id="credo-<id>">` envolvendo um `Acordeao` de um único item — a âncora `#credo-<id>` é responsabilidade do `Credo`, não do `Acordeao`, para manter o acordeão genérico. `<h4>` de cada declaração é creme (não limão: em `text-sm` o limão reprovaria AA) — ver [[log/decisions]] 2026-08-08. Achados de revisão corrigidos: teste travando a correspondência entre o título de cada declaração e o seu próprio texto (as 20 declarações do fixture, não só uma), `key={i}` no lugar de `key={declaracao.titulo}`, e `content/schema.ts` passou a rejeitar `id` de grupo de credo duplicado (mensagem em português voltada para quem edita o JSON, não para programador) — ver [[log/decisions]] 2026-08-08.
-- [ ] Tasks 11–14 — SEO, editor, montagem de `app/page.tsx`, deploy
+- [x] Task 11 — `components/sections/Citacao.tsx` (citação fora da trilha, limão em `text-2xl`/`md:text-4xl` — o único lugar da página onde limão aparece em texto, porque só a partir de 24px o contraste de 4,02:1 do limão passa no AA), `components/sections/Visita.tsx` (último capítulo, dentro de `Capitulo` — cartão creme com texto grafite, invertendo o fundo escuro da página para marcar o fim da trilha) e `components/sections/Rodape.tsx` (fora da trilha, links de Instagram/YouTube em nova aba). Regra de degradação aplicada em dois pontos da `Visita`: `contato.telefone === ''` não renderiza o botão de telefone, `contato.mapaEmbedUrl === ''` não renderiza o iframe (sobra só o link "Abrir no Google Maps") — os dois casos batem com o conteúdo real de `site.json` (telefone e demais campos de contato ainda vazios). Implementado verbatim a partir de `.superpowers/sdd/task-11-brief.md` — ver [[log/decisions]] 2026-08-08.
+- [ ] Tasks 12–14 — SEO, editor, montagem de `app/page.tsx`, deploy
 
 ## Próximo passo
 
-Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 11. Cada task termina com testes verdes e um commit.
+Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 12. Cada task termina com testes verdes e um commit.
 
-`app/page.tsx` ainda é o placeholder do `create-next-app` — nenhuma seção criada até agora (`Hero`, `AcoesRapidas`, `Historia`, `Lideranca`, `Proposito`, `Cuidado`, `Credo`), nem as primitivas decorativas da Task 4, nem as de interface da Task 5 (`Trilha`/`Capitulo`/`Chip`/`Acordeao`), é consumida em nenhuma página ainda. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que uma task futura monte o layout real com `app/page.tsx`.
+`app/page.tsx` ainda é o placeholder do `create-next-app` — nenhuma seção criada até agora (`Hero`, `AcoesRapidas`, `Historia`, `Lideranca`, `Proposito`, `Cuidado`, `Credo`, `Citacao`, `Visita`, `Rodape`), nem as primitivas decorativas da Task 4, nem as de interface da Task 5 (`Trilha`/`Capitulo`/`Chip`/`Acordeao`), é consumida em nenhuma página ainda. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que uma task futura monte o layout real com `app/page.tsx`.
 
 ## Bloqueios reais
 
