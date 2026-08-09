@@ -2,7 +2,7 @@
 
 ## Onde estamos
 
-**Fase: implementação em andamento (branch `implementacao`). Task 4 de 14 concluída.**
+**Fase: implementação em andamento (branch `implementacao`). Task 5 de 14 concluída.**
 
 - [x] Brainstorming e design aprovados pelo Rafael
 - [x] Spec escrito, com o conteúdo integral do folder transcrito no apêndice
@@ -13,14 +13,15 @@
 - [x] Task 2 — schema Zod, `content/site.json` (todo o texto do folder, 20 declarações de credo em 6 grupos) e `content/load.ts` (carregador validado)
 - [x] Task 3 — `lib/tema.ts` (`variaveisDeTema`), tokens ligados ao Tailwind via `@theme inline` em `app/globals.css`, `<body>` com fundo verde escuro / texto creme, `app/layout.tsx` reescrito com fonte Poppins (`next/font/google`) e metadata a partir de `content/load.ts`
 - [x] Task 4 — primitivas decorativas: `components/decor/Blob.tsx`, `components/decor/Circulo.tsx`, `components/ui/SeparadorXXX.tsx`, todas `aria-hidden="true"`/`focusable="false"`
-- [ ] Tasks 5–14 — seções, SEO, editor
+- [x] Task 5 — primitivas de interface: `components/ui/Trilha.tsx`, `components/ui/Capitulo.tsx`, `components/ui/Chip.tsx`, `components/ui/Acordeao.tsx` (único client component até agora)
+- [ ] Tasks 6–14 — seções, SEO, editor
 - [ ] Deploy
 
 ## Próximo passo
 
-Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 5. Cada task termina com testes verdes e um commit.
+Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 6. Cada task termina com testes verdes e um commit.
 
-`app/page.tsx` ainda é o placeholder do `create-next-app` — as primitivas da Task 4 ainda não são consumidas em nenhuma página. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que as seções da Task 5+ sejam construídas usando `Blob`, `Circulo` e `SeparadorXXX`.
+`app/page.tsx` ainda é o placeholder do `create-next-app` — nem as primitivas decorativas da Task 4 nem as de interface da Task 5 (`Trilha`/`Capitulo`/`Chip`/`Acordeao`) são consumidas em nenhuma página ainda. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que as seções da Task 6+ montem o layout real usando essas oito peças.
 
 ## Bloqueios reais
 

@@ -42,6 +42,8 @@ Do folder, todos reproduzidos em SVG inline (nada de imagem raster, nada de requ
 
 Toda decoração leva `aria-hidden="true"` e `focusable="false"`. Leitor de tela não deve encontrar nada disso.
 
+**A trilha em si (a linha vertical em limão) não é decorativa — é estrutura.** Implementada na Task 5 como `components/ui/Trilha.tsx` (a linha, via pseudo-elemento posicionado) e `components/ui/Capitulo.tsx` (cada `<section>` com âncora própria, nó redondo em limão sobre a linha, rótulo em creme, `<h2>` em limão ≥24px). Os offsets `left-[1.6rem]`/`md:left-[2.6rem]` da linha e `-left-8`/`md:-left-10` do nó do capítulo são acoplados — mudar um sem o outro faz o nó flutuar fora da linha. `components/ui/Chip.tsx` (contorno creme translúcido, usado em listas de valores/crenças) e `components/ui/Acordeao.tsx` (único client component até agora; um item aberto por vez, `aria-expanded`/`aria-controls`, operável por teclado) completam o kit de primitivas de interface. Nenhuma seção real ainda consome essas quatro peças — isso é Task 6+.
+
 ## Tipografia
 
 Poppins, carregada por `next/font/google` (sem FOUT, sem request a domínio de terceiro em runtime).

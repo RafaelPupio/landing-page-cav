@@ -103,3 +103,15 @@ A diferença entre `Circulo` (fill fixo via variável CSS) e `Blob`/`SeparadorXX
 A grade pontilhada do folder impresso, já cortada do escopo (ver decisão acima), não foi reintroduzida — confirmado que nenhum destes três componentes a implementa.
 
 Nenhum componente de seção consome as primitivas ainda; isso é escopo da Task 5+. `npm test` (9 testes) e `npm run build` passam.
+
+## 2026-08-08 — Task 5 concluída: primitivas de interface (Trilha, Capítulo, Chip, Acordeão)
+
+`components/ui/Trilha.tsx` (o tronco — linha vertical em limão via pseudo-elemento absoluto, conteúdo recuado à direita dela), `components/ui/Capitulo.tsx` (`<section id>` com âncora própria, nó redondo em limão sobre a linha, rótulo em creme, `<h2>` em limão `text-2xl`/`md:text-3xl`), `components/ui/Chip.tsx` (`<li>` com contorno creme translúcido) e `components/ui/Acordeao.tsx` (primeiro client component do projeto — `'use client'`, um item aberto por vez, `aria-expanded`/`aria-controls`, abre por clique e por Enter/Espaço via `<button>` nativo).
+
+Implementação seguiu o brief da task verbatim (código já especificado em `.superpowers/sdd/task-5-brief.md`), TDD: testes escritos primeiro (`tests/components/trilha.test.tsx`, `tests/components/acordeao.test.tsx`), rodados e vistos falhando por módulo ausente, depois os quatro componentes criados e os 9 testes (mais os 10 já existentes, 19 no total) passando.
+
+Regra de contraste (ver entrada acima) mantida à risca: o rótulo do capítulo é `text-creme`, não `text-verde-limao` — travado por teste dedicado que checa `className` diretamente, não só o texto renderizado.
+
+Verificado o acoplamento entre `Trilha` e `Capitulo` que o offset da linha e o offset do nó precisam bater: convertendo as classes Tailwind em rem, a linha fica a 1,6rem (mobile) / 2,6rem (`md:`) da borda esquerda do contêiner da `Trilha`, e o nó do capítulo (`h-3 w-3`, ou seja, 0,75rem de diâmetro) fica com a borda esquerda a 1,5rem / 2,5rem da mesma referência — a linha passa dentro do nó em ambos os breakpoints (não fica centralizada no meio do nó, passa ligeiramente à esquerda do centro, ~0,275rem de diferença, mas nunca flutua fora dele). Não tentei "melhorar" esse offset porque o brief pediu os valores verbatim e o objetivo era não quebrar o acoplamento, não otimizá-lo. Não consegui abrir o dev server no navegador da sessão para conferir visualmente em pixel (a porta de preview da ferramenta ficou presa em 8787, ocupada por outro processo, independente da config de porta do projeto) — a verificação ficou só na aritmética das classes Tailwind. Sinalizado como pendência de conferência visual manual para o Rafael ou para uma sessão futura com navegador disponível.
+
+`npm test` (19 testes, 6 arquivos) e `npm run build` passam. Nada fora de `components/ui/` e `tests/components/` foi alterado no commit de código.
