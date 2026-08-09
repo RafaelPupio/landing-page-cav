@@ -2,7 +2,7 @@
 
 ## Onde estamos
 
-**Fase: implementação em andamento (branch `implementacao`). Task 8 de 14 concluída.**
+**Fase: implementação em andamento (branch `implementacao`). Task 9 de 14 concluída.**
 
 - [x] Brainstorming e design aprovados pelo Rafael
 - [x] Spec escrito, com o conteúdo integral do folder transcrito no apêndice
@@ -17,14 +17,15 @@
 - [x] Task 6 — topo da página: `components/sections/Hero.tsx` (`h1`, subtítulo, CTA de âncora, `Blob` decorativo) e `components/sections/AcoesRapidas.tsx` (nav com um link por ação — Como chegar, Domingos 18h, Instagram, YouTube — ícones SVG inline). Achados de revisão corrigidos: teste travando a regra de contraste do subtítulo (creme no mobile / limão só a partir do md:) e regra de link externo trocada de `startsWith('http')` para regex `^https?://`, com `content/schema.ts` validando o formato de `href` de `acoesRapidas` — ver [[log/decisions]] 2026-08-08.
 - [x] Task 7 — capítulos `components/sections/Historia.tsx` e `components/sections/Lideranca.tsx`, ambos só conteúdo (texto em creme) dentro de `Capitulo` (Task 5), que já fornece `<section id>`, nó da trilha, rótulo e `<h2>` — ver [[log/decisions]] 2026-08-08. Achado de revisão corrigido: teste da `Historia` que contava `section#historia p` (acoplado à estrutura interna do `Capitulo`) trocado por asserção de conteúdo — ver [[log/decisions]] 2026-08-08.
 - [x] Task 8 — capítulo `components/sections/Proposito.tsx` (missão em destaque, visão e valores como `<ul>`, valores com `Chip`), dentro de `Capitulo` (Task 5). `<h3>` de Visão e Valores em creme, nunca limão — ver [[log/decisions]] 2026-08-08. Achados de revisão corrigidos: teste travando ordem/conteúdo dos itens (não só contagem), visão trocada de `<ol>` para `<ul>` (ordem não confirmada como significativa — pendente checar com a liderança da igreja) e `key={i}` no lugar de `key={item}` — ver [[log/decisions]] 2026-08-08.
-- [ ] Tasks 9–14 — demais seções, SEO, editor
+- [x] Task 9 — capítulo `components/sections/Cuidado.tsx` (intro + três pilares Conectar/Crescer/Servir, cada um em `<h3>` dentro de um cartão com borda), dentro de `Capitulo` (Task 5). Único capítulo até agora cujo schema tem campo opcionalmente vazio por item de lista (`pilar.subtitulo`): a regra de degradação do projeto (campo vazio não renderiza elemento vazio) foi aplicada com `{pilar.subtitulo && (...)}`, e o `<p>` resultante carrega `data-subtitulo` para o teste contar subtítulos sem depender do texto — ver [[log/decisions]] 2026-08-08.
+- [ ] Tasks 10–14 — demais seções, SEO, editor
 - [ ] Deploy
 
 ## Próximo passo
 
-Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 9. Cada task termina com testes verdes e um commit.
+Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 10. Cada task termina com testes verdes e um commit.
 
-`app/page.tsx` ainda é o placeholder do `create-next-app` — nenhuma seção criada até agora (`Hero`, `AcoesRapidas`, `Historia`, `Lideranca`, `Proposito`), nem as primitivas decorativas da Task 4, nem as de interface da Task 5 (`Trilha`/`Capitulo`/`Chip`/`Acordeao`), é consumida em nenhuma página ainda. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que uma task futura monte o layout real com `app/page.tsx`.
+`app/page.tsx` ainda é o placeholder do `create-next-app` — nenhuma seção criada até agora (`Hero`, `AcoesRapidas`, `Historia`, `Lideranca`, `Proposito`, `Cuidado`), nem as primitivas decorativas da Task 4, nem as de interface da Task 5 (`Trilha`/`Capitulo`/`Chip`/`Acordeao`), é consumida em nenhuma página ainda. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que uma task futura monte o layout real com `app/page.tsx`.
 
 ## Bloqueios reais
 
