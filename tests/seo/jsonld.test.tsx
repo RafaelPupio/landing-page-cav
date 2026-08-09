@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
+import { renderToStaticMarkup } from 'react-dom/server'
 import { dadosDaIgreja } from '@/lib/jsonld'
 import { site } from '@/content/load'
+import JsonLd from '@/components/seo/JsonLd'
 
 describe('dadosDaIgreja', () => {
   const dados = dadosDaIgreja(site)
@@ -43,5 +45,22 @@ describe('dadosDaIgreja', () => {
   it('gera um objeto serializável em JSON', () => {
     expect(() => JSON.stringify(dados)).not.toThrow()
     expect(JSON.parse(JSON.stringify(dados))['@type']).toBe('Church')
+  })
+})
+
+describe('JsonLd (componente)', () => {
+  it('escapa "</script>" em campo de texto livre, sem fechar a tag antes da hora, e preserva o valor original', () => {
+    const valorMalicioso = 'Igreja</script><script>alert(1)</script>'
+    const html = renderToStaticMarkup(<JsonLd dados={{ descricao: valorMalicioso }} />)
+
+    // Só pode existir uma tag de fechamento real — a do próprio <script> do componente.
+    const aberturaFim = html.indexOf('>') + 1
+    const fechamentoReal = html.lastIndexOf('</script>')
+    const conteudo = html.slice(aberturaFim, fechamentoReal)
+
+    expect(conteudo).not.toContain('</script>')
+
+    const dadosParseados = JSON.parse(conteudo)
+    expect(dadosParseados.descricao).toBe(valorMalicioso)
   })
 })

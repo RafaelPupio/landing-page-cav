@@ -10,7 +10,13 @@ export const temaSchema = z.object({
 export const horarioSchema = z.object({
   rotulo: z.string().min(1),
   quando: z.string().min(1),
-  diaSemana: z.string().min(1), // formato schema.org, ex.: "Sunday"
+  diaSemana: z.enum(
+    ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    {
+      error:
+        'Dia da semana inválido em "diaSemana". Use o nome do dia em inglês (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday ou Sunday) — é esse termo que o Google reconhece para mostrar o horário de culto na busca; em português (ex.: "Domingo") o campo é ignorado silenciosamente.',
+    },
+  ),
   abre: z.string().regex(/^\d{2}:\d{2}$/),
   fecha: z.string().regex(/^\d{2}:\d{2}$/),
 })

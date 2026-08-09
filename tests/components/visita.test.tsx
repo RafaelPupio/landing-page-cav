@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import Visita from '@/components/sections/Visita'
 import Citacao from '@/components/sections/Citacao'
 import Rodape from '@/components/sections/Rodape'
+import type { Horario } from '@/content/schema'
 
 const CONTATO = {
   logradouro: 'Av. das Emas, 2240W',
@@ -18,7 +19,7 @@ const CONTATO = {
   email: '',
 }
 
-const HORARIOS = [
+const HORARIOS: Horario[] = [
   { rotulo: 'Culto', quando: 'Domingos, 18h', diaSemana: 'Sunday', abre: '18:00', fecha: '20:00' },
   { rotulo: 'Grupo de Conexão', quando: 'Quartas, 20h', diaSemana: 'Wednesday', abre: '20:00', fecha: '21:30' },
 ]

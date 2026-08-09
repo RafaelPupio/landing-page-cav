@@ -50,4 +50,15 @@ describe('siteSchema', () => {
       expect(siteSchema.safeParse(quebrado).success, `${capitulo} sem rótulo`).toBe(false)
     }
   })
+
+  it('rejeita "Domingo" em diaSemana — exige o nome do dia em inglês, que é o que o schema.org/Google entende', () => {
+    const quebrado = structuredClone(conteudo) as { horarios: { diaSemana: string }[] }
+    quebrado.horarios[0].diaSemana = 'Domingo'
+    const resultado = siteSchema.safeParse(quebrado)
+    expect(resultado.success).toBe(false)
+    if (!resultado.success) {
+      expect(resultado.error.issues[0].path).toEqual(['horarios', 0, 'diaSemana'])
+      expect(resultado.error.issues[0].message).toMatch(/inglês/)
+    }
+  })
 })
