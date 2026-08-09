@@ -93,3 +93,11 @@ Atualizada também `brain/projeto/identidade-visual.md`: a tabela de tokens aind
 `npm test` (7 testes, incluindo o novo `tests/lib/tema.test.ts`) e `npm run build` passam.
 
 Achado a registrar: um `…` sobrevive em `content/site.json` (dentro da citação de Mateus 28.20, no parágrafo de história) e `grep -c '…'` retorna 1, não 0 como o brief exige. Verificado contra o apêndice (`docs/superpowers/specs/2026-08-08-landing-cav-design.md:165`): não é texto truncado por mim, é uma citação bíblica parcial que já vem com reticências no próprio apêndice-fonte. Mantido verbatim por ser mais específico e mais grave desviar do "nunca reescrever, nunca cortar referência bíblica" do que satisfazer o grep. Sinalizado para o Rafael revisar.
+
+## 2026-08-08 — Task 4 concluída: primitivas decorativas
+
+`components/decor/Blob.tsx` (3 variantes de path, `fill="currentColor"`, cor herdada de classe Tailwind no consumidor), `components/decor/Circulo.tsx` (3 tamanhos, cor via `var(--verde-escuro|--verde-limao|--creme)` direto no atributo `fill` — não dá para usar classe Tailwind de cor de texto/fundo num `fill` de SVG) e `components/ui/SeparadorXXX.tsx` (três X em `stroke="currentColor"`, cor fixa `text-verde-limao`). Todos os três SVGs levam `aria-hidden="true"` e `focusable="false"`, coberto por teste em `tests/components/decor.test.tsx`.
+
+A grade pontilhada do folder impresso, já cortada do escopo (ver decisão acima), não foi reintroduzida — confirmado que nenhum destes três componentes a implementa.
+
+Nenhum componente de seção consome as primitivas ainda; isso é escopo da Task 5+. `npm test` (9 testes) e `npm run build` passam.
