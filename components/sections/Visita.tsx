@@ -20,8 +20,8 @@ export default function Visita({
         <p className="text-lg font-light">{endereco}</p>
 
         <dl className="mt-5 space-y-1">
-          {horarios.map((horario) => (
-            <div key={horario.rotulo} className="flex gap-2">
+          {horarios.map((horario, i) => (
+            <div key={i} className="flex gap-2">
               <dt className="font-semibold">{horario.rotulo}:</dt>
               <dd className="font-light">{horario.quando}</dd>
             </div>
@@ -35,24 +35,24 @@ export default function Visita({
             rel="noopener noreferrer"
             className="rounded-full bg-verde-escuro px-6 py-3 font-semibold text-creme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
           >
-            Abrir no Google Maps
+            {visita.ctaMapsTexto}
           </a>
           {contato.telefone && (
             <a
               href={`tel:${contato.telefone.replace(/\D/g, '')}`}
               className="rounded-full border border-verde-escuro px-6 py-3 font-semibold text-verde-escuro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-verde-escuro"
             >
-              Telefone
+              {visita.ctaTelefoneTexto}
             </a>
           )}
         </div>
 
         {contato.mapaEmbedUrl && (
           <iframe
-            title="Mapa"
+            title={visita.mapaTitulo}
             src={contato.mapaEmbedUrl}
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer"
             className="mt-7 h-64 w-full rounded-2xl border-0"
           />
         )}
