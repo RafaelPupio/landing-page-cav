@@ -14,7 +14,7 @@
 - [x] Task 3 — `lib/tema.ts` (`variaveisDeTema`), tokens ligados ao Tailwind via `@theme inline` em `app/globals.css`, `<body>` com fundo verde escuro / texto creme, `app/layout.tsx` reescrito com fonte Poppins (`next/font/google`) e metadata a partir de `content/load.ts`
 - [x] Task 4 — primitivas decorativas: `components/decor/Blob.tsx`, `components/decor/Circulo.tsx`, `components/ui/SeparadorXXX.tsx`, todas `aria-hidden="true"`/`focusable="false"`
 - [x] Task 5 — primitivas de interface: `components/ui/Trilha.tsx`, `components/ui/Capitulo.tsx`, `components/ui/Chip.tsx`, `components/ui/Acordeao.tsx` (único client component até agora). Achados de revisão corrigidos: offset da linha da Trilha alinhado ao centro do nó (`1.875rem`/`md:2.875rem`) e painel do Acordeão passou a ficar sempre montado no DOM, escondido via `hidden` nativo (não desmontado) — ver [[log/decisions]] 2026-08-08.
-- [x] Task 6 — topo da página: `components/sections/Hero.tsx` (`h1`, subtítulo, CTA de âncora, `Blob` decorativo) e `components/sections/AcoesRapidas.tsx` (nav com um link por ação — Como chegar, Domingos 18h, Instagram, YouTube — ícones SVG inline)
+- [x] Task 6 — topo da página: `components/sections/Hero.tsx` (`h1`, subtítulo, CTA de âncora, `Blob` decorativo) e `components/sections/AcoesRapidas.tsx` (nav com um link por ação — Como chegar, Domingos 18h, Instagram, YouTube — ícones SVG inline). Achados de revisão corrigidos: teste travando a regra de contraste do subtítulo (creme no mobile / limão só a partir do md:) e regra de link externo trocada de `startsWith('http')` para regex `^https?://`, com `content/schema.ts` validando o formato de `href` de `acoesRapidas` — ver [[log/decisions]] 2026-08-08.
 - [ ] Tasks 7–14 — demais seções, SEO, editor
 - [ ] Deploy
 
