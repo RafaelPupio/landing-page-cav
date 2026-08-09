@@ -24,7 +24,7 @@ export default function Hero({ hero }: { hero: Site['hero'] }) {
         </p>
         <a
           href={hero.ctaAncora}
-          className="mt-10 inline-block rounded-full bg-creme px-8 py-4 text-base font-semibold text-verde-escuro transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-creme"
+          className="mt-10 inline-block rounded-full bg-creme px-8 py-4 text-base font-semibold text-verde-escuro transition hover:opacity-90 focus-visible:anel-de-foco"
         >
           {hero.ctaTexto}
         </a>

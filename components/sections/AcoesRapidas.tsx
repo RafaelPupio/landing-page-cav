@@ -11,16 +11,16 @@ export default function AcoesRapidas({ acoes }: { acoes: Site['acoesRapidas'] })
   return (
     <nav aria-label="Ações rápidas" className="px-6 pb-8">
       <ul className="mx-auto grid max-w-3xl grid-cols-2 gap-3 md:grid-cols-4">
-        {acoes.map((acao) => {
+        {acoes.map((acao, i) => {
           // Regra explícita (não heurística): só URL absoluta http(s) abre em nova aba.
           // `startsWith('http')` casaria também com algo como "httpfoo".
           const externo = /^https?:\/\//.test(acao.href)
           return (
-            <li key={acao.rotulo}>
+            <li key={i}>
               <a
                 href={acao.href}
                 {...(externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="flex h-full flex-col items-start gap-3 rounded-2xl border border-creme/30 p-4 text-sm font-semibold text-creme transition hover:border-creme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-creme"
+                className="flex h-full flex-col items-start gap-3 rounded-2xl border border-creme/30 p-4 text-sm font-semibold text-creme transition hover:border-creme focus-visible:anel-de-foco"
               >
                 <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" fill="currentColor">
                   {/* evenodd recorta os subcaminhos internos: sem ele o relógio vira um disco sólido. */}
