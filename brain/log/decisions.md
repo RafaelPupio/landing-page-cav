@@ -80,4 +80,16 @@ Schema Zod, JSON com todo o texto do folder (transcrito verbatim do apêndice do
 
 Ajuste não previsto pelo brief: em `tests/content/schema.test.ts`, o teste "exige rótulo em todos os capítulos" fazia `structuredClone(conteudo) as Record<string, Record<string, unknown>>`, que o TypeScript strict recusa no `next build` (a propriedade `horarios` é um array, incompatível com a assinatura de índice de dois níveis). Corrigido para `as unknown as Record<...>` — mesmo comportamento em runtime, só satisfaz o type-checker. Único arquivo alterado fora do que o brief especificou.
 
+## 2026-08-08 — Task 3 concluída: `lib/tema.ts`, tokens ligados ao Tailwind, fundo escuro global
+
+`variaveisDeTema(tema: Tema): CSSProperties` converte os quatro tokens de `content/site.json.tema` em custom properties CSS (`--verde-escuro`, `--verde-limao`, `--creme`, `--grafite`). `app/globals.css` reescrito: `@theme inline` expõe os tokens ao Tailwind (`bg-verde-escuro` etc.) e o `font-sans` passa a apontar para `--font-poppins`; `body` recebe `background-color: var(--verde-escuro)` e `color: var(--creme)` diretamente, sem depender de nenhuma classe em `page.tsx`. `app/layout.tsx` reescrito por completo: sai o boilerplate do `create-next-app` (fontes Geist, `<html lang="en">`), entra Poppins via `next/font/google`, `lang="pt-BR"`, `metadata` lido de `site.site.nome`/`descricao`, e `style={variaveisDeTema(site.tema)}` aplicado no `<body>`.
+
+Confirmado no build: `#44581A` aparece no CSS compilado (`.next/static/chunks/*.css`), então o fundo escuro é real, não só teórico.
+
+`app/page.tsx` **não foi tocado** — fora de escopo desta task, por instrução explícita. Continua sendo o placeholder do `create-next-app`, com `bg-zinc-50`/`bg-white` cobrindo o `<main>` por cima do fundo escuro do `<body>`. Isso significa que quem abrir `npm run dev` agora ainda vê uma página majoritariamente branca por dentro — o fundo escuro só é visível nas bordas fora do `<main>` até a Task 4 substituir `page.tsx` pelas seções reais. Registrado para não ser confundido com regressão.
+
+Atualizada também `brain/projeto/identidade-visual.md`: a tabela de tokens ainda descrevia `creme` como "fundo da página", herdado da fase pré-decisão de layout D. Corrigida para refletir `verdeEscuro` como fundo geral e `creme` como cor de texto/cartão de visita, consistente com a decisão "Layout final: direção D" já registrada acima.
+
+`npm test` (7 testes, incluindo o novo `tests/lib/tema.test.ts`) e `npm run build` passam.
+
 Achado a registrar: um `…` sobrevive em `content/site.json` (dentro da citação de Mateus 28.20, no parágrafo de história) e `grep -c '…'` retorna 1, não 0 como o brief exige. Verificado contra o apêndice (`docs/superpowers/specs/2026-08-08-landing-cav-design.md:165`): não é texto truncado por mim, é uma citação bíblica parcial que já vem com reticências no próprio apêndice-fonte. Mantido verbatim por ser mais específico e mais grave desviar do "nunca reescrever, nunca cortar referência bíblica" do que satisfazer o grep. Sinalizado para o Rafael revisar.

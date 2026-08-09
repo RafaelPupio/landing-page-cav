@@ -6,12 +6,14 @@ Tudo aqui foi extraído do folder impresso que o Rafael enviou. A igreja já tem
 
 | Nome | Hex | Uso |
 |---|---|---|
-| `verdeEscuro` | `#44581A` | Blocos sólidos, texto de corpo sobre creme, botões primários |
-| `verdeLimao` | `#A3C63C` | Títulos de seção, destaques, contornos finos |
-| `creme` | `#F7F5EC` | Fundo da página |
-| `grafite` | `#1F1F1C` | Texto corrido |
+| `verdeEscuro` | `#44581A` | **Fundo da página inteira** (decisão do layout D — Capítulos), botão primário como fundo |
+| `verdeLimao` | `#A3C63C` | Trilha vertical, nós, texto de 24px+ — nunca texto pequeno (ver contraste abaixo) |
+| `creme` | `#F7F5EC` | Texto de corpo sobre o fundo verde escuro; único bloco de fundo claro é o cartão de visita |
+| `grafite` | `#1F1F1C` | Texto sobre fundos claros (ex.: dentro do cartão de visita em creme) |
 
-Vivem em `content/site.json` sob `tema`, viram variáveis CSS (`--verde-escuro` etc.) via `lib/tema.ts` aplicado no `<body>`, e o Tailwind os expõe como `bg-verde-escuro`, `text-verde-limao` e afins pelo bloco `@theme inline` em `app/globals.css`.
+Atualizado na Task 3 para refletir a decisão de layout D (fundo escuro do topo ao rodapé) — o texto antigo desta tabela ainda descrevia `creme` como fundo geral, herdado da fase anterior à escolha de layout.
+
+Vivem em `content/site.json` sob `tema`, viram variáveis CSS (`--verde-escuro` etc.) via `lib/tema.ts::variaveisDeTema()` aplicado como `style` no `<body>` (`app/layout.tsx`), e o Tailwind os expõe como `bg-verde-escuro`, `text-verde-limao` e afins pelo bloco `@theme inline` em `app/globals.css`. O `body` já nasce com `background-color: var(--verde-escuro)` e `color: var(--creme)` no CSS global — não depende de uma classe Tailwind ser aplicada em `page.tsx` para o fundo escuro aparecer.
 
 **Trocar uma cor no JSON repinta o site inteiro.** Esse é o ponto — foi desenhado assim para que ninguém precise caçar hex espalhado por componente.
 

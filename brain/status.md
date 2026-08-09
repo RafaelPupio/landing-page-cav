@@ -2,7 +2,7 @@
 
 ## Onde estamos
 
-**Fase: implementação em andamento (branch `implementacao`). Task 2 de 14 concluída.**
+**Fase: implementação em andamento (branch `implementacao`). Task 3 de 14 concluída.**
 
 - [x] Brainstorming e design aprovados pelo Rafael
 - [x] Spec escrito, com o conteúdo integral do folder transcrito no apêndice
@@ -11,12 +11,15 @@
 - [x] Repositório publicado no GitHub
 - [x] Task 1 — scaffold Next.js + Tailwind + Vitest
 - [x] Task 2 — schema Zod, `content/site.json` (todo o texto do folder, 20 declarações de credo em 6 grupos) e `content/load.ts` (carregador validado)
-- [ ] Tasks 3–14 — componentes, seções, SEO, editor
+- [x] Task 3 — `lib/tema.ts` (`variaveisDeTema`), tokens ligados ao Tailwind via `@theme inline` em `app/globals.css`, `<body>` com fundo verde escuro / texto creme, `app/layout.tsx` reescrito com fonte Poppins (`next/font/google`) e metadata a partir de `content/load.ts`
+- [ ] Tasks 4–14 — componentes, seções, SEO, editor
 - [ ] Deploy
 
 ## Próximo passo
 
-Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 3. Cada task termina com testes verdes e um commit.
+Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 4. Cada task termina com testes verdes e um commit.
+
+`app/page.tsx` ainda é o placeholder do `create-next-app` — fora do escopo da Task 3, propositalmente. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que as seções da Task 4+ sejam construídas.
 
 ## Bloqueios reais
 
