@@ -12,23 +12,23 @@ export default function Proposito({ proposito }: { proposito: Site['proposito'] 
       <h3 className="mt-10 text-sm font-semibold uppercase tracking-[0.18em] text-creme">
         {proposito.visaoTitulo}
       </h3>
-      <ol className="mt-4 space-y-2">
-        {proposito.visao.map((item) => (
+      <ul className="mt-4 space-y-2">
+        {proposito.visao.map((item, i) => (
           <li
-            key={item}
+            key={i}
             className="border-b border-creme/15 pb-2 text-base font-light text-creme/90"
           >
             {item}
           </li>
         ))}
-      </ol>
+      </ul>
 
       <h3 className="mt-10 text-sm font-semibold uppercase tracking-[0.18em] text-creme">
         {proposito.valoresTitulo}
       </h3>
       <ul className="mt-4 flex flex-wrap gap-2">
-        {proposito.valores.map((item) => (
-          <Chip key={item}>{item}</Chip>
+        {proposito.valores.map((item, i) => (
+          <Chip key={i}>{item}</Chip>
         ))}
       </ul>
     </Capitulo>
