@@ -31,4 +31,14 @@ describe('Cuidado', () => {
     const { container } = render(<Cuidado cuidado={CUIDADO} />)
     expect(container.querySelector('section#cuidado')).not.toBeNull()
   })
+
+  it('mantém o texto de cada pilar dentro do bloco do seu próprio nome', () => {
+    render(<Cuidado cuidado={CUIDADO} />)
+    for (const pilar of CUIDADO.pilares) {
+      const heading = screen.getByRole('heading', { level: 3, name: pilar.nome })
+      const card = heading.closest('div')
+      expect(card).not.toBeNull()
+      expect(card).toHaveTextContent(pilar.texto)
+    }
+  })
 })
