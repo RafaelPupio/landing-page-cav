@@ -9,10 +9,11 @@ const ITENS = [
 ]
 
 describe('Acordeao', () => {
-  it('começa com todos os painéis fechados', () => {
+  it('começa com todos os painéis fechados, mas presentes no DOM (SEO: o rastreador não clica em acordeões)', () => {
     render(<Acordeao itens={ITENS} />)
     expect(screen.getByRole('button', { name: 'As Escrituras' })).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.queryByText('Texto A')).not.toBeInTheDocument()
+    expect(screen.getByText('Texto A')).toBeInTheDocument()
+    expect(screen.getByText('Texto A')).not.toBeVisible()
   })
 
   it('abre o painel ao clicar e liga aria-controls ao id do painel', async () => {
@@ -23,15 +24,17 @@ describe('Acordeao', () => {
     expect(botao).toHaveAttribute('aria-expanded', 'true')
     const painel = screen.getByText('Texto A').closest('[role="region"]')
     expect(painel).toHaveAttribute('id', botao.getAttribute('aria-controls'))
+    expect(screen.getByText('Texto A')).toBeVisible()
   })
 
-  it('fecha o painel anterior ao abrir outro', async () => {
+  it('fecha o painel anterior ao abrir outro, mantendo o conteúdo fechado no DOM', async () => {
     const user = userEvent.setup()
     render(<Acordeao itens={ITENS} />)
     await user.click(screen.getByRole('button', { name: 'As Escrituras' }))
     await user.click(screen.getByRole('button', { name: 'A Igreja' }))
-    expect(screen.queryByText('Texto A')).not.toBeInTheDocument()
-    expect(screen.getByText('Texto B')).toBeInTheDocument()
+    expect(screen.getByText('Texto A')).toBeInTheDocument()
+    expect(screen.getByText('Texto A')).not.toBeVisible()
+    expect(screen.getByText('Texto B')).toBeVisible()
   })
 
   it('abre pelo teclado com Enter', async () => {
@@ -39,6 +42,14 @@ describe('Acordeao', () => {
     render(<Acordeao itens={ITENS} />)
     await user.tab()
     await user.keyboard('{Enter}')
-    expect(screen.getByText('Texto A')).toBeInTheDocument()
+    expect(screen.getByText('Texto A')).toBeVisible()
+  })
+
+  it('abre pelo teclado com Espaço', async () => {
+    const user = userEvent.setup()
+    render(<Acordeao itens={ITENS} />)
+    await user.tab()
+    await user.keyboard(' ')
+    expect(screen.getByText('Texto A')).toBeVisible()
   })
 })

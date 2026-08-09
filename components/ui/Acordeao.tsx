@@ -32,16 +32,15 @@ export default function Acordeao({ itens }: { itens: ItemAcordeao[] }) {
                 </span>
               </button>
             </h3>
-            {estaAberto && (
-              <div
-                role="region"
-                id={`painel-${item.id}`}
-                aria-labelledby={`gatilho-${item.id}`}
-                className="pb-8"
-              >
-                {item.conteudo}
-              </div>
-            )}
+            <div
+              role="region"
+              id={`painel-${item.id}`}
+              aria-labelledby={`gatilho-${item.id}`}
+              hidden={!estaAberto}
+              className="pb-8"
+            >
+              {item.conteudo}
+            </div>
           </div>
         )
       })}
