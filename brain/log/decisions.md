@@ -202,3 +202,19 @@ Implementação seguiu o brief da task verbatim (`.superpowers/sdd/task-8-brief.
 Nada além de `components/sections/` e `tests/components/` foi tocado; `app/page.tsx` continua fora do escopo desta task — `Proposito` ainda não é consumido por nenhuma página (ver [[status]]).
 
 `npm test -- tests/components/proposito.test.tsx` (4 testes), `npm test` completo (37 testes, 9 arquivos) e `npm run build` passam.
+
+---
+
+## 2026-08-08 — Correção de revisão da Task 8: teste de ordem/conteúdo, visão vira `<ul>`, `key={i}`
+
+Revisão de código encontrou três achados em `components/sections/Proposito.tsx` e `tests/components/proposito.test.tsx`.
+
+**Achado 1 (Important) — teste não travava ordem nem conteúdo.** `getAllByRole('listitem')` só contava 5, então um bug que embaralhasse a ordem da visão (ou trocasse um item por outro de mesmo total) passaria despercebido. Corrigido: a asserção agora mapeia `textContent` de cada `listitem` e compara com `[...PROPOSITO.visao, ...PROPOSITO.valores]` via `toEqual`, travando texto e ordem. Confirmado na prática, não só por leitura: a ordem da visão foi invertida de propósito no componente (`[...proposito.visao].reverse()`), o teste rodou e falhou (`AssertionError: expected [ 'Pregar a Cristo', …(4) ] to deeply equal [ 'Amar a Deus', …(4) ]`), depois desfeito e a suíte voltou a passar.
+
+**Achado 2 (decisão de conteúdo) — visão trocada de `<ol>` para `<ul>`.** A entrada da Task 8 acima registrou a visão como `<ol>` sob a premissa de que é "uma sequência de compromissos, não uma ordem arbitrária" — mas essa premissa nunca foi confirmada com a liderança da igreja. `<ol>` afirma ao leitor de tela que a ordem carrega informação ("item 1 de 5", "item 2 de 5"); para os cinco itens (Amar a Deus, Pregar a Cristo, Servir a todos, Andar em unidade, Manifestar o Reino) isso é uma hierarquia não confirmada, e afirmar uma hierarquia inexistente é pior que não afirmar nada. Trocado para `<ul>`; visualmente idêntico (a lista não tem marcadores no design). O teste de ordem do Achado 1 continua válido — a ordem do conteúdo continua sendo a do JSON, só deixamos de declarar ao leitor de tela que ela é semanticamente significativa.
+
+**Pendência de confirmação com o Rafael:** se a liderança da igreja confirmar que a ordem dos cinco itens da visão é intencional (ex.: progressão teológica deliberada), reverter para `<ol>`.
+
+**Achado 3 (Minor) — `key={item}` trocado por `key={i}`.** Divergia do padrão já fixado em `Historia.tsx` (Task 7) para o mesmo caso (array de strings estático vindo do JSON), e o schema não impede duplicatas em `visao`/`valores`. Corrigido nas duas listas (`visao` e `valores`).
+
+`npm test -- tests/components/proposito.test.tsx` (4 testes), `npm test` completo (37 testes, 9 arquivos) e `npm run build` passam.
