@@ -13,6 +13,7 @@
 - Node.js ≥ 20. O ambiente alvo tem Node v26 e npm 11. O `create-next-app@latest` instalou Next.js 16.3.0 — o plano foi escrito citando 15, mas o comando usa `@latest` e o 16 é o que está no projeto.
 - Idioma de toda a interface e do conteúdo: **pt-BR**. `<html lang="pt-BR">`.
 - Tokens de cor exatos: `verdeEscuro #44581A`, `verdeLimao #A3C63C`, `creme #F7F5EC`, `grafite #1F1F1C`.
+- **Piso de opacidade para texto:** `text-creme/90` (6,23:1) é o mínimo sobre o fundo verde escuro. `/70` mede 4,497:1 e reprova AA.
 - **Regra de contraste, inegociável.** Limão sobre verde escuro mede 4,02:1 — passa em texto grande, reprova em texto pequeno (AA exige 4,5:1). Portanto: limão **somente** na linha da trilha, nos nós, e em títulos de 24px ou maiores. Rótulos, corpo, botões e qualquer texto abaixo de 24px usam creme (7,24:1). Botão primário sobre fundo escuro é **fundo creme com texto verde escuro** — nunca fundo limão com texto pequeno.
 - **Nenhum componente pode conter texto de conteúdo hardcoded.** Todo texto vem por props, originado de `content/site.json`. Rótulos puramente estruturais de acessibilidade (`aria-label` genérico) são a única exceção.
 - Todo o texto de conteúdo é copiado **verbatim** do apêndice de `docs/superpowers/specs/2026-08-08-landing-cav-design.md`. Não reescrever, resumir ou "melhorar" o texto da igreja.
@@ -1536,13 +1537,13 @@ export default function Cuidado({ cuidado }: { cuidado: Site['cuidado'] }) {
       <p className="text-base font-light leading-relaxed text-creme/90">{cuidado.intro}</p>
 
       <div className="mt-8 space-y-6">
-        {cuidado.pilares.map((pilar) => (
-          <div key={pilar.nome} className="rounded-2xl border border-creme/25 p-5">
+        {cuidado.pilares.map((pilar, i) => (
+          <div key={i} className="rounded-2xl border border-creme/25 p-5">
             <h3 className="text-lg font-bold uppercase tracking-wide text-creme">{pilar.nome}</h3>
             {pilar.subtitulo && (
               <p
                 data-subtitulo
-                className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-creme/70"
+                className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-creme/90"
               >
                 {pilar.subtitulo}
               </p>
