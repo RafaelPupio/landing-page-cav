@@ -430,3 +430,11 @@ Estava errado. Composição alfa simples de `#A3C63C` a 25% sobre `#44581A` dá 
 O blob ficou em `/15` (5,72:1) assim mesmo: a folga é gratuita e o teste trava o valor. Mas **não havia armadilha latente** — encurtar `hero.titulo` pelo `/editar` nunca teria reprovado o contraste. Os comentários em `Hero.tsx` e `tests/components/hero.test.tsx` foram corrigidos para não deixar o número errado gravado no código.
 
 Lição para as próximas: número de contraste vindo de revisão se recalcula antes de virar instrução. A conta leva dez segundos.
+
+## 2026-08-09 — Branch `implementacao` integrada na main pelo PR #1
+
+64 commits, 14 tasks, 97 testes. Rafael pediu merge **e** PR; resolvido abrindo o PR primeiro (para o diff ficar revisável e registrado) e fazendo o merge por ele. A branch foi preservada, não deletada.
+
+Balanço do que as revisões pegaram e que o plano tinha deixado passar: acordeão que desmontava o painel e esconderia o credo do Google; trava do editor fail-open; `<footer>` dentro do `<main>`; cinco rótulos hardcoded fora do JSON; `text-creme/70` reprovando AA; e cinco testes que passavam com o conteúdo trocado entre rótulos. Nenhum desses era visível sem alguém olhar de fora.
+
+Dois defeitos só apareceram no navegador, nunca no jsdom: o ícone de relógio renderizando como disco sólido, e o landmark do rodapé. Vale como lembrete de que a suíte não substitui abrir a página.
