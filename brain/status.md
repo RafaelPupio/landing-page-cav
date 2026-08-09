@@ -2,7 +2,7 @@
 
 ## Onde estamos
 
-**Fase: implementação em andamento (branch `implementacao`). Task 11 de 14 concluída.**
+**Fase: implementação em andamento (branch `implementacao`). Task 12 de 14 concluída.**
 
 - [x] Brainstorming e design aprovados pelo Rafael
 - [x] Spec escrito, com o conteúdo integral do folder transcrito no apêndice
@@ -21,13 +21,14 @@
 - [x] Task 10 — capítulo `components/sections/Credo.tsx`, as 20 declarações doutrinárias (`site.credo.grupos`, 6 grupos) em acordeão (`Acordeao`, Task 5), dentro de `Capitulo` (Task 5). Cada grupo vira uma `<div id="credo-<id>">` envolvendo um `Acordeao` de um único item — a âncora `#credo-<id>` é responsabilidade do `Credo`, não do `Acordeao`, para manter o acordeão genérico. `<h4>` de cada declaração é creme (não limão: em `text-sm` o limão reprovaria AA) — ver [[log/decisions]] 2026-08-08. Achados de revisão corrigidos: teste travando a correspondência entre o título de cada declaração e o seu próprio texto (as 20 declarações do fixture, não só uma), `key={i}` no lugar de `key={declaracao.titulo}`, e `content/schema.ts` passou a rejeitar `id` de grupo de credo duplicado (mensagem em português voltada para quem edita o JSON, não para programador) — ver [[log/decisions]] 2026-08-08.
 - [x] Task 11 — `components/sections/Citacao.tsx` (citação fora da trilha, limão em `text-2xl`/`md:text-4xl` — o único lugar da página onde limão aparece em texto, porque só a partir de 24px o contraste de 4,02:1 do limão passa no AA), `components/sections/Visita.tsx` (último capítulo, dentro de `Capitulo` — cartão creme com texto grafite, invertendo o fundo escuro da página para marcar o fim da trilha) e `components/sections/Rodape.tsx` (fora da trilha, links de Instagram/YouTube em nova aba). Regra de degradação aplicada em dois pontos da `Visita`: `contato.telefone === ''` não renderiza o botão de telefone, `contato.mapaEmbedUrl === ''` não renderiza o iframe (sobra só o link "Abrir no Google Maps") — os dois casos batem com o conteúdo real de `site.json` (telefone e demais campos de contato ainda vazios). Implementado verbatim a partir de `.superpowers/sdd/task-11-brief.md` — ver [[log/decisions]] 2026-08-08.
 - [x] Correção de revisão da Task 11 — os cinco rótulos hardcoded ("Abrir no Google Maps", "Telefone", `title="Mapa"`, "Instagram", "YouTube") movidos para `content/site.json` (`visita.ctaMapsTexto`/`ctaTelefoneTexto`/`mapaTitulo`, `redes.instagramRotulo`/`youtubeRotulo`) com campos correspondentes em `content/schema.ts`; teste de horários travando rótulo↔valor com fixture de dois horários (confirmado por mutação); `key={i}` no `.map` de horários; iframe do mapa trocado de `referrerPolicy="no-referrer-when-downgrade"` para `"no-referrer"` (escolha deliberada de privacidade); `text-creme/80` do rodapé trocado para `/90`, alinhando ao piso fixado nas Tasks 9–10 — ver [[log/decisions]] 2026-08-08.
-- [ ] Tasks 12–14 — SEO, editor, montagem de `app/page.tsx`, deploy
+- [x] Task 12 — `app/page.tsx` montado: `Hero`/`AcoesRapidas` fora da trilha, `Trilha` envolvendo os seis capítulos (`Historia`/`Proposito`/`Cuidado`/`Lideranca`/`Credo`/`Visita`), `Citacao`/`Rodape` fora da trilha. **A página existe de verdade pela primeira vez** — antes disso `app/page.tsx` era o placeholder do `create-next-app` e nenhuma seção era consumida por nada. Verificação visual real no navegador (não só aritmética): alinhamento da linha da trilha com o centro dos nós confirmado por geometria exata em 375px e 1280px (0,5px de diferença, subpixel); as quatro ações rápidas cabem sem rolagem no celular; acordeão do credo abre/fecha (capturado em tela); cartão creme da Visita se destaca; mapa do Google carrega (capturado em tela + confirmado por `performance` API). Ressalva registrada: a ferramenta de captura de tela desta sessão não produz imagem em 1280px além de ~600–1000px de rolagem (fica em branco) — comportamento e CSS computados conferidos por DOM/JS nesse caso, não por pixel. Achado de conteúdo (não de código): "Generosidade" colide como texto entre um valor do Propósito (Task 8) e um título de declaração do Credo (Task 10) — o teste da task foi escopado à seção do Propósito para não depender de unicidade textual que o conteúdo real não garante — ver [[log/decisions]] 2026-08-08.
+- [ ] Tasks 13–14 — SEO, editor de conteúdo, deploy
 
 ## Próximo passo
 
-Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 12. Cada task termina com testes verdes e um commit.
+Executar o plano em `docs/superpowers/plans/2026-08-08-landing-cav.md`, começando pela Task 13. Cada task termina com testes verdes e um commit.
 
-`app/page.tsx` ainda é o placeholder do `create-next-app` — nenhuma seção criada até agora (`Hero`, `AcoesRapidas`, `Historia`, `Lideranca`, `Proposito`, `Cuidado`, `Credo`, `Citacao`, `Visita`, `Rodape`), nem as primitivas decorativas da Task 4, nem as de interface da Task 5 (`Trilha`/`Capitulo`/`Chip`/`Acordeao`), é consumida em nenhuma página ainda. A página só vai refletir o fundo escuro globalmente (via `<body>`) até que uma task futura monte o layout real com `app/page.tsx`.
+`app/page.tsx` já monta a página real (ver Task 12 acima). Falta: metadados de SEO mais completos/JSON-LD (Task 13), editor visual restrito a desenvolvimento (Task 14) e deploy.
 
 ## Bloqueios reais
 
