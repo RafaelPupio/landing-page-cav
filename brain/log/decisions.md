@@ -146,3 +146,21 @@ Links externos (`href` começando com `http`) recebem `target="_blank"` e `rel="
 Nada além de `components/sections/` e `tests/components/` foi tocado no commit de código; `app/page.tsx` continua fora do escopo desta task — `Hero` e `AcoesRapidas` ainda não são consumidos por nenhuma página (ver [[status]]).
 
 `npm test` (26 testes, 7 arquivos) e `npm run build` passam.
+
+## 2026-08-08 — Correção de revisão da Task 6: contraste do subtítulo sem teste e link externo por heurística frágil
+
+Revisão de código encontrou dois achados na Task 6:
+
+1. **O subtítulo do Hero dependia de duas classes de cor (`text-creme md:text-verde-limao`) para não reprovar contraste AA, mas nenhum teste travava isso.** Em texto pequeno (18px, tamanho mobile) o limite AA é 4,5:1 e o limão (`#A3C63C`, 4,02:1 sobre o verde-escuro `#44581A`) reprova; só a partir do `md:` (24px) o limite cai para 3:1 e o limão passa. Se alguém simplificasse para uma cor só, o texto ficaria ilegível no celular — de onde vem quase todo o tráfego — sem que a suíte acusasse nada.
+
+   **Correção:** teste novo em `tests/components/hero.test.tsx` que verifica `text-creme` e `md:text-verde-limao` presentes e `text-verde-limao` (sem prefixo) ausente. Confirmado na prática, não só por leitura de código: o componente foi quebrado de propósito (trocado para `text-verde-limao md:text-2xl` sozinho), o teste rodou e falhou (`expected [ Array(6) ] to include 'text-creme'`), depois desfeito.
+
+2. **`AcoesRapidas` decidia link externo com `acao.href.startsWith('http')`** — heurística que casaria por acidente com algo como `"httpfoo"`, e que não distingue uma URL absoluta do próprio site de uma de terceiro.
+
+   **Correção, e convenção nova para o projeto:** a regra virou regex explícita `^https?://` em `components/sections/AcoesRapidas.tsx`. Mais importante, `content/schema.ts` agora valida o formato de `href` em `acoesRapidas` — só aceita âncora interna (`#ancora`), caminho interno (`/caminho`), URL absoluta (`http://`/`https://`), `mailto:` ou `tel:`; qualquer outra coisa quebra o build com mensagem em português explicando os formatos aceitos (quem edita o `content/site.json` é alguém da igreja, não um programador).
+
+   **Convenção documentada no próprio schema (comentário):** link interno em `acoesRapidas` se escreve sempre como `#ancora` ou `/caminho`, nunca com o domínio completo (ex.: nunca `https://arvoredavidalrv.com.br/algo`) — um link do próprio site escrito como URL absoluta é classificado como externo e abre numa aba nova por engano; a regex por si só não resolve isso (não sabe qual é "o próprio domínio"), então a prevenção é essa convenção de conteúdo, não lógica de código.
+
+   Testes adicionados: `mailto:`, `tel:` e caminho relativo (`/contato`) não recebem `target="_blank"`; URL `https://` de terceiro recebe; e um teste de schema mostrando que `href` fora do formato aceito (`"httpfoo"`) é rejeitado.
+
+`npm test -- tests/components/hero.test.tsx tests/content/schema.test.ts` (15 testes), `npm test` completo (30 testes, 7 arquivos) e `npm run build` passam.
