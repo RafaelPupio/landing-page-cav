@@ -190,3 +190,15 @@ Confirmado na prática, não só por leitura de código: `Historia.tsx` foi queb
 Varredura pelo resto da suíte por acoplamento semelhante (teste que conta elemento pertencente a componente diferente do que está sob teste): nenhum outro caso encontrado. `hero.test.tsx` conta `getAllByRole('link')` dentro do próprio `AcoesRapidas` (elementos que ele mesmo renderiza, não de um vizinho). `decor.test.tsx` conta `svg` de três primitivas decorativas renderizadas juntas de propósito no mesmo teste — todas sob teste, nenhuma é vizinho de outra. `trilha.test.tsx` testa `Trilha` e `Capitulo` juntos intencionalmente (ambos são o alvo da suíte, não um vizinho incidental).
 
 `npm test -- tests/components/textos.test.tsx` (3 testes), `npm test` completo (33 testes, 8 arquivos) e `npm run build` passam.
+
+## 2026-08-08 — Task 8 concluída: capítulo de Propósito (missão, visão, valores)
+
+`components/sections/Proposito.tsx` — um único capítulo com três blocos internos dentro de `Capitulo` (Task 5): a missão em destaque (`<p>` em creme, `text-lg`/`md:text-xl`), a visão como `<ol>` de verdade (é uma sequência de compromissos, não uma ordem arbitrária — cada item um `<li>` com borda inferior) e os valores como `<ul>` de `Chip` (Task 5, cada `Chip` já é um `<li>` com contorno creme). Título de cada bloco (`visaoTitulo`, `valoresTitulo`) é um `<h3>` — texto pequeno (`text-sm`), por isso em creme, nunca limão, conforme a regra de contraste do projeto (limão mede 4,02:1 sobre o verde escuro, reprova AA abaixo de 24px; creme mede 7,24:1). Nenhum texto hardcoded — `missao`, `visaoTitulo`, `visao`, `valoresTitulo`, `valores` todos vêm de `site.proposito` via prop tipada `Site['proposito']`.
+
+Antes de escrever o teste, conferido contra `Capitulo.tsx` e `Chip.tsx` reais (não assumido no escuro) que nenhum dos dois produz `<li>` fora do que o próprio `Proposito` renderiza: o rótulo do `Capitulo` é um `<p>`, não item de lista, e o único `<li>` que o `Chip` produz é o próprio chip. Por isso o teste que conta `getAllByRole('listitem')` para 2 itens de visão + 3 valores do fixture espera 5, sem depender de nada que pertença ao `Capitulo` — consistente com a convenção fixada na Task 7 (teste de seção não deve supor a marcação interna de um componente vizinho).
+
+Implementação seguiu o brief da task verbatim (`.superpowers/sdd/task-8-brief.md`), TDD: teste escrito primeiro (`tests/components/proposito.test.tsx`), rodado e visto falhando por módulo ausente (`Failed to resolve import "@/components/sections/Proposito"`), depois o componente criado e os 4 testes passando.
+
+Nada além de `components/sections/` e `tests/components/` foi tocado; `app/page.tsx` continua fora do escopo desta task — `Proposito` ainda não é consumido por nenhuma página (ver [[status]]).
+
+`npm test -- tests/components/proposito.test.tsx` (4 testes), `npm test` completo (37 testes, 9 arquivos) e `npm run build` passam.
