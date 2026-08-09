@@ -19,7 +19,16 @@ Vivem em `content/site.json` sob `tema`, viram variáveis CSS (`--verde-escuro` 
 
 ## Cuidado de contraste
 
-`verdeLimao` sobre `creme` é um par de contraste baixo. Serve para títulos grandes e elementos decorativos, **não** para texto corrido. Se aparecer numa linha de corpo em algum componente novo, é regressão de acessibilidade.
+O par que importa é **limão sobre verde escuro**, porque o verde escuro é o fundo da página inteira. Medido:
+
+| Par | Razão | Veredito |
+|---|---|---|
+| `verdeLimao` sobre `verdeEscuro` | **4,02:1** | Passa AA de texto grande (3:1). **Reprova** AA de texto normal (4,5:1) |
+| `creme` sobre `verdeEscuro` | **7,24:1** | Passa com folga em qualquer tamanho |
+
+Daí a regra: limão **só** na linha da trilha, nos nós e em texto de 24px ou mais. Rótulos, corpo, títulos pequenos e texto de botão usam creme. O botão primário é fundo creme com texto verde escuro — fundo limão com texto de 16px reprovaria.
+
+Se aparecer limão num texto abaixo de 24px em algum componente novo, é regressão de acessibilidade. Ver [[log/decisions]] para a medição original.
 
 ## Elementos gráficos
 
@@ -29,7 +38,7 @@ Do folder, todos reproduzidos em SVG inline (nada de imagem raster, nada de requ
 - **Círculos sólidos** — verde escuro e limão, três tamanhos.
 - **Contornos finos em limão** — arcos de traço fino.
 - **`✕✕✕`** — o motivo de três xis, em `components/ui/SeparadorXXX.tsx`, separando seções.
-- **Grade pontilhada** — pequenos pontos em padrão SVG.
+- ~~Grade pontilhada~~ — cortada na direção D: no fundo escuro vira ruído sem informar nada.
 
 Toda decoração leva `aria-hidden="true"` e `focusable="false"`. Leitor de tela não deve encontrar nada disso.
 
