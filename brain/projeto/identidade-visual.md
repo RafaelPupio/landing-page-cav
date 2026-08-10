@@ -54,3 +54,32 @@ No folder o corpo é justificado. Na web, justificado em coluna estreita cria ri
 ## Fotos
 
 O folder tem fotos de culto, oração e comunhão, várias em preto e branco, todas em máscara circular ou orgânica. **Nenhum arquivo foi recebido.** Os slots existem no layout e hoje renderizam gradientes no estilo do folder. Trocar por foto real = mudar um caminho em `content/site.json`.
+
+## Logo da igreja (recebido em 2026-08-10)
+
+O Rafael enviou o pacote da marca. Os arquivos-fonte ficam fora do repositório (`~/Downloads/drive-download-20260810T140353Z-1-001/`); o repositório guarda só os derivados usados no site.
+
+O emblema é uma árvore dentro de um círculo, com o lockup "COMUNIDADE / ÁRVORE DA VIDA" abaixo. **A versão colorida usa um gradiente de limão para verde escuro — os mesmos tons que já estavam nos tokens.** A paleta que tiramos do folder impresso bate com a marca.
+
+Variantes recebidas, e para que servem:
+
+| Arquivo-fonte | O que é |
+|---|---|
+| `Prancheta 1 (2).png` | Vertical, preto — fundo claro |
+| `Prancheta 1 cópia (2).png` | Vertical, **branco** — é a que o site usa |
+| `Prancheta 1 cópia 2 (1).png` | Vertical, gradiente verde |
+| `Prancheta 4*.png` | Horizontal (1209×261), nas mesmas três variantes |
+| `LOGOPB.png` | 2927×2430, mas com fundo sólido — não serve para recorte |
+| `Logo.ai` | Vetor. É um PDF por dentro, então `sips` rasteriza em qualquer resolução — mas sai preto sobre branco, sem alfa |
+
+Derivados no repositório, todos gerados a partir da variante branca com o alfa original preservado e recoloridos para creme:
+
+- `app/icon.png` (512) e `app/apple-icon.png` (180) — emblema creme sobre quadrado verde escuro. O Next gera os tamanhos a partir daí.
+- `app/opengraph-image.png` (1200×630) — logotipo horizontal creme, filete limão e "Domingos, 18h · Lucas do Rio Verde / MT".
+- `public/emblema-arvore-da-vida.png` (904×754) — emblema creme transparente, usado no hero.
+
+**Por que só o emblema no hero, e não o logotipo inteiro:** o lockup completo já contém o nome da igreja, e o `<h1>` logo abaixo repete esse nome como texto. Duplicar seria ruim para SEO e faria o leitor de tela anunciar duas vezes. Por isso o hero usa o emblema com `alt=""` (decorativo) e mantém o nome como texto real.
+
+O caminho do emblema vive em `hero.emblema` no `content/site.json`, então dá para trocar ou remover pelo `/editar`. Campo vazio não renderiza imagem — mesma regra de degradação do resto.
+
+Ainda não usado: as duas versões animadas em MP4 (`logo animada.mp4`, `Logo Motion Árvore da Vida - 2.mp4`). Caberiam no hero, mas custam peso de página e exigiriam respeitar `prefers-reduced-motion` — fica para uma decisão do Rafael.

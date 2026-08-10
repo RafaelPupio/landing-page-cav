@@ -31,9 +31,9 @@ Nenhum bloqueia a implementação. Os itens abaixo bloqueiam apenas o **lançame
 | E-mail, CEP, coordenadas | Desconhecidos, mesmo tratamento |
 | Horários de GCs | Desconhecidos. Só o culto de domingo 18h está confirmado |
 | Fotos | Nenhum arquivo recebido. Os slots existem e renderizam gradientes |
-| Imagem Open Graph | Precisa de arte 1200×630. Sem ela, o card do link fica sem imagem |
+| Imagem Open Graph | ✅ Pronta em `app/opengraph-image.png`, com o logotipo real |
 | Perfil da Empresa no Google | Não verificado se existe. Ver [[projeto/seo]] — importa mais que o site |
-| Logo real | `app/icon.svg` hoje é um placeholder (folha/árvore estilizada, limão sobre verde escuro) — a igreja tem um emblema circular próprio que não foi enviado. Trocar o arquivo quando o Rafael mandar o logo real (SVG de preferência) |
+| Logo real | ✅ Recebido e integrado em 2026-08-10 — favicon, imagem de compartilhamento e emblema no hero. Pendente só decidir se as versões animadas em MP4 entram |
 
 ## Dados confirmados
 

@@ -76,6 +76,14 @@ export const siteSchema = z.object({
     subtitulo: z.string().min(1),
     ctaTexto: z.string().min(1),
     ctaAncora: z.string().min(1),
+    // Caminho do emblema a partir de public/, começando com "/". Vazio esconde o
+    // emblema em vez de quebrar a página — mesma regra dos outros campos opcionais.
+    emblema: z
+      .string()
+      .refine((v) => v === '' || v.startsWith('/'), {
+        message:
+          'O emblema deve ser um caminho dentro de public/, começando com "/" — por exemplo "/emblema-arvore-da-vida.png". Deixe vazio para não mostrar emblema nenhum.',
+      }),
   }),
   acoesRapidas: z.array(z.object({
     rotulo: z.string().min(1),

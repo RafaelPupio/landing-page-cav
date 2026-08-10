@@ -8,6 +8,7 @@ const HERO = {
   subtitulo: 'Conhecer a Deus e torná-Lo conhecido',
   ctaTexto: 'Venha nos visitar',
   ctaAncora: '#visita',
+  emblema: '/emblema-arvore-da-vida.png',
 }
 
 describe('Hero', () => {
@@ -42,6 +43,25 @@ describe('Hero', () => {
     expect(classes).toContain('text-creme')
     expect(classes).toContain('md:text-verde-limao')
     expect(classes).not.toContain('text-verde-limao')
+  })
+
+  // O emblema é decorativo: o <h1> logo abaixo já diz o nome da igreja, então um
+  // alt descritivo faria o leitor de tela anunciar a mesma coisa duas vezes.
+  it('renderiza o emblema como imagem decorativa, sem duplicar o nome no leitor de tela', () => {
+    const { container } = render(<Hero hero={HERO} />)
+    const img = container.querySelector('img')
+    expect(img).not.toBeNull()
+    expect(img).toHaveAttribute('alt', '')
+    expect(img?.getAttribute('src')).toContain('emblema-arvore-da-vida')
+    // alt vazio mantém a imagem fora da árvore de acessibilidade
+    expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  })
+
+  // Regra de degradação: campo vazio não renderiza elemento vazio.
+  it('não renderiza imagem alguma quando o emblema está vazio', () => {
+    const { container } = render(<Hero hero={{ ...HERO, emblema: '' }} />)
+    expect(container.querySelector('img')).toBeNull()
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
   })
 
   // Trava a opacidade do blob decorativo atrás do subtítulo. O fundo tingido é
