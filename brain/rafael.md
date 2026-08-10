@@ -2,7 +2,7 @@
 
 ## Quem é
 
-MBA em finanças, novo em IA e desenvolvimento. Toca o TraderBot (bot de forex com ML + MQL5) em paralelo — ou seja, é tecnicamente curioso e capaz de ler código, mas não é engenheiro de software de carreira.
+MBA em finanças, novo em IA e desenvolvimento. Toca outro projeto técnico em paralelo — ou seja, é tecnicamente curioso e capaz de ler código, mas não é engenheiro de software de carreira.
 
 Escreve em português, às vezes com typos e sem acento. Ler pela intenção, não pela letra — mas quando a intenção for genuinamente ambígua, perguntar em vez de adivinhar. Já aconteceu neste projeto: "create a way i cant modify the whole site" quase certamente era "**can** modify", e valeu explicitar a interpretação antes de agir.
 
@@ -20,4 +20,4 @@ A Comunidade Árvore da Vida é a igreja dele. O conteúdo é institucional e fo
 
 ## Padrão de trabalho que ele já tem
 
-No TraderBot, toda tarefa termina com o brain atualizado e commitado. Ele valoriza esse hábito. Aqui vale o mesmo: [[status]] e [[log/decisions]] atualizados antes de dizer que algo está pronto.
+Ele já trabalha assim em outro projeto: toda tarefa termina com o brain atualizado e commitado. Valoriza esse hábito. Aqui vale o mesmo — [[status]] e [[log/decisions]] atualizados antes de dizer que algo está pronto.
