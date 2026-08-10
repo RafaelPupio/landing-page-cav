@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Blob from '@/components/decor/Blob'
 import type { Site } from '@/content/schema'
 
@@ -13,6 +14,19 @@ export default function Hero({ hero }: { hero: Site['hero'] }) {
         className="pointer-events-none absolute -right-28 -top-32 w-80 text-verde-limao/15 md:w-[30rem]"
       />
       <div className="relative mx-auto max-w-3xl">
+        {/* alt vazio de propósito: o <h1> logo abaixo já diz o nome da igreja, e um
+            alt aqui faria o leitor de tela anunciar a mesma coisa duas vezes.
+            Campo vazio no JSON não renderiza nada — mesma regra de degradação do resto. */}
+        {hero.emblema && (
+          <Image
+            src={hero.emblema}
+            alt=""
+            width={904}
+            height={754}
+            priority
+            className="mb-7 h-20 w-auto md:h-28"
+          />
+        )}
         <h1 className="text-4xl font-bold uppercase leading-[1.02] tracking-tight text-creme md:text-6xl">
           {hero.titulo}
         </h1>

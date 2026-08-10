@@ -438,3 +438,17 @@ Lição para as próximas: número de contraste vindo de revisão se recalcula a
 Balanço do que as revisões pegaram e que o plano tinha deixado passar: acordeão que desmontava o painel e esconderia o credo do Google; trava do editor fail-open; `<footer>` dentro do `<main>`; cinco rótulos hardcoded fora do JSON; `text-creme/70` reprovando AA; e cinco testes que passavam com o conteúdo trocado entre rótulos. Nenhum desses era visível sem alguém olhar de fora.
 
 Dois defeitos só apareceram no navegador, nunca no jsdom: o ícone de relógio renderizando como disco sólido, e o landmark do rodapé. Vale como lembrete de que a suíte não substitui abrir a página.
+
+## 2026-08-10 — Logo real da igreja integrado
+
+Rafael enviou o pacote da marca. Substituí o `app/icon.svg` que eu tinha desenhado como placeholder.
+
+Três derivados entraram: favicon (emblema creme sobre verde), imagem de compartilhamento 1200×630 com o logotipo horizontal, e o emblema transparente no hero.
+
+**No hero entra só o emblema, não o lockup completo.** O logotipo inteiro traz o nome da igreja, e o `<h1>` logo abaixo repete o mesmo nome — duplicar prejudicaria o SEO e faria o leitor de tela anunciar duas vezes. O emblema vai com `alt=""`, porque o texto adjacente já diz o que ele representa.
+
+O caminho fica em `hero.emblema` no JSON, editável pelo `/editar`, e obedece à regra de degradação: vazio não renderiza imagem. O schema valida que o caminho comece com `/`, com mensagem em português.
+
+Confirmação que vale registrar: a paleta que tiramos do folder impresso (limão `#A3C63C` → verde `#44581A`) é exatamente o gradiente da versão colorida do logo. A marca e o site falam a mesma língua sem precisar de ajuste.
+
+Fora do escopo por ora: as duas versões animadas em MP4.
