@@ -10,7 +10,7 @@ Rafael escolheu os dois objetivos, não um. Resolvido em [[projeto/objetivo]]: a
 
 ## 2026-08-08 — Stack: Next.js 15 + Tailwind v4
 
-Rafael escolheu, contra a recomendação inicial de HTML estático puro. A recomendação era pela facilidade de manutenção por alguém da igreja. Ele preferiu Next.js — decisão dele, e defensável: o projeto pode crescer (agenda, blog) e ele já lida com ferramenta técnica no TraderBot. A camada de edição em `/editar` compensa a perda de simplicidade.
+Rafael escolheu, contra a recomendação inicial de HTML estático puro. A recomendação era pela facilidade de manutenção por alguém da igreja. Ele preferiu Next.js — decisão dele, e defensável: o projeto pode crescer (agenda, blog) e ele já lida com ferramenta técnica em outro projeto. A camada de edição em `/editar` compensa a perda de simplicidade.
 
 ## 2026-08-08 — Dados práticos vieram do Instagram
 
