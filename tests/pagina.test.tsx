@@ -11,7 +11,18 @@ describe('página inicial', () => {
 
   it('expõe todas as âncoras de seção', () => {
     const { container } = render(<Pagina />)
-    for (const ancora of ['inicio', 'historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita']) {
+    for (const ancora of [
+      'inicio',
+      'historia',
+      'proposito',
+      'mensagens',
+      'cuidado',
+      'lideranca',
+      'credo',
+      'generosidade',
+      'primeira-vez',
+      'visita',
+    ]) {
       expect(container.querySelector(`#${ancora}`), `âncora #${ancora}`).not.toBeNull()
     }
   })
@@ -31,7 +42,18 @@ describe('página inicial', () => {
   it('renderiza hero e os 6 capítulos na ordem esperada', () => {
     const { container } = render(<Pagina />)
     const ids = Array.from(container.querySelectorAll('section[id]')).map((s) => s.id)
-    expect(ids).toEqual(['inicio', 'historia', 'proposito', 'cuidado', 'lideranca', 'credo', 'visita'])
+    expect(ids).toEqual([
+      'inicio',
+      'historia',
+      'proposito',
+      'mensagens',
+      'cuidado',
+      'lideranca',
+      'credo',
+      'generosidade',
+      'primeira-vez',
+      'visita',
+    ])
   })
 
   // Já foi esquecido uma vez: os links do rodapé ficaram sem anel de foco algum

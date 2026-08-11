@@ -260,6 +260,40 @@
   "citacao": {
     "texto": "Essas crenças são a base do nosso alicerce. São a sustentação de quem somos. Mesmo que não sejam sempre vistas, elas permitem que toda a estrutura esteja sempre segura, forte e firme."
   },
+  "mensagens": {
+    "rotulo": "Ouça de onde estiver",
+    "titulo": "Mensagens",
+    "intro": "As pregações dos nossos cultos ficam disponíveis no canal da comunidade. Se você ainda não veio, é uma boa forma de conhecer antes de visitar.",
+    "canalTexto": "Ver as mensagens no YouTube",
+    "canalUrl": "https://youtube.com/@ArvoredaVidaLRV",
+    "destaques": []
+  },
+  "generosidade": {
+    "rotulo": "Semeadura e colheita",
+    "titulo": "Generosidade",
+    "texto": "A Nova Aliança enfatiza que a motivação para dar deve ser o amor ao próximo e a Deus, e não o medo de retaliação ou a ameaça de uma maldição. É um chamado para viver em liberdade e em resposta ao sacrifício supremo de Jesus, que nos redimiu e nos libertou de toda maldição.",
+    "ctaTexto": "",
+    "ctaUrl": ""
+  },
+  "primeiraVez": {
+    "rotulo": "Primeira vez aqui?",
+    "titulo": "O que esperar",
+    "intro": "Você não precisa se preparar para nada. Chegue, sente onde quiser, e fique à vontade — ninguém vai pedir que você se levante ou fale.",
+    "passos": [
+      {
+        "titulo": "Chegue às 18h",
+        "texto": "O culto de domingo começa às 18h, na Av. das Emas, 2240W. Chegar alguns minutos antes ajuda a encontrar lugar com calma."
+      },
+      {
+        "titulo": "Venha como você está",
+        "texto": "Não há código de vestimenta nem lugar marcado. Venha do jeito que estiver, sozinho ou com a família."
+      },
+      {
+        "titulo": "Fique para conversar",
+        "texto": "Depois do culto as pessoas ficam um pouco. É a melhor hora para conhecer alguém e tirar suas dúvidas sem pressa."
+      }
+    ]
+  },
   "visita": {
     "rotulo": "E você",
     "titulo": "Venha nos visitar",

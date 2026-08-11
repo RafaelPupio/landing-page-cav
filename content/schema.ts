@@ -60,6 +60,16 @@ export const grupoCredoSchema = z.object({
   declaracoes: z.array(declaracaoSchema).min(1),
 })
 
+// Link opcional: vazio é válido e significa "não renderize o bloco" (regra de degradação).
+// Mesmos formatos aceitos em acoesRapidas.href — link interno nunca leva o domínio completo.
+const linkOpcional = z.union([
+  z.literal(''),
+  z.string().regex(
+    /^(#[^\s]+|\/[^\s]*|https?:\/\/[^\s]+|mailto:[^\s]+|tel:[^\s]+)$/,
+    'Link inválido. Use um dos formatos aceitos: âncora interna (ex.: #visita), caminho interno (ex.: /contato), link completo (ex.: https://exemplo.com.br), e-mail (ex.: mailto:contato@exemplo.com.br) ou telefone (ex.: tel:+5511999999999). Deixe em branco para o bloco não aparecer.',
+  ),
+])
+
 export const siteSchema = z.object({
   tema: temaSchema,
   site: z.object({
@@ -135,6 +145,35 @@ export const siteSchema = z.object({
     ),
   }),
   citacao: z.object({ texto: z.string().min(1) }),
+  mensagens: z.object({
+    rotulo: z.string().min(1),
+    titulo: z.string().min(1),
+    intro: z.string().min(1),
+    canalTexto: z.string().min(1),
+    canalUrl: z.string().url(),
+    // Nasce vazia: nenhuma pregação é cadastrada sem o link real da igreja.
+    destaques: z.array(z.object({
+      titulo: z.string().min(1),
+      detalhe: z.string(),
+      url: linkOpcional,
+    })),
+  }),
+  generosidade: z.object({
+    rotulo: z.string().min(1),
+    titulo: z.string().min(1),
+    texto: z.string().min(1),
+    ctaTexto: z.string(),
+    ctaUrl: linkOpcional,
+  }),
+  primeiraVez: z.object({
+    rotulo: z.string().min(1),
+    titulo: z.string().min(1),
+    intro: z.string().min(1),
+    passos: z.array(z.object({
+      titulo: z.string().min(1),
+      texto: z.string().min(1),
+    })).min(1),
+  }),
   visita: z.object({
     rotulo: z.string().min(1),
     titulo: z.string().min(1),
