@@ -11,9 +11,10 @@
 - [x] Repositório no GitHub
 - [x] Tasks 1–14 — scaffold, conteúdo, tema, primitivas, seções, montagem, SEO, editor
 - [x] Revisão final de branch, sem bloqueadores
+- [x] Capítulos de mensagens, generosidade e primeira visita (PR #2, mergeado 2026-08-10)
 - [ ] Deploy
 
-Suíte: **97 testes**, 15 arquivos. `npm run build` e `npm run lint` limpos.
+Suíte: **113 testes**, 16 arquivos. `npm run build` e `npm run lint` limpos.
 
 ## Próximo passo
 

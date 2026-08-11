@@ -42,3 +42,4 @@ next-env.d.ts
 
 # orquestração (diretório de trabalho, não versionado)
 .superpowers/
+.obsidian/
