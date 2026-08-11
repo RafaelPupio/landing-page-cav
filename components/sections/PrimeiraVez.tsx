@@ -8,7 +8,7 @@ export default function PrimeiraVez({ primeiraVez }: { primeiraVez: Site['primei
 
       <ol className="mt-8 space-y-6">
         {primeiraVez.passos.map((passo, i) => (
-          <li key={i} className="rounded-2xl border border-creme/25 p-5">
+          <li key={i} className="rounded-2xl border border-creme/20 bg-creme/[0.03] p-5">
             {/* A numeração é informação: são os passos de uma chegada, em ordem. */}
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-creme/90">
               {String(i + 1).padStart(2, '0')}

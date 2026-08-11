@@ -137,36 +137,23 @@ describe('PrimeiraVez', () => {
   })
 })
 
-// A regra de contraste do projeto: limão mede 4,02:1 sobre o verde escuro e reprova
-// AA abaixo de 24px. Nenhum texto pequeno destas seções pode ser limão.
+// Contraste sobre o fundo #131A08, recalculado quando o fundo escureceu:
+// limão mede 9,08:1 e creme 16,31:1 — ambos passam AA em qualquer tamanho.
+// O que ainda reprovaria é limão sobre o VERDE ANTIGO (#44581A, 4,03:1), então o
+// teste trava que nenhuma seção volte a pintar fundo com o verde antigo.
 describe('contraste das seções novas', () => {
-  it('não usa verde-limão em nenhum texto pequeno', () => {
+  it('não usa o verde antigo como fundo de bloco com texto', () => {
     const { container } = render(
       <>
         <Mensagens mensagens={COM_DESTAQUES} />
-        <Generosidade
-          generosidade={{
-            rotulo: 'R',
-            titulo: 'T',
-            texto: 'Texto.',
-            ctaTexto: 'Contribuir',
-            ctaUrl: 'https://exemplo.com',
-          }}
-        />
         <PrimeiraVez primeiraVez={PRIMEIRA_MINIMA} />
       </>,
     )
-    const pequenos = container.querySelectorAll(
-      'p, li, h3, h4, a, span, dt, dd, button',
-    )
-    for (const el of pequenos) {
-      expect(el.className, `${el.tagName} "${el.textContent?.slice(0, 30)}"`).not.toContain(
-        'text-verde-limao',
-      )
+    for (const el of container.querySelectorAll('*')) {
+      expect(el.className.toString()).not.toContain('bg-verde-escuro')
     }
   })
 })
-
 const PRIMEIRA_MINIMA = {
   rotulo: 'Primeira vez aqui?',
   titulo: 'O que esperar',

@@ -466,3 +466,20 @@ Comparado a essas referências, o site tinha três lacunas — e nenhuma era est
 **Ressalva que vale registrar alto:** os três passos de "O que esperar" são o **único texto do site que eu escrevi em vez de transcrever**. Todo o resto vem do folder. São suposições razoáveis sobre um domingo da CAV, mas suposições — o Rafael precisa confirmar ou reescrever pelo `/editar`. Está na tabela de bloqueios do [[status]].
 
 Decisões menores: os passos usam `<ol>` porque a ordem é uma sequência de chegada (diferente da Visão, que virou `<ul>` justamente por não ter hierarquia confirmada). A trilha passou de 6 para 9 capítulos.
+
+## 2026-08-10 — Modernização visual: o site virou a maquete
+
+Rafael comparou o site com a maquete em `docs/mockups/influentes/` e escolheu a maquete. Entrou a camada visual que faltava quando incorporei só os três capítulos.
+
+**O que mudou:**
+- **Fundo `#131A08`** (novo token `tema.fundo`) e `tema.superficie` `#1D2710` para faixas alternadas. O verde `#44581A` continua no tema, agora só como cor de botão e do cartão de visita.
+- **Cabeçalho fixo** translúcido com faixa de horário embutida, até cinco âncoras e o botão de visita. No celular o menu é um `<details>` — abre sem JavaScript e pelo teclado.
+- **CTA fixo no rodapé do celular** com "Como chegar" e "Planeje sua visita". Quase todo o tráfego vem da bio do Instagram; a ação precisa estar no polegar em qualquer ponto da página.
+- **Logo animado no hero**, com `mix-blend-screen` para o preto do arquivo sumir. Quem prefere menos movimento não vê **e não baixa** os 820 KB — o `src` só é montado depois de confirmar a preferência.
+- Hero de tela cheia, tipografia maior e mais apertada; Cuidado em três colunas no desktop.
+
+**A consequência mais importante não é estética.** No fundo escuro o limão mede 9,08:1 e passa AA em qualquer tamanho — a regra "limão só em 24px+" morreu. Ver [[projeto/identidade-visual]].
+
+Três testes que guardavam a regra antiga foram reescritos, não afrouxados: o do rótulo do capítulo, o do subtítulo do hero e o do blob (que saiu do hero). No lugar entrou `tests/lib/contraste.test.ts`, que mede os tokens de verdade em vez de checar nome de classe — se alguém clarear o fundo pelo `/editar`, a suíte quebra.
+
+`window.matchMedia` foi adicionado ao `vitest.setup.ts`: o jsdom não implementa, e sem isso qualquer componente que consulte preferência de movimento derruba os testes da página.

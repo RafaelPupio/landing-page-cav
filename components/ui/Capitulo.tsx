@@ -17,7 +17,7 @@ export default function Capitulo({
         aria-hidden="true"
         className="absolute -left-8 top-2 block h-3 w-3 rounded-full bg-verde-limao md:-left-10"
       />
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-creme">{rotulo}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-verde-limao">{rotulo}</p>
       <h2 className="mt-2 text-2xl font-bold uppercase leading-tight text-verde-limao md:text-3xl">
         {titulo}
       </h2>

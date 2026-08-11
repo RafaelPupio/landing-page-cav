@@ -3,7 +3,9 @@
     "verdeEscuro": "#44581A",
     "verdeLimao": "#A3C63C",
     "creme": "#F7F5EC",
-    "grafite": "#1F1F1C"
+    "grafite": "#1F1F1C",
+    "fundo": "#131A08",
+    "superficie": "#1D2710"
   },
   "site": {
     "nome": "Comunidade Árvore da Vida",
@@ -39,12 +41,48 @@
     "instagramRotulo": "Instagram",
     "youtubeRotulo": "YouTube"
   },
+  "faixaServico": {
+    "texto": "Culto aos domingos, 18h · Av. das Emas, 2240W — Lucas do Rio Verde/MT"
+  },
+  "cabecalho": {
+    "ctaTexto": "Planeje sua visita",
+    "ctaAncora": "#visita",
+    "menuRotulo": "Abrir menu",
+    "itens": [
+      {
+        "rotulo": "Primeira vez",
+        "ancora": "#primeira-vez"
+      },
+      {
+        "rotulo": "Mensagens",
+        "ancora": "#mensagens"
+      },
+      {
+        "rotulo": "Conectar",
+        "ancora": "#cuidado"
+      },
+      {
+        "rotulo": "No que cremos",
+        "ancora": "#credo"
+      },
+      {
+        "rotulo": "Visitar",
+        "ancora": "#visita"
+      }
+    ]
+  },
+  "ctaFixo": {
+    "rotuloSecundario": "Como chegar",
+    "rotuloPrimario": "Planeje sua visita",
+    "ancoraPrimaria": "#visita"
+  },
   "hero": {
     "titulo": "Comunidade Árvore da Vida",
     "subtitulo": "Conhecer a Deus e torná-Lo conhecido",
     "ctaTexto": "Venha nos visitar",
     "ctaAncora": "#visita",
-    "emblema": "/emblema-arvore-da-vida.png"
+    "emblema": "/emblema-arvore-da-vida.png",
+    "videoLogo": "/logo-animado.mp4"
   },
   "acoesRapidas": [
     {
