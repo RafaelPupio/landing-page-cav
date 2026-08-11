@@ -33,6 +33,9 @@ Nenhum bloqueia a implementação. Os itens abaixo bloqueiam apenas o **lançame
 | Fotos | Nenhum arquivo recebido. Os slots existem e renderizam gradientes |
 | Imagem Open Graph | ✅ Pronta em `app/opengraph-image.png`, com o logotipo real |
 | Perfil da Empresa no Google | Não verificado se existe. Ver [[projeto/seo]] — importa mais que o site |
+| **Texto de "O que esperar"** | ⚠️ **Único texto do site que o Claude escreveu, não transcreveu.** Os três passos (chegue às 18h, venha como está, fique para conversar) são suposições sobre o domingo da igreja. Rafael/liderança precisa confirmar ou reescrever pelo `/editar` antes do lançamento |
+| Link de contribuição | Não existe. O capítulo Generosidade renderiza só o texto; o botão aparece sozinho quando `generosidade.ctaUrl` for preenchido (PIX, link de doação, o que a igreja usar) |
+| Mensagens em destaque | `mensagens.destaques` nasce vazio de propósito — nenhuma pregação foi inventada. Hoje o capítulo leva direto ao canal do YouTube |
 | Logo real | ✅ Recebido e integrado em 2026-08-10 — favicon, imagem de compartilhamento e emblema no hero. Pendente só decidir se as versões animadas em MP4 entram |
 
 ## Dados confirmados
