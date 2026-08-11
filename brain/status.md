@@ -14,7 +14,7 @@
 - [x] Capítulos de mensagens, generosidade e primeira visita (PR #2, mergeado 2026-08-10)
 - [ ] Deploy
 
-Suíte: **113 testes**, 16 arquivos. `npm run build` e `npm run lint` limpos.
+Suíte: **118 testes**, 17 arquivos. `npm run build` e `npm run lint` limpos.
 
 ## Próximo passo
 

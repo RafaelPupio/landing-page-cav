@@ -1,22 +1,26 @@
 import Image from 'next/image'
-import Blob from '@/components/decor/Blob'
+import LogoAnimado from '@/components/ui/LogoAnimado'
 import type { Site } from '@/content/schema'
 
 export default function Hero({ hero }: { hero: Site['hero'] }) {
   return (
-    <section id="inicio" className="relative overflow-hidden px-6 pt-20 pb-14 md:pt-28">
-      {/* Opacidade do blob calibrada pelo contraste, não pela distância do título:
-          o tingimento é uniforme em qualquer ponto do blob, então a margem vale onde
-          quer que o subtítulo caia — inclusive se hero.titulo encurtar pelo /editar.
-          Medido: /25 dá 4,84:1 com creme (já dentro do AA) e /15 dá 5,72:1. */}
-      <Blob
-        variante={2}
-        className="pointer-events-none absolute -right-28 -top-32 w-80 text-verde-limao/15 md:w-[30rem]"
+    <section
+      id="inicio"
+      className="relative flex min-h-[100svh] items-center overflow-hidden px-6 pb-16 pt-40 md:pt-44"
+    >
+      {/* Vazio no JSON esconde o vídeo — e quem prefere menos movimento nunca o baixa. */}
+      {hero.videoLogo && <LogoAnimado src={hero.videoLogo} />}
+
+      {/* Véu por cima do vídeo: garante o contraste do texto onde quer que o brilho
+          da animação passe. Sem ele o contraste dependeria do quadro do vídeo. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(120%_90%_at_70%_35%,transparent_0%,rgba(19,26,8,0.82)_55%,var(--fundo)_100%)]"
       />
-      <div className="relative mx-auto max-w-3xl">
+
+      <div className="relative mx-auto w-full max-w-5xl">
         {/* alt vazio de propósito: o <h1> logo abaixo já diz o nome da igreja, e um
-            alt aqui faria o leitor de tela anunciar a mesma coisa duas vezes.
-            Campo vazio no JSON não renderiza nada — mesma regra de degradação do resto. */}
+            alt aqui faria o leitor de tela anunciar a mesma coisa duas vezes. */}
         {hero.emblema && (
           <Image
             src={hero.emblema}
@@ -24,13 +28,15 @@ export default function Hero({ hero }: { hero: Site['hero'] }) {
             width={904}
             height={754}
             priority
-            className="mb-7 h-20 w-auto md:h-28"
+            className="mb-8 h-16 w-auto md:h-24"
           />
         )}
-        <h1 className="text-4xl font-bold uppercase leading-[1.02] tracking-tight text-creme md:text-6xl">
+        <h1 className="max-w-[16ch] text-5xl font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-creme md:text-8xl">
           {hero.titulo}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg font-light text-creme md:text-2xl md:text-verde-limao">
+        {/* Limão em qualquer tamanho: sobre o fundo #131A08 mede 9,08:1, muito acima
+            do 4,5:1 exigido. Era a restrição do fundo antigo, não da cor. */}
+        <p className="mt-7 max-w-[30ch] text-xl font-light leading-snug text-verde-limao md:text-3xl">
           {hero.subtitulo}
         </p>
         <a

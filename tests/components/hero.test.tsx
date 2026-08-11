@@ -9,6 +9,7 @@ const HERO = {
   ctaTexto: 'Venha nos visitar',
   ctaAncora: '#visita',
   emblema: '/emblema-arvore-da-vida.png',
+  videoLogo: '',
 }
 
 describe('Hero', () => {
@@ -29,51 +30,37 @@ describe('Hero', () => {
     expect(cta.className).toContain('text-verde-escuro')
   })
 
-  // Trava a regra de contraste do subtítulo: limão sozinho reprova AA no mobile.
-  // Em 18px (tamanho mobile) o limite AA é 4,5:1 e o limão mede 4,02:1 sobre o
-  // verde-escuro — reprova. Só a partir do md: (24px) o limite cai para 3:1 e o
-  // limão passa. Por isso o subtítulo PRECISA das duas classes (creme no mobile,
-  // limão só com prefixo md:); se alguém simplificar para "text-verde-limao"
-  // sozinho, o texto fica ilegível no celular, que é de onde vem quase todo o
-  // tráfego. Este teste existe só por isso — não é teste de estilo, não apague.
-  it('subtítulo é creme no mobile e só vira limão a partir do md — sem isso reprova contraste AA em tela pequena', () => {
+  // Antes o subtítulo precisava ser creme no mobile porque limão reprovava sobre o
+  // verde antigo. No fundo #131A08 o limão mede 9,08:1 e vale em qualquer tamanho.
+  it('usa limão no subtítulo, em qualquer largura', () => {
     render(<Hero hero={HERO} />)
-    const subtitulo = screen.getByText(HERO.subtitulo)
-    const classes = subtitulo.className.split(/\s+/)
-    expect(classes).toContain('text-creme')
-    expect(classes).toContain('md:text-verde-limao')
-    expect(classes).not.toContain('text-verde-limao')
+    const sub = screen.getByText(HERO.subtitulo)
+    expect(sub.className).toContain('text-verde-limao')
+    expect(sub.className).not.toContain('md:text-verde-limao')
   })
 
-  // O emblema é decorativo: o <h1> logo abaixo já diz o nome da igreja, então um
-  // alt descritivo faria o leitor de tela anunciar a mesma coisa duas vezes.
-  it('renderiza o emblema como imagem decorativa, sem duplicar o nome no leitor de tela', () => {
-    const { container } = render(<Hero hero={HERO} />)
-    const img = container.querySelector('img')
-    expect(img).not.toBeNull()
-    expect(img).toHaveAttribute('alt', '')
-    expect(img?.getAttribute('src')).toContain('emblema-arvore-da-vida')
-    // alt vazio mantém a imagem fora da árvore de acessibilidade
-    expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  it('só monta o vídeo do logo quando há caminho cadastrado', () => {
+    const { container: sem } = render(<Hero hero={{ ...HERO, videoLogo: '' }} />)
+    expect(sem.querySelector('video')).toBeNull()
+    const { container: com } = render(<Hero hero={{ ...HERO, videoLogo: '/logo-animado.mp4' }} />)
+    const video = com.querySelector('video')
+    expect(video).not.toBeNull()
+    expect(video).toHaveAttribute('aria-hidden', 'true')
+    // React aplica muted como propriedade, não como atributo do HTML.
+    expect((video as HTMLVideoElement).muted).toBe(true)
+    expect((video as HTMLVideoElement).autoplay).toBe(true)
   })
 
-  // Regra de degradação: campo vazio não renderiza elemento vazio.
-  it('não renderiza imagem alguma quando o emblema está vazio', () => {
-    const { container } = render(<Hero hero={{ ...HERO, emblema: '' }} />)
-    expect(container.querySelector('img')).toBeNull()
-    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
-  })
-
-  // Trava a opacidade do blob decorativo atrás do subtítulo. O fundo tingido é
-  // uniforme em qualquer ponto do blob, então a margem vale independente de onde o
-  // subtítulo cair — não depende do comprimento de hero.titulo. Medido: /25 dá
-  // 4,84:1 com creme (já passa AA) e /15 dá 5,72:1. Ficamos em /15 pela folga; se
-  // alguém precisar de um blob mais forte, /25 continua dentro da regra.
-  it('usa opacidade baixa no blob atrás do subtítulo, para não reprovar contraste se o título encurtar', () => {
-    const { container } = render(<Hero hero={HERO} />)
-    const blob = container.querySelector('svg')
-    expect(blob?.getAttribute('class')).toContain('text-verde-limao/15')
-    expect(blob?.getAttribute('class')).not.toContain('text-verde-limao/25')
+  it('esconde o vídeo de quem prefere menos movimento, sem baixá-lo', () => {
+    const original = window.matchMedia
+    window.matchMedia = ((q: string) => ({
+      matches: true, media: q, onchange: null,
+      addEventListener: () => {}, removeEventListener: () => {},
+      addListener: () => {}, removeListener: () => {}, dispatchEvent: () => false,
+    })) as unknown as typeof window.matchMedia
+    const { container } = render(<Hero hero={{ ...HERO, videoLogo: '/logo-animado.mp4' }} />)
+    expect(container.querySelector('video')).toBeNull()
+    window.matchMedia = original
   })
 })
 

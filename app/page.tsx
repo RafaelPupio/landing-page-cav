@@ -1,3 +1,5 @@
+import Cabecalho from '@/components/ui/Cabecalho'
+import CtaFixo from '@/components/ui/CtaFixo'
 import Hero from '@/components/sections/Hero'
 import AcoesRapidas from '@/components/sections/AcoesRapidas'
 import Trilha from '@/components/ui/Trilha'
@@ -17,6 +19,14 @@ import { site } from '@/content/load'
 export default function Pagina() {
   return (
     <>
+      {/* Fora do <main>: cabeçalho é landmark banner, e um <header> descendente de
+          <main> perde esse papel na navegação por landmarks. */}
+      <Cabecalho
+        cabecalho={site.cabecalho}
+        faixa={site.faixaServico}
+        nome={site.site.nome}
+        emblema={site.hero.emblema}
+      />
       <main>
         <Hero hero={site.hero} />
         <AcoesRapidas acoes={site.acoesRapidas} />
@@ -36,6 +46,7 @@ export default function Pagina() {
       {/* Fora do <main> de propósito: um <footer> descendente de <main> perde o
           papel contentinfo e some da navegação por landmarks. */}
       <Rodape nome={site.site.nome} texto={site.rodape.texto} redes={site.redes} />
+      <CtaFixo cta={site.ctaFixo} mapsUrl={site.contato.mapsUrl} />
     </>
   )
 }
