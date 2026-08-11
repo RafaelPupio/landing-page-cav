@@ -6,6 +6,9 @@ import Proposito from '@/components/sections/Proposito'
 import Cuidado from '@/components/sections/Cuidado'
 import Lideranca from '@/components/sections/Lideranca'
 import Credo from '@/components/sections/Credo'
+import Mensagens from '@/components/sections/Mensagens'
+import Generosidade from '@/components/sections/Generosidade'
+import PrimeiraVez from '@/components/sections/PrimeiraVez'
 import Citacao from '@/components/sections/Citacao'
 import Visita from '@/components/sections/Visita'
 import Rodape from '@/components/sections/Rodape'
@@ -20,9 +23,12 @@ export default function Pagina() {
         <Trilha>
           <Historia historia={site.historia} />
           <Proposito proposito={site.proposito} />
+          <Mensagens mensagens={site.mensagens} />
           <Cuidado cuidado={site.cuidado} />
           <Lideranca lideranca={site.lideranca} />
           <Credo credo={site.credo} />
+          <Generosidade generosidade={site.generosidade} />
+          <PrimeiraVez primeiraVez={site.primeiraVez} />
           <Visita visita={site.visita} contato={site.contato} horarios={site.horarios} />
         </Trilha>
         <Citacao citacao={site.citacao} />
