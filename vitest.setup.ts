@@ -9,3 +9,18 @@ import { vi } from 'vitest'
 vi.mock('next/font/google', () => ({
   Poppins: () => ({ variable: 'font-poppins-mock' }),
 }))
+
+// jsdom não implementa matchMedia. O padrão aqui é "sem preferência por menos
+// movimento"; testes que precisam do contrário sobrescrevem window.matchMedia.
+if (!window.matchMedia) {
+  window.matchMedia = ((consulta: string) => ({
+    matches: false,
+    media: consulta,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => false,
+  })) as unknown as typeof window.matchMedia
+}

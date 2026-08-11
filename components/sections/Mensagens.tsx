@@ -11,7 +11,7 @@ export default function Mensagens({ mensagens }: { mensagens: Site['mensagens'] 
       {mensagens.destaques.length > 0 && (
         <ul className="mt-8 space-y-4">
           {mensagens.destaques.map((destaque, i) => (
-            <li key={i} className="rounded-2xl border border-creme/25 p-5">
+            <li key={i} className="rounded-2xl border border-creme/20 bg-creme/[0.03] p-5">
               <h3 className="text-base font-semibold text-creme">
                 {destaque.url ? (
                   <a

@@ -12,6 +12,10 @@ export const temaSchema = z.object({
   verdeLimao: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
   creme: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
   grafite: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
+  // Fundo da página e das faixas alternadas. No verde quase preto o limão mede
+  // 9,08:1 com o fundo — passa AA em qualquer tamanho, ao contrário do verde antigo.
+  fundo: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
+  superficie: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
 })
 
 export const horarioSchema = z.object({
@@ -81,6 +85,22 @@ export const siteSchema = z.object({
   contato: contatoSchema,
   horarios: z.array(horarioSchema).min(1),
   redes: redesSchema,
+  faixaServico: z.object({ texto: z.string().min(1) }),
+  cabecalho: z.object({
+    ctaTexto: z.string().min(1),
+    ctaAncora: z.string().min(1),
+    menuRotulo: z.string().min(1),
+    // Cinco itens ou menos: mais escolhas levam a menos decisões.
+    itens: z.array(z.object({
+      rotulo: z.string().min(1),
+      ancora: z.string().regex(/^#[^\s]+$/, 'A âncora do menu precisa começar com # (ex.: #visita).'),
+    })).min(1).max(5),
+  }),
+  ctaFixo: z.object({
+    rotuloSecundario: z.string().min(1),
+    rotuloPrimario: z.string().min(1),
+    ancoraPrimaria: z.string().min(1),
+  }),
   hero: z.object({
     titulo: z.string().min(1),
     subtitulo: z.string().min(1),
@@ -93,6 +113,14 @@ export const siteSchema = z.object({
       .refine((v) => v === '' || v.startsWith('/'), {
         message:
           'O emblema deve ser um caminho dentro de public/, começando com "/" — por exemplo "/emblema-arvore-da-vida.png". Deixe vazio para não mostrar emblema nenhum.',
+      }),
+    // Logo animado do hero. Vazio esconde o vídeo e deixa só o emblema estático —
+    // que é também o que quem prefere menos movimento sempre vê.
+    videoLogo: z
+      .string()
+      .refine((v) => v === '' || v.startsWith('/'), {
+        message:
+          'O vídeo do logo deve ser um caminho dentro de public/, começando com "/" — por exemplo "/logo-animado.mp4". Deixe vazio para não mostrar vídeo nenhum.',
       }),
   }),
   acoesRapidas: z.array(z.object({

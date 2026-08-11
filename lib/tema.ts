@@ -7,5 +7,7 @@ export function variaveisDeTema(tema: Tema): CSSProperties {
     '--verde-limao': tema.verdeLimao,
     '--creme': tema.creme,
     '--grafite': tema.grafite,
+    '--fundo': tema.fundo,
+    '--superficie': tema.superficie,
   } as CSSProperties
 }
