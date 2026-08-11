@@ -452,3 +452,17 @@ O caminho fica em `hero.emblema` no JSON, editável pelo `/editar`, e obedece à
 Confirmação que vale registrar: a paleta que tiramos do folder impresso (limão `#A3C63C` → verde `#44581A`) é exatamente o gradiente da versão colorida do logo. A marca e o site falam a mesma língua sem precisar de ajuste.
 
 Fora do escopo por ora: as duas versões animadas em MP4.
+
+## 2026-08-10 — Três capítulos novos, vindos da pesquisa nas igrejas mais influentes
+
+Pesquisa em Elevation, Bola de Neve e nos levantamentos de melhores sites de igreja de 2026. Os padrões que se repetem: responder quem/quando/o-que-fazer antes de qualquer rolagem, navegação curta, biblioteca de mensagens, CTA fixo, e generosidade tratada como seção e não como aba escondida.
+
+Comparado a essas referências, o site tinha três lacunas — e nenhuma era estética:
+
+1. **Mensagens** (`#mensagens`, depois de Propósito). A igreja tem canal ativo no YouTube e o site não linkava uma pregação. Quem descobre pelo Google não conseguia ouvir nada antes de decidir visitar. `destaques` nasce vazio: nenhuma pregação foi inventada, e o capítulo leva direto ao canal.
+2. **Generosidade** (`#generosidade`, depois do Credo). O credo tem uma declaração inteira sobre generosidade e o site não oferecia nenhum caminho para ofertar — era a única parte do texto deles que pedia uma ação que a página não dava. O texto do capítulo é a frase VERBATIM da declaração, e o botão só aparece quando `ctaUrl` for preenchido.
+3. **O que esperar** (`#primeira-vez`, antes de Visita). Nenhuma resposta para o que trava o visitante: como é, preciso me vestir de algum jeito, vão me chamar na frente.
+
+**Ressalva que vale registrar alto:** os três passos de "O que esperar" são o **único texto do site que eu escrevi em vez de transcrever**. Todo o resto vem do folder. São suposições razoáveis sobre um domingo da CAV, mas suposições — o Rafael precisa confirmar ou reescrever pelo `/editar`. Está na tabela de bloqueios do [[status]].
+
+Decisões menores: os passos usam `<ol>` porque a ordem é uma sequência de chegada (diferente da Visão, que virou `<ul>` justamente por não ter hierarquia confirmada). A trilha passou de 6 para 9 capítulos.
