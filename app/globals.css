@@ -5,6 +5,8 @@
   --color-verde-limao: var(--verde-limao);
   --color-creme: var(--creme);
   --color-grafite: var(--grafite);
+  --color-fundo: var(--fundo);
+  --color-superficie: var(--superficie);
   --font-sans: var(--font-poppins);
 }
 
@@ -31,7 +33,7 @@ html {
 }
 
 body {
-  background-color: var(--verde-escuro);
+  background-color: var(--fundo);
   color: var(--creme);
 }
 

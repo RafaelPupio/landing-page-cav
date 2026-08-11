@@ -30,7 +30,10 @@ describe('Trilha e Capitulo', () => {
     expect(screen.getByText('Nosso alicerce')).toBeInTheDocument()
   })
 
-  it('mantém o rótulo em creme, não em limão — limão reprova contraste em texto pequeno', () => {
+  // O rótulo é limão desde que o fundo escureceu: 9,08:1 sobre #131A08 passa AA em
+  // qualquer tamanho. Quem garante que a premissa continua válida é
+  // tests/lib/contraste.test.ts, que mede os tokens reais.
+  it('usa limão no rótulo do capítulo', () => {
     render(
       <Trilha>
         <Capitulo id="c" rotulo="Abril de 2017" titulo="Título">
@@ -38,11 +41,8 @@ describe('Trilha e Capitulo', () => {
         </Capitulo>
       </Trilha>,
     )
-    const rotulo = screen.getByText('Abril de 2017')
-    expect(rotulo.className).toContain('text-creme')
-    expect(rotulo.className).not.toContain('text-verde-limao')
+    expect(screen.getByText('Abril de 2017').className).toContain('text-verde-limao')
   })
-
   it('renderiza os filhos do capítulo', () => {
     render(
       <Trilha>

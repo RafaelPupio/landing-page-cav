@@ -19,16 +19,20 @@ Vivem em `content/site.json` sob `tema`, viram variáveis CSS (`--verde-escuro` 
 
 ## Cuidado de contraste
 
-O par que importa é **limão sobre verde escuro**, porque o verde escuro é o fundo da página inteira. Medido:
+**Mudou em 2026-08-10, quando o fundo escureceu.** O par que importa é limão sobre o **fundo** — e o fundo deixou de ser o verde `#44581A` e passou a ser `#131A08`, verde quase preto.
 
 | Par | Razão | Veredito |
 |---|---|---|
-| `verdeLimao` sobre `verdeEscuro` | **4,02:1** | Passa AA de texto grande (3:1). **Reprova** AA de texto normal (4,5:1) |
-| `creme` sobre `verdeEscuro` | **7,24:1** | Passa com folga em qualquer tamanho |
+| `verdeLimao` sobre `fundo` `#131A08` | **9,08:1** | Passa AA em qualquer tamanho |
+| `verdeLimao` sobre `superficie` `#1D2710` | **7,93:1** | Passa AA em qualquer tamanho |
+| `creme` sobre `fundo` | **16,31:1** | Passa com folga |
+| `creme/90` sobre `fundo` | **13,30:1** | Passa |
+| `creme/70` sobre `fundo` | **8,42:1** | Passa (reprovava no fundo antigo) |
+| `verdeLimao` sobre o verde ANTIGO `#44581A` | 4,03:1 | **Reprovava** em texto pequeno |
 
-Daí a regra: limão **só** na linha da trilha, nos nós e em texto de 24px ou mais. Rótulos, corpo, títulos pequenos e texto de botão usam creme. O botão primário é fundo creme com texto verde escuro — fundo limão com texto de 16px reprovaria.
+A restrição que moldou o design original — *limão só em texto de 24px ou mais* — **não vale mais**. Ela era do fundo, não da cor. Hoje limão vale para rótulos, subtítulo do hero e a faixa de horário.
 
-Se aparecer limão num texto abaixo de 24px em algum componente novo, é regressão de acessibilidade. Ver [[log/decisions]] para a medição original.
+**O que trava isso:** `tests/lib/contraste.test.ts` mede os tokens reais de `content/site.json` e reprova se alguém clarear `tema.fundo`. Não é teste de classe CSS — é a conta. Se o fundo voltar a ser claro, o teste quebra antes de a página ir ao ar.
 
 ## Elementos gráficos
 
