@@ -6,14 +6,14 @@ Tudo aqui foi extraído do folder impresso que o Rafael enviou. A igreja já tem
 
 | Nome | Hex | Uso |
 |---|---|---|
-| `verdeEscuro` | `#44581A` | **Fundo da página inteira** (decisão do layout D — Capítulos), botão primário como fundo |
-| `verdeLimao` | `#A3C63C` | Trilha vertical, nós, texto de 24px+ — nunca texto pequeno (ver contraste abaixo) |
+| `fundo` | `#131A08` | **Fundo da página inteira** desde 2026-08-10 |
+| `superficie` | `#1D2710` | Faixas e cartões que precisam se destacar do fundo |
+| `verdeEscuro` | `#44581A` | Já foi o fundo; hoje só texto sobre creme (botão primário, cartão de visita) |
+| `verdeLimao` | `#A3C63C` | Trilha, nós, rótulos, subtítulo do hero, faixa de horário — **qualquer tamanho** desde que o fundo escureceu |
 | `creme` | `#F7F5EC` | Texto de corpo sobre o fundo verde escuro; único bloco de fundo claro é o cartão de visita |
 | `grafite` | `#1F1F1C` | Texto sobre fundos claros (ex.: dentro do cartão de visita em creme) |
 
-Atualizado na Task 3 para refletir a decisão de layout D (fundo escuro do topo ao rodapé) — o texto antigo desta tabela ainda descrevia `creme` como fundo geral, herdado da fase anterior à escolha de layout.
-
-Vivem em `content/site.json` sob `tema`, viram variáveis CSS (`--verde-escuro` etc.) via `lib/tema.ts::variaveisDeTema()` aplicado como `style` no `<body>` (`app/layout.tsx`), e o Tailwind os expõe como `bg-verde-escuro`, `text-verde-limao` e afins pelo bloco `@theme inline` em `app/globals.css`. O `body` já nasce com `background-color: var(--verde-escuro)` e `color: var(--creme)` no CSS global — não depende de uma classe Tailwind ser aplicada em `page.tsx` para o fundo escuro aparecer.
+Vivem em `content/site.json` sob `tema`, viram variáveis CSS (`--verde-escuro` etc.) via `lib/tema.ts::variaveisDeTema()` aplicado como `style` no `<body>` (`app/layout.tsx`), e o Tailwind os expõe como `bg-verde-escuro`, `text-verde-limao` e afins pelo bloco `@theme inline` em `app/globals.css`. O `body` já nasce com `background-color: var(--fundo)` e `color: var(--creme)` no CSS global — não depende de uma classe Tailwind ser aplicada em `page.tsx` para o fundo escuro aparecer.
 
 **Trocar uma cor no JSON repinta o site inteiro.** Esse é o ponto — foi desenhado assim para que ninguém precise caçar hex espalhado por componente.
 
@@ -38,13 +38,13 @@ A restrição que moldou o design original — *limão só em texto de 24px ou m
 
 Do folder, todos reproduzidos em SVG inline (nada de imagem raster, nada de request externo):
 
-- **Blobs orgânicos** — três variantes de path, em `components/decor/Blob.tsx`, único elemento decorativo do folder que chegou a ser usado por uma seção real (`Hero.tsx`, atrás do subtítulo). No impresso eles sangram para fora da página; na web, `overflow-hidden` na seção com o blob posicionado parcialmente fora reproduz o efeito. Opacidade do blob do Hero calibrada em `/15` (não `/25`) na revisão final de 2026-08-09 — em `/25` o verde-escuro tingido reduz demais o contraste do texto creme que pode cair atrás dele; ver [[log/decisions]] 2026-08-09.
+- **Blobs orgânicos** — três variantes de path, em `components/decor/Blob.tsx`. No impresso eles sangram para fora da página; na web, `overflow-hidden` na seção com o blob posicionado parcialmente fora reproduz o efeito. **Saiu do Hero em 2026-08-10**, quando o logo animado passou a ocupar o fundo do topo. Hoje o `Blob` não é usado por nenhuma seção — é a próxima peça candidata a virar código morto se ninguém consumir.
 - ~~Círculos sólidos~~ e ~~contornos finos em limão~~ e ~~`✕✕✕`~~ (`components/decor/Circulo.tsx`, `components/ui/SeparadorXXX.tsx`) — chegaram a ser implementados junto com o `Blob` na Task 4, mas nenhuma seção real (Task 6 em diante) acabou consumindo essas duas peças; removidas como código morto na revisão final de 2026-08-09 (só eram exercitadas pelos próprios testes, cobertura de mentira). Se a decoração do círculo/xis fizer falta visualmente algum dia, reimplementar a partir do folder impresso, não recuperar do histórico do git sem revisitar o design.
 - ~~Grade pontilhada~~ — cortada na direção D: no fundo escuro vira ruído sem informar nada.
 
 Toda decoração leva `aria-hidden="true"` e `focusable="false"`. Leitor de tela não deve encontrar nada disso.
 
-**A trilha em si (a linha vertical em limão) não é decorativa — é estrutura.** Implementada na Task 5 como `components/ui/Trilha.tsx` (a linha, via pseudo-elemento posicionado) e `components/ui/Capitulo.tsx` (cada `<section>` com âncora própria, nó redondo em limão sobre a linha, rótulo em creme, `<h2>` em limão ≥24px). Os offsets `left-[1.6rem]`/`md:left-[2.6rem]` da linha e `-left-8`/`md:-left-10` do nó do capítulo são acoplados — mudar um sem o outro faz o nó flutuar fora da linha. `components/ui/Chip.tsx` (contorno creme translúcido, usado em listas de valores/crenças) e `components/ui/Acordeao.tsx` (único client component até agora; um item aberto por vez, `aria-expanded`/`aria-controls`, operável por teclado) completam o kit de primitivas de interface. Nenhuma seção real ainda consome essas quatro peças — isso é Task 6+.
+**A trilha em si (a linha vertical em limão) não é decorativa — é estrutura.** Implementada na Task 5 como `components/ui/Trilha.tsx` (a linha, via pseudo-elemento posicionado) e `components/ui/Capitulo.tsx` (cada `<section>` com âncora própria, nó redondo em limão sobre a linha, rótulo em creme, `<h2>` em limão ≥24px). Os offsets `left-[1.6rem]`/`md:left-[2.6rem]` da linha e `-left-8`/`md:-left-10` do nó do capítulo são acoplados — mudar um sem o outro faz o nó flutuar fora da linha. `components/ui/Chip.tsx` (contorno creme translúcido, usado em listas de valores/crenças) e `components/ui/Acordeao.tsx` (um item aberto por vez, `aria-expanded`/`aria-controls`, operável por teclado) completam o kit de primitivas de interface. A partir de 2026-08-10 o kit ganhou `FaixaServico`, `Cabecalho` (fixo, com menu `<details>` no celular), `CtaFixo` (barra fixa no rodapé do celular) e `LogoAnimado` (client component que só monta o vídeo se a pessoa não pediu menos movimento).
 
 ## Tipografia
 
@@ -86,4 +86,4 @@ Derivados no repositório, todos gerados a partir da variante branca com o alfa 
 
 O caminho do emblema vive em `hero.emblema` no `content/site.json`, então dá para trocar ou remover pelo `/editar`. Campo vazio não renderiza imagem — mesma regra de degradação do resto.
 
-Ainda não usado: as duas versões animadas em MP4 (`logo animada.mp4`, `Logo Motion Árvore da Vida - 2.mp4`). Caberiam no hero, mas custam peso de página e exigiriam respeitar `prefers-reduced-motion` — fica para uma decisão do Rafael.
+**Logo animado, em uso desde 2026-08-10.** `public/logo-animado.mp4` é `Logo Motion Árvore da Vida - 2.mp4` cortado de 3s a 8s (os 4 primeiros segundos são quase pretos) e comprimido pelo `avconvert` do macOS: **9,9 MB → 820 KB**. O fundo do arquivo é preto, então o hero usa `mix-blend-screen` — o preto some e sobra o brilho. Quem prefere menos movimento não vê e **não baixa**: o `src` só é montado depois de confirmar a preferência no cliente.
