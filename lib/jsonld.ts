@@ -1,11 +1,11 @@
 import type { Site } from '@/content/schema'
 
-export function dadosDaIgreja(site: Site): Record<string, unknown> {
+export function dadosDaIgreja(site: Site, url: string = site.site.url): Record<string, unknown> {
   const dados: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Church',
     name: site.site.nome,
-    url: site.site.url,
+    url,
     description: site.site.descricao,
     address: {
       '@type': 'PostalAddress',
