@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import { site } from '@/content/load'
+import { urlDoSite } from '@/lib/urlDoSite'
 import { variaveisDeTema } from '@/lib/tema'
 import JsonLd from '@/components/seo/JsonLd'
 import { dadosDaIgreja } from '@/lib/jsonld'
@@ -14,7 +15,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.site.url),
+  metadataBase: new URL(urlDoSite()),
   title: {
     default: `${site.site.nome} — ${site.contato.cidade}/${site.contato.estado}`,
     template: `%s — ${site.site.nome}`,
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: site.site.url,
+    url: urlDoSite(),
     siteName: site.site.nome,
     title: `${site.site.nome} — ${site.contato.cidade}/${site.contato.estado}`,
     description: site.site.descricao,
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={poppins.variable}>
       <body style={variaveisDeTema(site.tema)} className="font-sans antialiased">
-        <JsonLd dados={dadosDaIgreja(site)} />
+        <JsonLd dados={dadosDaIgreja(site, urlDoSite())} />
         {children}
       </body>
     </html>
