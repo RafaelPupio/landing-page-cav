@@ -2,7 +2,7 @@
 
 ## Estado
 
-Nada publicado ainda, mas o bloqueio técnico do endereço foi resolvido. O repositório está no GitHub (`RafaelPupio/landing-page-cav`, privado) e o código do site ainda não foi escrito.
+Nada publicado ainda, mas o site está pronto e o bloqueio técnico do endereço foi resolvido. Repositório no GitHub (`RafaelPupio/landing-page-cav`, privado), 122 testes verdes, build de produção verificado.
 
 ## Plano
 
