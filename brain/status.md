@@ -14,7 +14,7 @@
 - [x] Capítulos de mensagens, generosidade e primeira visita (PR #2, mergeado 2026-08-10)
 - [ ] Deploy
 
-Suíte: **118 testes**, 17 arquivos. `npm run build` e `npm run lint` limpos.
+Suíte: **119 testes**, 16 arquivos. `npm run build` e `npm run lint` limpos.
 
 ## Próximo passo
 
@@ -26,13 +26,13 @@ Nenhum bloqueia a implementação. Os itens abaixo bloqueiam apenas o **lançame
 
 | Item | Situação |
 |---|---|
-| Domínio | Não registrado. Sugestão: `arvoredavidalrv.com.br` no Registro.br, ~R$40/ano. Desde a Task 13, esse domínio inexistente já sai no HTML publicado — `metadataBase`/canonical, `og:url` e o `url` do JSON-LD (`lib/jsonld.ts`) apontam todos para `https://arvoredavidalrv.com.br`. Não quebra o build, mas até o domínio ser registrado e apontado, links compartilhados e o JSON-LD levam a um endereço que não resolve |
-| Hospedagem | Vercel, plano gratuito — conta ainda não criada |
+| Domínio | Não registrado — mas **deixou de ser bloqueio técnico**: `lib/urlDoSite.ts` usa a URL que a Vercel informa, e passa a usar o domínio sozinho quando ele for apontado. Sugestão: `arvoredavidalrv.com.br` no Registro.br, ~R$40/ano. Desde a Task 13, esse domínio inexistente já sai no HTML publicado — `metadataBase`/canonical, `og:url` e o `url` do JSON-LD (`lib/jsonld.ts`) apontam todos para `https://arvoredavidalrv.com.br`. Não quebra o build, mas até o domínio ser registrado e apontado, links compartilhados e o JSON-LD levam a um endereço que não resolve |
+| Hospedagem | ⏳ **É o passo que falta.** CLI instalada (v58.9.4), mas sem sessão. Importar `RafaelPupio/landing-page-cav` em vercel.com → Add New → Project. Como o repo é privado, precisa liberar o acesso na instalação do GitHub |
 | WhatsApp / telefone | Desconhecido. Fica como campo vazio; o botão simplesmente não renderiza |
 | E-mail, CEP, coordenadas | Desconhecidos, mesmo tratamento |
 | Horários de GCs | Desconhecidos. Só o culto de domingo 18h está confirmado |
 | Fotos | Nenhum arquivo recebido. Os slots existem e renderizam gradientes |
-| Imagem Open Graph | ✅ Pronta em `app/opengraph-image.png`, com o logotipo real |
+| Imagem Open Graph | ✅ Pronta em `app/opengraph-image.png`, já no verde novo `#131A08` |
 | Perfil da Empresa no Google | Não verificado se existe. Ver [[projeto/seo]] — importa mais que o site |
 | **Texto de "O que esperar"** | ⚠️ **Único texto do site que o Claude escreveu, não transcreveu.** Os três passos (chegue às 18h, venha como está, fique para conversar) são suposições sobre o domingo da igreja. Rafael/liderança precisa confirmar ou reescrever pelo `/editar` antes do lançamento |
 | Link de contribuição | Não existe. O capítulo Generosidade renderiza só o texto; o botão aparece sozinho quando `generosidade.ctaUrl` for preenchido (PIX, link de doação, o que a igreja usar) |
