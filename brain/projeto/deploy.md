@@ -2,7 +2,7 @@
 
 ## Estado
 
-Nada publicado. O repositório está no GitHub (`RafaelPupio/landing-page-cav`, privado) e o código do site ainda não foi escrito.
+Nada publicado ainda, mas o bloqueio técnico do endereço foi resolvido. O repositório está no GitHub (`RafaelPupio/landing-page-cav`, privado) e o código do site ainda não foi escrito.
 
 ## Plano
 
@@ -29,3 +29,17 @@ Não é burocracia: cada item aqui já é uma falha que aconteceria em produçã
 - Vincular a URL ao Perfil da Empresa no Google (ver [[projeto/seo]] — isso importa mais que o site).
 - Trocar o link da bio do Instagram.
 - Submeter o sitemap no Google Search Console.
+
+## O endereço do site se resolve sozinho (2026-08-11)
+
+`site.url` no JSON guarda o domínio que a igreja pretende registrar. Enquanto ele não existir, publicar com esse valor faria canonical, `og:url`, sitemap, robots e JSON-LD apontarem para um endereço que não resolve — o Google receberia dados estruturados quebrados, o que é pior que não ter nenhum.
+
+`lib/urlDoSite.ts` resolve na ordem:
+
+1. `NEXT_PUBLIC_SITE_URL` — escape manual
+2. `VERCEL_PROJECT_PRODUCTION_URL` — a Vercel preenche sozinha
+3. `site.url` do JSON — vale em desenvolvimento
+
+**Detalhe que custou um teste falso:** os metadados do Next são resolvidos no **build**, não no start. Verificar com `npm start` depois de um build feito sem a variável mostra o valor antigo e engana. O teste válido é `VERCEL_PROJECT_PRODUCTION_URL=... npm run build && npm start` — foi assim que confirmei os cinco lugares.
+
+Na Vercel a variável existe no build, então funciona sem configuração. Quando o domínio próprio for apontado, ela passa a valer o domínio, e nada precisa ser editado.

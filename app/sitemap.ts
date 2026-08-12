@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
-import { site } from '@/content/load'
+import { urlDoSite } from '@/lib/urlDoSite'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [{ url: site.site.url, changeFrequency: 'monthly', priority: 1 }]
+  return [{ url: urlDoSite(), changeFrequency: 'monthly', priority: 1 }]
 }

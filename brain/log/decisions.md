@@ -483,3 +483,15 @@ Rafael comparou o site com a maquete em `docs/mockups/influentes/` e escolheu a 
 Três testes que guardavam a regra antiga foram reescritos, não afrouxados: o do rótulo do capítulo, o do subtítulo do hero e o do blob (que saiu do hero). No lugar entrou `tests/lib/contraste.test.ts`, que mede os tokens de verdade em vez de checar nome de classe — se alguém clarear o fundo pelo `/editar`, a suíte quebra.
 
 `window.matchMedia` foi adicionado ao `vitest.setup.ts`: o jsdom não implementa, e sem isso qualquer componente que consulte preferência de movimento derruba os testes da página.
+
+## 2026-08-11 — O endereço do site deixa de ser um bloqueio de lançamento
+
+Rafael pediu para publicar na Vercel. A CLI não está instalada e não há sessão autenticada — o deploy em si é dele, e eu não entro com credenciais.
+
+O que dava para resolver, e era um bloqueio real: o site anunciava `https://arvoredavidalrv.com.br` como endereço oficial em cinco lugares (canonical, `og:url`, sitemap, robots, JSON-LD). Domínio que não existe. Publicar assim seria pior que não ter dados estruturados.
+
+`lib/urlDoSite.ts` resolve por ordem de confiabilidade, com a URL que a Vercel informa no meio. Ver [[projeto/deploy]].
+
+**Erro meu no caminho, que vale registrar:** verifiquei primeiro com `npm start` sobre um build antigo e o canonical continuou no domínio errado. Quase reportei o resolvedor como quebrado. A causa é que os metadados do Next são resolvidos no build — a variável precisa existir lá, não no start. Rebuild com a variável confirmou os cinco lugares corretos.
+
+`dadosDaIgreja` passou a receber a url por parâmetro (com padrão) para continuar pura e testável, em vez de ler o ambiente por dentro.
