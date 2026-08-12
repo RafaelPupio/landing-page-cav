@@ -38,7 +38,7 @@ A restrição que moldou o design original — *limão só em texto de 24px ou m
 
 Do folder, todos reproduzidos em SVG inline (nada de imagem raster, nada de request externo):
 
-- **Blobs orgânicos** — três variantes de path, em `components/decor/Blob.tsx`. No impresso eles sangram para fora da página; na web, `overflow-hidden` na seção com o blob posicionado parcialmente fora reproduz o efeito. **Saiu do Hero em 2026-08-10**, quando o logo animado passou a ocupar o fundo do topo. Hoje o `Blob` não é usado por nenhuma seção — é a próxima peça candidata a virar código morto se ninguém consumir.
+- ~~Blobs orgânicos~~ (`components/decor/Blob.tsx`) — saíram do Hero quando o logo animado passou a ocupar o fundo do topo, e em 2026-08-11 foram removidos como código morto, seguindo o mesmo critério do círculo e do `✕✕✕`. Se a forma orgânica do folder fizer falta, reimplementar a partir do impresso em vez de recuperar do histórico sem revisitar o design.
 - ~~Círculos sólidos~~ e ~~contornos finos em limão~~ e ~~`✕✕✕`~~ (`components/decor/Circulo.tsx`, `components/ui/SeparadorXXX.tsx`) — chegaram a ser implementados junto com o `Blob` na Task 4, mas nenhuma seção real (Task 6 em diante) acabou consumindo essas duas peças; removidas como código morto na revisão final de 2026-08-09 (só eram exercitadas pelos próprios testes, cobertura de mentira). Se a decoração do círculo/xis fizer falta visualmente algum dia, reimplementar a partir do folder impresso, não recuperar do histórico do git sem revisitar o design.
 - ~~Grade pontilhada~~ — cortada na direção D: no fundo escuro vira ruído sem informar nada.
 

@@ -495,3 +495,13 @@ O que dava para resolver, e era um bloqueio real: o site anunciava `https://arvo
 **Erro meu no caminho, que vale registrar:** verifiquei primeiro com `npm start` sobre um build antigo e o canonical continuou no domínio errado. Quase reportei o resolvedor como quebrado. A causa é que os metadados do Next são resolvidos no build — a variável precisa existir lá, não no start. Rebuild com a variável confirmou os cinco lugares corretos.
 
 `dadosDaIgreja` passou a receber a url por parâmetro (com padrão) para continuar pura e testável, em vez de ler o ambiente por dentro.
+
+## 2026-08-11 — Passada de pré-lançamento
+
+Rafael ainda não importou o projeto na Vercel (conferi: os endereços `*.vercel.app` respondem 404 da borda, e o domínio não resolve). Enquanto isso, dois acertos que só faziam sentido agora:
+
+**Imagem de compartilhamento no verde novo.** O `app/opengraph-image.png` ainda usava o verde `#44581A` — quem clicasse no link do WhatsApp veria um card num verde e cairia num site quase preto. Remapeei só as cores de fundo (fundo → `#131A08`, círculo decorativo → `#1D2710`) com transição suave nas bordas, preservando logotipo e texto. Regenerar do zero exigiria a Poppins, que não está instalada no sistema — e trocar a fonte deixaria o card pior que a inconsistência de cor.
+
+**`Blob` removido.** Era a última peça de `components/decor/`. Saiu do Hero na modernização e nenhuma seção passou a usá-la; ficou só sendo exercitada pelo próprio teste, que é cobertura de mentira. Mesmo critério aplicado ao `Circulo` e ao `SeparadorXXX` na revisão final de 2026-08-09.
+
+Os ícones `app/icon.png` e `app/apple-icon.png` **não** foram alterados: continuam com o emblema creme sobre o verde da marca. Em 16px o verde é mais reconhecível que o quase-preto, e o favicon é o lugar onde a cor da marca deve aparecer.
