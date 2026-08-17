@@ -1,4 +1,4 @@
-# Status — atualizado 2026-08-09
+# Status — atualizado 2026-08-17
 
 ## Onde estamos
 
@@ -12,9 +12,22 @@
 - [x] Tasks 1–14 — scaffold, conteúdo, tema, primitivas, seções, montagem, SEO, editor
 - [x] Revisão final de branch, sem bloqueadores
 - [x] Capítulos de mensagens, generosidade e primeira visita (PR #2, mergeado 2026-08-10)
+- [x] Auditoria de segurança + endurecimento (2026-08-17) — ver [[log/decisions]]
 - [ ] Deploy
 
-Suíte: **119 testes**, 16 arquivos. `npm run build` e `npm run lint` limpos.
+Suíte: **133 testes**, 17 arquivos. `npm run build` e `npm run lint` limpos.
+
+## Segurança
+
+Auditado em 2026-08-17, sem nenhuma falha explorável. A trava de `/editar` e
+`/api/content` está correta (allowlist fail-closed em `lib/ambiente.ts`) e
+verificada contra o build de produção: as três rotas respondem 404. `npm audit`
+limpo, nenhum segredo versionado, todo `target="_blank"` com `rel="noopener"`.
+
+Dois endurecimentos aplicados nessa passada, ambos preventivos:
+`next.config.ts` agora envia CSP e os demais cabeçalhos de segurança, e
+`contato.mapaEmbedUrl` exige https no schema. Detalhes e as trocas conscientes
+(por que o CSP aceita `'unsafe-inline'`) em [[log/decisions]].
 
 ## Próximo passo
 

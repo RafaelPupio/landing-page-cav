@@ -39,7 +39,19 @@ export const contatoSchema = z.object({
   estado: z.string().length(2),
   cep: z.string(),
   mapsUrl: z.string().url(),
-  mapaEmbedUrl: z.string(),
+  // Diferente de `mapsUrl` (que só vira href de um link), este endereço vai
+  // para o `src` de um <iframe> em Visita.tsx: o navegador o carrega sozinho,
+  // dentro da nossa página, sem ninguém clicar em nada. Por isso a trava aqui é
+  // mais apertada que a dos campos vizinhos — https obrigatório, o que já exclui
+  // `javascript:`, `data:` e http em texto puro. Vazio continua válido e
+  // significa "não mostre o mapa", igual aos outros campos opcionais.
+  mapaEmbedUrl: z.union([
+    z.literal(''),
+    z.string().url().refine((v) => v.startsWith('https://'), {
+      message:
+        'O endereço do mapa precisa começar com https:// — ele é carregado dentro da página, não apenas clicado. Copie o link do "Incorporar um mapa" no Google Maps. Deixe vazio para não mostrar mapa nenhum.',
+    }),
+  ]),
   latitude: z.string(),
   longitude: z.string(),
   telefone: z.string(),
