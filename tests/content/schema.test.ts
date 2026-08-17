@@ -51,6 +51,34 @@ describe('siteSchema', () => {
     }
   })
 
+  // mapaEmbedUrl vai direto para o `src` de um <iframe>. Diferente dos outros
+  // links, o navegador não espera um clique: ele carrega esse endereço sozinho,
+  // dentro da página. Um `javascript:` ou um http:// em texto puro aqui vale
+  // bem mais que num link comum — por isso a trava é mais apertada que a dos
+  // campos vizinhos, e por isso ela tem teste próprio.
+  it.each([
+    ['javascript:alert(1)', 'esquema javascript:'],
+    ['http://maps.google.com/maps?output=embed', 'http sem TLS'],
+    ['maps.google.com/maps?output=embed', 'endereço sem esquema'],
+    ['data:text/html,<h1>oi</h1>', 'data: URI'],
+  ])('rejeita %s como mapaEmbedUrl (%s)', (valor) => {
+    const quebrado = structuredClone(conteudo) as { contato: { mapaEmbedUrl: string } }
+    quebrado.contato.mapaEmbedUrl = valor
+    const resultado = siteSchema.safeParse(quebrado)
+    expect(resultado.success).toBe(false)
+    if (!resultado.success) {
+      expect(resultado.error.issues[0].path).toEqual(['contato', 'mapaEmbedUrl'])
+    }
+  })
+
+  // Vazio continua válido: Visita.tsx faz `{contato.mapaEmbedUrl && ...}`, ou
+  // seja, string vazia é a forma de dizer "não mostre o mapa" sem quebrar nada.
+  it('aceita mapaEmbedUrl vazio — é assim que se esconde o mapa', () => {
+    const semMapa = structuredClone(conteudo) as { contato: { mapaEmbedUrl: string } }
+    semMapa.contato.mapaEmbedUrl = ''
+    expect(siteSchema.safeParse(semMapa).success).toBe(true)
+  })
+
   it('rejeita "Domingo" em diaSemana — exige o nome do dia em inglês, que é o que o schema.org/Google entende', () => {
     const quebrado = structuredClone(conteudo) as { horarios: { diaSemana: string }[] }
     quebrado.horarios[0].diaSemana = 'Domingo'
