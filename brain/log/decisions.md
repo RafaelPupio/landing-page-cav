@@ -505,3 +505,53 @@ Rafael ainda não importou o projeto na Vercel (conferi: os endereços `*.vercel
 **`Blob` removido.** Era a última peça de `components/decor/`. Saiu do Hero na modernização e nenhuma seção passou a usá-la; ficou só sendo exercitada pelo próprio teste, que é cobertura de mentira. Mesmo critério aplicado ao `Circulo` e ao `SeparadorXXX` na revisão final de 2026-08-09.
 
 Os ícones `app/icon.png` e `app/apple-icon.png` **não** foram alterados: continuam com o emblema creme sobre o verde da marca. Em 16px o verde é mais reconhecível que o quase-preto, e o favicon é o lugar onde a cor da marca deve aparecer.
+
+## 2026-08-17 — Auditoria de segurança e dois endurecimentos preventivos
+
+Rafael pediu uma revisão de vulnerabilidades. Não havia PR aberto (as cinco já
+estavam mergeadas), então a auditoria foi sobre a `main` inteira.
+
+**Nenhuma falha explorável.** O que mais importava — a regra 3 do `INDEX.md` —
+está certo e agora verificado de ponta a ponta, não só por teste unitário: com
+`next start` sobre o build de produção, `/editar`, `GET /api/content` e
+`PUT /api/content` respondem 404. `npm audit` limpo, nenhum segredo versionado,
+todo `target="_blank"` com `rel="noopener noreferrer"`, e o `JsonLd` já escapava
+`<` corretamente.
+
+Os dois achados eram de endurecimento, não de bug. Arrumei os dois em TDD
+(13 testes escritos primeiro, vermelhos, depois a implementação).
+
+**1. Cabeçalhos de segurança em `next.config.ts`.** O site não mandava nenhuma
+instrução de proteção ao navegador. Agora manda CSP, `X-Content-Type-Options`,
+`X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` e HSTS.
+
+A troca consciente que vale registrar: o `script-src` aceita `'unsafe-inline'`.
+Eliminar isso exigiria nonce por requisição via middleware, e **nonce exige
+renderização dinâmica** — a home deixaria de ser estática e de sair do CDN. Isso
+custaria o carregamento rápido no celular, que é O caso de uso (regra 4). Mesmo
+com `'unsafe-inline'`, a política continua bloqueando o vetor mais comum, que é
+buscar script de um domínio de fora. Confirmei no navegador injetando um script
+de `example.com` e um iframe de `evil.example.com`: os dois foram bloqueados
+(`script-src-elem` e `frame-src`) e o mapa do Google continuou carregando.
+O build confirma que a home segue estática (`○ /`).
+
+O CSP de desenvolvimento é mais frouxo (`'unsafe-eval'` e `ws:`), senão o hot
+reload do Turbopack quebra. A checagem reusa `ehDesenvolvimento()` — a mesma
+allowlist fail-closed do `/editar`, então NODE_ENV inesperado cai na política
+apertada, nunca na frouxa. Verifiquei que `npm run dev` e o `/editar` continuam
+funcionando (a API respondeu 200 com o conteúdo).
+
+**2. `contato.mapaEmbedUrl` agora exige https.** Era o único campo de link do
+schema sem validação, enquanto `mapsUrl`, `instagram`, `youtube` e `canalUrl`
+todos usavam `.url()`. Ele vai direto para o `src` de um `<iframe>` em
+`Visita.tsx` — o navegador carrega esse endereço sozinho, sem clique, o que faz
+um `javascript:` ou `data:` valer bem mais ali que num link comum. Explorar
+exigiria já ter acesso ao repositório ou à máquina de desenvolvimento, então a
+gravidade real é baixa; arrumei porque parecia esquecimento, não escolha.
+Vazio continua válido — é como se esconde o mapa.
+
+**Nota de método:** a verificação visual por screenshot não funcionou (a pane do
+navegador ficou escondida e o `scroll` deu timeout). Trocar por sondas
+programáticas — injetar recursos externos e ler os eventos
+`securitypolicyviolation` — provou mais que a screenshot provaria, porque mostra
+o CSP *bloqueando* e não só a página parecendo normal.
