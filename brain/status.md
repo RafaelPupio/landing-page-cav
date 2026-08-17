@@ -40,7 +40,7 @@ Nenhum bloqueia a implementação. Os itens abaixo bloqueiam apenas o **lançame
 | Item | Situação |
 |---|---|
 | Domínio | Não registrado — mas **deixou de ser bloqueio técnico**: `lib/urlDoSite.ts` usa a URL que a Vercel informa, e passa a usar o domínio sozinho quando ele for apontado. Sugestão: `arvoredavidalrv.com.br` no Registro.br, ~R$40/ano. Desde a Task 13, esse domínio inexistente já sai no HTML publicado — `metadataBase`/canonical, `og:url` e o `url` do JSON-LD (`lib/jsonld.ts`) apontam todos para `https://arvoredavidalrv.com.br`. Não quebra o build, mas até o domínio ser registrado e apontado, links compartilhados e o JSON-LD levam a um endereço que não resolve |
-| Hospedagem | ⏳ **É o passo que falta.** CLI instalada (v58.9.4), mas sem sessão. Importar `RafaelPupio/landing-page-cav` em vercel.com → Add New → Project. Como o repo é privado, precisa liberar o acesso na instalação do GitHub |
+| Hospedagem | ✅ **Importado na Vercel** — constatado em 2026-08-17 pelo check da Vercel no PR #6, que gerou deploy de preview com sucesso (projeto `rafael-e2fe/landing-page-cav`). Os previews estão sob proteção de acesso da Vercel: respondem 302 para o login, então não dá para conferi-los de fora sem sessão. **Não verificado ainda:** se o deploy de produção está no ar e com que endereço — a API de deployments do GitHub foi bloqueada na sessão em que isso foi descoberto. Rafael tem esse dado no painel |
 | WhatsApp / telefone | Desconhecido. Fica como campo vazio; o botão simplesmente não renderiza |
 | E-mail, CEP, coordenadas | Desconhecidos, mesmo tratamento |
 | Horários de GCs | Desconhecidos. Só o culto de domingo 18h está confirmado |

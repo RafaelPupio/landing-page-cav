@@ -555,3 +555,22 @@ navegador ficou escondida e o `scroll` deu timeout). Trocar por sondas
 programáticas — injetar recursos externos e ler os eventos
 `securitypolicyviolation` — provou mais que a screenshot provaria, porque mostra
 o CSP *bloqueando* e não só a página parecendo normal.
+
+## 2026-08-17 — O projeto já está na Vercel (constatado, não feito)
+
+Ao mergear o PR #6 apareceu um check da Vercel verde, com deploy de preview do
+projeto `rafael-e2fe/landing-page-cav`. Ou seja, Rafael importou o repositório
+em algum momento entre 2026-08-12 e hoje, e o `status.md` seguia dizendo que
+importar era "o passo que falta". Corrigido.
+
+O que **não** foi verificado: se a produção está no ar e em que endereço. Os
+previews respondem 302 para o login da Vercel (proteção de acesso ligada), e a
+chamada à API de deployments do GitHub foi bloqueada pelo classificador de
+permissões nesta sessão. Fica como pergunta aberta para o Rafael, não como
+suposição escrita aqui.
+
+Consequência prática: os cabeçalhos de segurança do PR #6 estão verificados
+contra o build de produção **local** (`next start`), não contra a borda da
+Vercel. A Vercel aplica `headers()` na borda normalmente, mas isso é
+expectativa, não medição — vale um `curl -I` no endereço real quando ele for
+conhecido.
