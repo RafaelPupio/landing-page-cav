@@ -574,3 +574,24 @@ contra o build de produção **local** (`next start`), não contra a borda da
 Vercel. A Vercel aplica `headers()` na borda normalmente, mas isso é
 expectativa, não medição — vale um `curl -I` no endereço real quando ele for
 conhecido.
+
+## 2026-08-18 — Produção verificada no ar: fecha a pergunta aberta de ontem
+
+Rafael perguntou o endereço do site na Vercel. O endereço padrão do projeto
+respondeu direto: **https://landing-page-cav.vercel.app** — 200, produção
+pública. (O endereço com sufixo `-rafael-e2fe` responde 302 para login, como
+todos os previews.)
+
+Com o endereço em mãos, fechei a ponta registrada ontem: os cabeçalhos de
+segurança do PR #6 agora estão **medidos na borda da Vercel**, não só no build
+local. Todos os seis chegam (CSP, HSTS, nosniff, X-Frame-Options,
+Referrer-Policy, Permissions-Policy), e `/editar` + `/api/content` respondem
+404 em produção de verdade. A regra 3 do INDEX está verificada no pior caso —
+o site público.
+
+Uma nota: a Vercel serve o HSTS com `preload`, apesar do nosso valor não o
+incluir — é a borda dela que anexa isso ao próprio domínio `*.vercel.app`, fora
+do nosso controle e sem efeito sobre o domínio próprio futuro.
+
+O checkbox "Deploy" do status foi marcado. O que resta de lançamento é conteúdo
+e domínio (ver tabela em [[status]]), nada de código.
