@@ -198,3 +198,27 @@ antigas de PR no origin foram apagadas junto com o force push.
 Regra durável que isso cria: conteúdo pessoal do Rafael não entra em arquivo
 versionado deste repo. O que precisar ser dito sobre ele em notas versionadas,
 dizer no nível "decisão dele / preferência dele", sem o perfil.
+
+## 2026-09-02 — cavlrv.com.br no ar: a cadeia completa, com uma surpresa no meio
+
+O site da igreja está em **https://cavlrv.com.br**. A cadeia: registro (CNPJ,
+via contabilidade) → delegação salva no painel → e a surpresa que destravou
+tudo antes da delegação propagar: **o Registro.br copia os registros dos
+nameservers de destino para o DNS deles durante a transição** — os IPs da
+Vercel apareceram servidos pelos a/b.auto.dns.br. O monitor da sessão pegou
+esse evento, a verificação da Vercel passou na hora, TLS emitido em minutos.
+
+Na sequência, o redeploy — obrigatório, não opcional: `vercel redeploy` do
+deployment de produção, porque canonical/og:url/sitemap resolvem
+`VERCEL_PROJECT_PRODUCTION_URL` no build (lição de 2026-08-11, aplicada desta
+vez sem tropeço). Conferido no HTML publicado: canonical e og:url apontam
+`https://cavlrv.com.br`, sitemap idem, cabeçalhos de segurança na borda,
+`/editar` 404.
+
+Pendência cosmética, não bloqueante: `www.cavlrv.com.br` e
+`landing-page-cav.vercel.app` servem 200 sem redirecionar para o apex. O
+canonical já consolida o SEO; um 308 no painel da Vercel (Settings → Domains →
+Redirect) fecharia com perfeição. Anotado no [[status]].
+
+O link da bio do Instagram pode passar a ser https://cavlrv.com.br — esse era
+o objetivo do projeto inteiro.
