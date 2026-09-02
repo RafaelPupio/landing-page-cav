@@ -140,3 +140,19 @@ cabeçalhos com `curl -I https://cavlrv.com.br`, e **fazer um redeploy** — o
 canonical, og:url, sitemap e JSON-LD são resolvidos no build via
 `VERCEL_PROJECT_PRODUCTION_URL` (a lição de 2026-08-11: metadado não muda com
 o domínio, muda com o build seguinte ao domínio).
+
+## 2026-09-02 — Correção: o cavlrv.com.br ainda não foi registrado; será no CNPJ da igreja
+
+Rafael esclareceu: ele ainda vai registrar pelo site do Registro.br, no CNPJ da
+igreja, com pagamento passando pela contabilidade. Isso corrige a entrada
+anterior de hoje ("Rafael registrou") — era prematura, e explica por que o
+RDAP não mostrava nada: não havia registro nenhum, não era pagamento em
+confirmação. Duas vezes seguidas o mesmo padrão (rafaelpupio.com "grátis",
+cavlrv "registrado"): o que o Rafael relata em conversa descreve intenção ou
+entendimento, e o registro oficial é quem confirma — anotar como fato só o que
+a fonte oficial mostrar.
+
+Registrar no CNPJ é o desfecho recomendado desde o início: o domínio pertence
+à igreja, não a uma pessoa. O lado Vercel segue pronto e aguardando (não
+expira). Ficou claro para o Rafael o único passo que a Vercel não faz: a troca
+de nameservers no painel do Registro.br, que é de quem detiver a conta do CNPJ.
