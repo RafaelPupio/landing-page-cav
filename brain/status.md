@@ -39,7 +39,7 @@ Nenhum bloqueia a implementação. Os itens abaixo bloqueiam apenas o **lançame
 
 | Item | Situação |
 |---|---|
-| Domínio | **Decisão pendente.** Rafael registrou `rafaelpupio.com` pela Vercel em 2026-09-01 (grátis no 1º ano; renovação US$ 11,25). Em 2026-09-01 ainda propagando nameservers, sem TLS e **não apontado a projeto nenhum**. É o domínio pessoal dele, não o da igreja — usar no site da igreja é escolha de marca, não técnica. O plano original (`arvoredavidalrv.com.br`, Registro.br ~R$40/ano) segue não registrado. Nada muda no código: `lib/urlDoSite.ts` adota sozinho qualquer domínio que for apontado na Vercel |
+| Domínio | ❌ **A igreja não tem domínio — em lugar nenhum.** Único domínio na conta Vercel é `rafaelpupio.com` (registrado 2026-09-01, grátis 1º ano), e ele já está apontado ao site pessoal do Rafael (projeto `rafaelpupio-com`) — o crédito de domínio grátis da Vercel foi gasto aí. Checado em 2026-09-01: `arvoredavidalrv.com.br` e `arvoredavida.com.br` estão livres no Registro.br (~R$40/ano); `comunidadearvoredavida.com.br` está registrado por terceiros (possível igreja homônima). Alternativa grátis: reivindicar um subdomínio `*.vercel.app` melhor que o atual. `lib/urlDoSite.ts` adota sozinho o que for apontado |
 | Hospedagem | ✅ **No ar em produção: <https://landing-page-cav.vercel.app>** (verificado em 2026-08-18: responde 200, com todos os cabeçalhos de segurança do PR #6 na borda, e `/editar` + `/api/content` respondendo 404). Projeto `rafael-e2fe/landing-page-cav`; previews continuam sob proteção de acesso (302 para login) |
 | WhatsApp / telefone | Desconhecido. Fica como campo vazio; o botão simplesmente não renderiza |
 | E-mail, CEP, coordenadas | Desconhecidos, mesmo tratamento |

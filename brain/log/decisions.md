@@ -81,3 +81,22 @@ no domínio do Rafael é decisão de marca dele e da liderança, não minha. O p
 original segue sendo `arvoredavidalrv.com.br`, ainda não registrado. Se ele
 decidir usar, é um comando (`vercel domains add rafaelpupio.com landing-page-cav`
 ou pelo painel) e `lib/urlDoSite.ts` adota o endereço sozinho no build seguinte.
+
+## 2026-09-01 — Correção: a igreja não tem domínio; o grátis da Vercel foi para o site pessoal
+
+Rafael esclareceu que a pergunta sobre "domínio grátis na Vercel" era sobre o
+domínio **da igreja**. Verificado a fundo: não existe. A conta Vercel tem um
+único domínio, `rafaelpupio.com`, e o `vercel alias ls` mostra que ele já está
+servindo o site pessoal (projeto `rafaelpupio-com`) — ou seja, o crédito de
+domínio grátis foi usado nele, não na igreja.
+
+Estado dos candidatos ao domínio da igreja (via NS lookup):
+- `arvoredavidalrv.com.br` — livre
+- `arvoredavida.com.br` — livre
+- `comunidadearvoredavida.com.br` — registrado por terceiros (nspmanaged.com);
+  possivelmente outra igreja com o mesmo nome, comum no Brasil
+
+Caminhos apresentados ao Rafael, sem executar nenhum: registrar `.com.br` no
+Registro.br (a Vercel não registra `.com.br`), ou a alternativa gratuita de um
+subdomínio `*.vercel.app` mais apresentável que `landing-page-cav.vercel.app`.
+Compra de domínio é dele, sempre — nunca minha.
