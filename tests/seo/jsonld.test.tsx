@@ -114,3 +114,34 @@ describe('urlDoSite', () => {
     )
   })
 })
+
+// O schema.org não sabe dizer "todo primeiro domingo do mês". Se um culto mensal
+// entrasse em openingHoursSpecification, o Google leria que a igreja abre naquele
+// horário TODAS as semanas — informação falsa em três semanas de cada quatro, e
+// exatamente o tipo de erro que ninguém percebe olhando a página.
+describe('horários mensais ficam fora dos dados estruturados', () => {
+  const base = { rotulo: 'Culto', diaSemana: 'Sunday' as const, abre: '18:00', fecha: '20:00' }
+
+  it('inclui só o que se repete toda semana', () => {
+    const dados = dadosDaIgreja({
+      ...site,
+      horarios: [
+        { ...base, quando: 'Domingos, 18h', recorrencia: 'semanal' },
+        { ...base, rotulo: 'Santa Ceia', quando: 'Todo primeiro domingo, 8h', abre: '08:00', fecha: '10:00', recorrencia: 'mensal' },
+      ],
+    })
+    expect(dados.openingHoursSpecification).toEqual([
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Sunday', opens: '18:00', closes: '20:00' },
+    ])
+  })
+
+  it('o conteúdo real não declara nenhum horário mensal ao Google', () => {
+    const mensais = site.horarios.filter((h) => h.recorrencia === 'mensal')
+    expect(mensais.length).toBeGreaterThan(0) // a Santa Ceia existe no conteúdo
+    const dados = dadosDaIgreja(site)
+    const horas = dados.openingHoursSpecification as { opens: string }[]
+    for (const m of mensais) {
+      expect(horas.map((h) => h.opens)).not.toContain(m.abre)
+    }
+  })
+})

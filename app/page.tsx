@@ -9,6 +9,7 @@ import Cuidado from '@/components/sections/Cuidado'
 import Lideranca from '@/components/sections/Lideranca'
 import Credo from '@/components/sections/Credo'
 import Mensagens from '@/components/sections/Mensagens'
+import Agenda from '@/components/sections/Agenda'
 import Generosidade from '@/components/sections/Generosidade'
 import PrimeiraVez from '@/components/sections/PrimeiraVez'
 import Citacao from '@/components/sections/Citacao'
@@ -34,6 +35,7 @@ export default function Pagina() {
           <Historia historia={site.historia} />
           <Proposito proposito={site.proposito} />
           <Mensagens mensagens={site.mensagens} />
+          <Agenda agenda={site.agenda} />
           <Cuidado cuidado={site.cuidado} />
           <Lideranca lideranca={site.lideranca} />
           <Credo credo={site.credo} />

@@ -32,7 +32,16 @@
       "quando": "Domingos, 18h",
       "diaSemana": "Sunday",
       "abre": "18:00",
-      "fecha": "20:00"
+      "fecha": "20:00",
+      "recorrencia": "semanal"
+    },
+    {
+      "rotulo": "Santa Ceia",
+      "quando": "Todo primeiro domingo do mês, 8h",
+      "diaSemana": "Sunday",
+      "abre": "08:00",
+      "fecha": "10:00",
+      "recorrencia": "mensal"
     }
   ],
   "redes": {
@@ -144,6 +153,15 @@
       "Generosidade",
       "Adoração"
     ]
+  },
+  "agenda": {
+    "rotulo": "O mês na igreja",
+    "titulo": "Agenda",
+    "intro": "O que vai acontecer nas próximas semanas.",
+    "periodo": "",
+    "imagem": "",
+    "canvaEmbedUrl": "",
+    "canvaUrl": ""
   },
   "cuidado": {
     "rotulo": "Nossa família",

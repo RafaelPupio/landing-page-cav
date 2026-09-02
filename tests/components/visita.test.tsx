@@ -20,8 +20,8 @@ const CONTATO = {
 }
 
 const HORARIOS: Horario[] = [
-  { rotulo: 'Culto', quando: 'Domingos, 18h', diaSemana: 'Sunday', abre: '18:00', fecha: '20:00' },
-  { rotulo: 'Grupo de Conexão', quando: 'Quartas, 20h', diaSemana: 'Wednesday', abre: '20:00', fecha: '21:30' },
+  { rotulo: 'Culto', quando: 'Domingos, 18h', diaSemana: 'Sunday', abre: '18:00', fecha: '20:00', recorrencia: 'semanal' },
+  { rotulo: 'Grupo de Conexão', quando: 'Quartas, 20h', diaSemana: 'Wednesday', abre: '20:00', fecha: '21:30', recorrencia: 'semanal' },
 ]
 
 const VISITA = {

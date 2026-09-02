@@ -241,3 +241,13 @@ Nada mudou no site. Nenhuma das duas foi escolhida; são opções lado a lado
 com motivação e trade-off anotados no próprio canvas. Se uma for adiante, o
 caminho é brainstorming → spec → plano, como nas features anteriores — não
 copiar o mockup direto para componente.
+
+## 2026-08-12 — Santa Ceia, agenda do mês e o "Ç" que não era um Ç
+
+**O "Ç" era colisão de acento, não erro de conteúdo.** O Rafael relatou que o C de "Comunidade" aparecia como "Ç". Conferi os bytes: `C` (U+0043) em todos os lugares do JSON. A causa estava no CSS — o `<h1>` usava `leading-[0.92]`, entrelinha **menor que a fonte**, e as linhas se sobrepunham em 23px. O acento do "Á" de ÁRVORE (linha 2) subia até a base do "C" de COMUNIDADE (linha 1) e lia como cedilha.
+
+Corrigido para `leading-[1.05]`, medido no navegador. **Português tem maiúscula acentuada demais para entrelinha negativa** — vale como regra para qualquer título futuro em caixa-alta.
+
+**Santa Ceia, primeiro domingo às 8h.** Ver a regra da recorrência em [[projeto/conteudo]]. O cartão de visita também ganhou `whitespace-nowrap` no rótulo: "Santa Ceia:" quebrava em duas linhas e desalinhava o horário ao lado.
+
+**Capítulo de agenda** (`#agenda`, depois de Mensagens), para o cartaz do mês vindo do Canva. Aceita imagem exportada ou o Canva incorporado, com a imagem tendo prioridade. Nasce vazio e não renderiza até ter conteúdo.
