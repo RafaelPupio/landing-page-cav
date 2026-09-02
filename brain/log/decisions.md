@@ -58,3 +58,26 @@ next to this file. Open the quarter you need, never the whole history.
 - `2026-08-17` Auditoria de segurança e dois endurecimentos preventivos
 - `2026-08-17` O projeto já está na Vercel (constatado, não feito)
 - `2026-08-18` Produção verificada no ar: fecha a pergunta aberta de ontem
+
+## 2026-09-01 — Rafael tem um domínio grátis na Vercel: rafaelpupio.com
+
+Rafael pediu para checar "um domínio grátis na Vercel". Duas mudanças de
+realidade constatadas de uma vez:
+
+**A CLI da Vercel agora está logada** (`rafaelpupio`, v59.10.0) — o brain
+achava que não havia sessão. Isso abre verificação direta por `vercel domains` /
+`vercel project inspect` nas próximas sessões.
+
+**O domínio é `rafaelpupio.com`**, registrado pela Vercel minutos antes da
+pergunta (2026-09-01 23:21), expira 2027-09-01, renovação US$ 11,25/ano.
+Estado no momento da checagem: nameservers intencionais `ns1/ns2.vercel-dns.com`
+ainda não confirmados pelo registro (✘ nos dois), HTTPS ainda não respondendo
+(TLS não emitido), e **não apontado a projeto nenhum** — inclusive não ao
+`landing-page-cav`.
+
+Não apontei nada por conta própria, por duas razões: (1) apontar domínio é
+mudança de produção; (2) é o domínio **pessoal** do Rafael — o site da igreja
+no domínio do Rafael é decisão de marca dele e da liderança, não minha. O plano
+original segue sendo `arvoredavidalrv.com.br`, ainda não registrado. Se ele
+decidir usar, é um comando (`vercel domains add rafaelpupio.com landing-page-cav`
+ou pelo painel) e `lib/urlDoSite.ts` adota o endereço sozinho no build seguinte.

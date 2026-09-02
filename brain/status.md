@@ -39,7 +39,7 @@ Nenhum bloqueia a implementação. Os itens abaixo bloqueiam apenas o **lançame
 
 | Item | Situação |
 |---|---|
-| Domínio | Não registrado — mas **deixou de ser bloqueio técnico**: `lib/urlDoSite.ts` usa a URL que a Vercel informa, e passa a usar o domínio sozinho quando ele for apontado. Sugestão: `arvoredavidalrv.com.br` no Registro.br, ~R$40/ano. Desde a Task 13, esse domínio inexistente já sai no HTML publicado — `metadataBase`/canonical, `og:url` e o `url` do JSON-LD (`lib/jsonld.ts`) apontam todos para `https://arvoredavidalrv.com.br`. Não quebra o build, mas até o domínio ser registrado e apontado, links compartilhados e o JSON-LD levam a um endereço que não resolve |
+| Domínio | **Decisão pendente.** Rafael registrou `rafaelpupio.com` pela Vercel em 2026-09-01 (grátis no 1º ano; renovação US$ 11,25). Em 2026-09-01 ainda propagando nameservers, sem TLS e **não apontado a projeto nenhum**. É o domínio pessoal dele, não o da igreja — usar no site da igreja é escolha de marca, não técnica. O plano original (`arvoredavidalrv.com.br`, Registro.br ~R$40/ano) segue não registrado. Nada muda no código: `lib/urlDoSite.ts` adota sozinho qualquer domínio que for apontado na Vercel |
 | Hospedagem | ✅ **No ar em produção: <https://landing-page-cav.vercel.app>** (verificado em 2026-08-18: responde 200, com todos os cabeçalhos de segurança do PR #6 na borda, e `/editar` + `/api/content` respondendo 404). Projeto `rafael-e2fe/landing-page-cav`; previews continuam sob proteção de acesso (302 para login) |
 | WhatsApp / telefone | Desconhecido. Fica como campo vazio; o botão simplesmente não renderiza |
 | E-mail, CEP, coordenadas | Desconhecidos, mesmo tratamento |
