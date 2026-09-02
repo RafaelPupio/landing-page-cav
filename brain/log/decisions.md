@@ -156,3 +156,25 @@ Registrar no CNPJ é o desfecho recomendado desde o início: o domínio pertence
 à igreja, não a uma pessoa. O lado Vercel segue pronto e aguardando (não
 expira). Ficou claro para o Rafael o único passo que a Vercel não faz: a troca
 de nameservers no painel do Registro.br, que é de quem detiver a conta do CNPJ.
+
+## 2026-09-02 — Repo público auditado: histórico limpo, pode continuar público
+
+Rafael pediu push e autorizou manter o repositório público para portfólio,
+desde que sem nada que prejudique a segurança do site. Constatação: **o repo
+já estava público** — então a auditoria valeu pelo que já estava exposto, não
+pelo que ia ser.
+
+Varridos os 97 commits do histórico inteiro (não só o tip): nenhuma chave,
+token, senha, .env ou certificado em commit algum. O único "token" que aparece
+é `secrets.GITLAB_TOKEN` no workflow de espelhamento — referência a secret do
+GitHub Actions, que é o jeito certo. `.vercel/` nunca foi versionado,
+`.env*` está no gitignore desde o início.
+
+Sobre o que o código público revela do site: o mecanismo de `/editar` fica
+visível, e tudo bem — a trava é allowlist de NODE_ENV testada, não depende de
+segredo. Segurança por obscuridade não era a defesa; a defesa continua a mesma
+com o código à vista. O embed do mapa não usa chave de API.
+
+Único ponto levantado ao Rafael, de privacidade (não de segurança do site):
+`brain/rafael.md` é um perfil pessoal dele e está público. Decisão é dele;
+nada foi removido.
