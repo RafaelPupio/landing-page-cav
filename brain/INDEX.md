@@ -9,7 +9,7 @@
 - [[projeto/conteudo]] — de onde vem cada texto e como editar sem programar
 - [[projeto/seo]] — o que faz a igreja aparecer no Google
 - [[projeto/deploy]] — domínio, hospedagem, o que depende do Rafael
-- [[rafael]] — quem é o usuário e como conversar com ele
+- [[rafael]] — quem é o usuário e como conversar com ele (arquivo LOCAL, fora do git por privacidade — existe só na máquina do Rafael)
 - [[log/decisions]] — decisões datadas (só acrescentar, nunca reescrever)
 
 ## Regras duras (sempre)

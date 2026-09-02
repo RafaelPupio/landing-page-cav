@@ -43,3 +43,6 @@ next-env.d.ts
 # orquestração (diretório de trabalho, não versionado)
 .superpowers/
 .obsidian/
+
+# perfil pessoal do Rafael — fica só no disco local, nunca no git (removido do histórico em 2026-09-02)
+brain/rafael.md

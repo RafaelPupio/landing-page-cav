@@ -178,3 +178,23 @@ com o código à vista. O embed do mapa não usa chave de API.
 Único ponto levantado ao Rafael, de privacidade (não de segurança do site):
 `brain/rafael.md` é um perfil pessoal dele e está público. Decisão é dele;
 nada foi removido.
+
+## 2026-09-02 — rafael.md removido do histórico público; vive só no disco local
+
+Rafael decidiu (flag da auditoria de hoje): o perfil pessoal dele não fica no
+repo público. Executado com `git filter-repo` — o arquivo saiu de TODOS os
+commits do histórico, não só do tip. Ele continua existindo em
+`brain/rafael.md` na máquina local, agora sob `.gitignore`, e o INDEX marca
+isso. Sessões nesta máquina seguem lendo o perfil normalmente; clones públicos
+simplesmente não o têm.
+
+Limitações ditas ao Rafael, sem promessa a mais: (1) os SHAs antigos podem
+seguir acessíveis no GitHub via refs de PR/cache até um GC — remoção completa
+do lado deles é via suporte do GitHub; (2) se o espelho do GitLab estiver ativo
+(secret configurado), o histórico antigo vive lá até um force-push do espelho;
+(3) qualquer clone/fork feito antes de hoje mantém o arquivo. As branches
+antigas de PR no origin foram apagadas junto com o force push.
+
+Regra durável que isso cria: conteúdo pessoal do Rafael não entra em arquivo
+versionado deste repo. O que precisar ser dito sobre ele em notas versionadas,
+dizer no nível "decisão dele / preferência dele", sem o perfil.
