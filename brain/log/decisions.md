@@ -222,3 +222,22 @@ Redirect) fecharia com perfeição. Anotado no [[status]].
 
 O link da bio do Instagram pode passar a ser https://cavlrv.com.br — esse era
 o objetivo do projeto inteiro.
+
+## 2026-09-02 — Duas ideias novas de landing, em canvas editável (exploração, não decisão)
+
+Rafael pediu "2 mockups of new ideas". Entregues como canvas do Claude Design,
+dois artboards de celular (390px) com a identidade real (Poppins, tokens do
+`site.json`, emblema, texto da igreja verbatim):
+https://claude.ai/code/artifact/64d18856-683d-481c-8ea2-afa61cada36f
+
+- **Ideia A · Convite** — inverte o tom: creme como o folder impresso; o herói
+  é "Domingo, 18h", não o nome; um botão só (Como chegar). Limão vira forma
+  decorativa, não texto (contraste sobre creme reprova).
+- **Ideia B · Painel** — mantém o escuro; troca os capítulos por um painel
+  bento de ações (culto+mapa, Instagram, mensagens, primeira vez, GCs,
+  generosidade). Para quem chega do link da bio e decide em 3 segundos.
+
+Nada mudou no site. Nenhuma das duas foi escolhida; são opções lado a lado
+com motivação e trade-off anotados no próprio canvas. Se uma for adiante, o
+caminho é brainstorming → spec → plano, como nas features anteriores — não
+copiar o mockup direto para componente.
