@@ -57,3 +57,23 @@ Campos que existem no schema mas estão vazios: `telefone`, `email`, `cep`, `lat
 `content/schema.ts`, `content/site.json` e `content/load.ts` existem e passam em `npm test` e `npm run build`. As 20 declarações do credo estão nos 6 grupos descritos acima, texto conferido contra o apêndice.
 
 Pendência a revisar: `content/site.json` contém um `…` dentro da citação de Mateus 28.20 no primeiro capítulo (história) — reticências que já vêm no apêndice-fonte como parte da citação bíblica parcial, não texto cortado por mim. Mantido verbatim; ver [[log/decisions]].
+
+## Publicar a agenda do mês (2026-08-12)
+
+O capítulo `#agenda` existe para o Rafael trocar o cartaz do mês sem pedir alteração de código. Enquanto os três campos estiverem vazios, **o capítulo inteiro não renderiza** — nada de moldura vazia esperando cartaz.
+
+Dois caminhos, e a imagem tem prioridade sobre o Canva incorporado quando os dois estão preenchidos.
+
+**Caminho recomendado — imagem.** No Canva: `Compartilhar → Baixar → PNG`. No GitHub, entrar na pasta `public/`, `Add file → Upload files`, arrastar o arquivo, `Commit changes`. Depois preencher `agenda.imagem` com `/nome-do-arquivo.png` e `agenda.periodo` com o mês. Carrega rápido, não depende do Canva estar no ar e não manda dado nenhum para terceiro.
+
+**Caminho alternativo — Canva incorporado.** No Canva: `Compartilhar → Mais → Incorporar`, copiar o endereço que termina em `/view?embed`, e colar em `agenda.canvaEmbedUrl`. Menos passos, mas depende do Canva e carrega mais devagar. Usa `referrerPolicy="no-referrer"`, mesma escolha de privacidade do mapa.
+
+`agenda.canvaUrl` é independente dos dois: se preenchido, acrescenta o botão "Abrir a agenda em tela cheia".
+
+## Culto mensal e os dados estruturados (2026-08-12)
+
+`horarios` ganhou o campo `recorrencia` (`semanal` ou `mensal`). **Só os semanais entram no JSON-LD.**
+
+O motivo é concreto: o schema.org não sabe dizer "todo primeiro domingo do mês". Declarar a Santa Ceia como `openingHoursSpecification` diria ao Google que a igreja abre às 8h **todo** domingo — falso em três semanas de cada quatro, e invisível para quem só olha a página. O culto mensal aparece normalmente no cartão de visita; só não vira dado estruturado.
+
+Travado por `tests/seo/jsonld.test.tsx`, que verifica tanto um caso construído quanto o conteúdo real.

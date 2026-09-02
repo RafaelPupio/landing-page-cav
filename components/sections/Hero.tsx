@@ -31,7 +31,11 @@ export default function Hero({ hero }: { hero: Site['hero'] }) {
             className="mb-8 h-16 w-auto md:h-24"
           />
         )}
-        <h1 className="max-w-[16ch] text-5xl font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-creme md:text-8xl">
+        {/* leading 1.05, não menos: em 0.92 a caixa da linha fica menor que a fonte
+            e o acento do "Á" de ÁRVORE sobe até a base do "C" de COMUNIDADE, que
+            passa a parecer um "Ç". Português tem maiúscula acentuada demais para
+            entrelinha negativa. */}
+        <h1 className="max-w-[16ch] text-5xl font-extrabold uppercase leading-[1.05] tracking-[-0.03em] text-creme md:text-8xl">
           {hero.titulo}
         </h1>
         {/* Limão em qualquer tamanho: sobre o fundo #131A08 mede 9,08:1, muito acima

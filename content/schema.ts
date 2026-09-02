@@ -30,6 +30,13 @@ export const horarioSchema = z.object({
   ),
   abre: z.string().regex(/^\d{2}:\d{2}$/),
   fecha: z.string().regex(/^\d{2}:\d{2}$/),
+  // Só os semanais entram no JSON-LD. O schema.org não sabe dizer "todo primeiro
+  // domingo do mês": declarar um culto mensal como horário de funcionamento diria
+  // ao Google que a igreja abre naquele horário TODA semana — falso em três
+  // semanas de cada quatro. Mensal aparece na página, não nos dados estruturados.
+  recorrencia: z.enum(['semanal', 'mensal'], {
+    error: 'Use "semanal" para o que acontece toda semana ou "mensal" para o que acontece uma vez por mês (ex.: Santa Ceia no primeiro domingo).',
+  }),
 })
 
 export const contatoSchema = z.object({
@@ -213,6 +220,23 @@ export const siteSchema = z.object({
       titulo: z.string().min(1),
       texto: z.string().min(1),
     })).min(1),
+  }),
+  agenda: z.object({
+    rotulo: z.string().min(1),
+    titulo: z.string().min(1),
+    intro: z.string(),
+    // Legenda do que está publicado, ex.: "Agosto de 2026". Vazio esconde a legenda.
+    periodo: z.string(),
+    // Caminho da imagem exportada do Canva, dentro de public/ (ex.: "/agenda-agosto.png").
+    imagem: z
+      .string()
+      .refine((v) => v === '' || v.startsWith('/'), {
+        message: 'A imagem da agenda deve ser um caminho dentro de public/, começando com "/" — por exemplo "/agenda-agosto.png". Deixe vazio para usar o Canva incorporado ou para esconder a seção.',
+      }),
+    // Alternativa à imagem: o link de incorporação do Canva (termina em /view?embed).
+    canvaEmbedUrl: linkOpcional,
+    // Link para abrir a agenda no Canva, em tela cheia.
+    canvaUrl: linkOpcional,
   }),
   visita: z.object({
     rotulo: z.string().min(1),

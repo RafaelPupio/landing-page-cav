@@ -21,8 +21,10 @@ export default function Visita({
 
         <dl className="mt-5 space-y-1">
           {horarios.map((horario, i) => (
-            <div key={i} className="flex gap-2">
-              <dt className="font-semibold">{horario.rotulo}:</dt>
+            // O rótulo não quebra: "Santa Ceia:" partido em duas linhas desalinhava
+            // o horário ao lado. shrink-0 impede o flex de espremê-lo.
+            <div key={i} className="flex flex-wrap gap-x-2">
+              <dt className="shrink-0 whitespace-nowrap font-semibold">{horario.rotulo}:</dt>
               <dd className="font-light">{horario.quando}</dd>
             </div>
           ))}
