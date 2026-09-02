@@ -100,3 +100,19 @@ Caminhos apresentados ao Rafael, sem executar nenhum: registrar `.com.br` no
 Registro.br (a Vercel não registra `.com.br`), ou a alternativa gratuita de um
 subdomínio `*.vercel.app` mais apresentável que `landing-page-cav.vercel.app`.
 Compra de domínio é dele, sempre — nunca minha.
+
+## 2026-09-02 — cav.com.br tem dono; e correção: rafaelpupio.com foi pago, não grátis
+
+Rafael pediu para conferir `cav.com.br`. **Registrado por terceiros** (pessoa
+física, Ronaldo Yassuyuki Morimoto, DNSSEC ativo) — indisponível. Conferido na
+fonte oficial (RDAP do Registro.br), não só por DNS.
+
+Livres na mesma checagem: `arvoredavidalrv.com.br`, `cavlrv.com.br`,
+`igrejacav.com.br`, `comunidadecav.com.br`.
+
+**Correção de registro anterior:** escrevi em 2026-09-01 que o
+`rafaelpupio.com` era "grátis no 1º ano". Era inferência minha a partir do
+preço de renovação — Rafael confirmou que pagou no cartão. A CLI não expõe
+fatura (só o painel em vercel.com → Settings → Billing mostra o valor cobrado);
+o brain agora diz "pago", e fica a lição: preço/cobrança não se infere, se
+confirma com quem pagou ou com a fatura.
