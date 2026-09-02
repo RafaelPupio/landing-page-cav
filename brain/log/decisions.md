@@ -116,3 +116,27 @@ preço de renovação — Rafael confirmou que pagou no cartão. A CLI não exp�
 fatura (só o painel em vercel.com → Settings → Billing mostra o valor cobrado);
 o brain agora diz "pago", e fica a lição: preço/cobrança não se infere, se
 confirma com quem pagou ou com a fatura.
+
+## 2026-09-02 — cavlrv.com.br: lado Vercel pronto, falta o DNS no Registro.br
+
+Rafael registrou `cavlrv.com.br` e pediu o apontamento. Feito na Vercel:
+apex e `www` adicionados ao projeto `landing-page-cav` via
+`vercel domains add`. A verificação retorna `invalid-configuration`, como
+esperado — os nameservers ainda não são os da Vercel.
+
+**Ressalva registrada:** na hora da configuração, o RDAP e o whois oficiais do
+Registro.br ainda respondiam "não registrado". Interpretação mais provável:
+pagamento em confirmação (PIX confirma em minutos; boleto leva dias). Se o
+registro não constar em ~1 dia útil, o pagamento não concluiu — checar antes de
+caçar problema de DNS.
+
+O passo que resta é do Rafael, no painel do Registro.br: trocar os servidores
+DNS para `ns1.vercel-dns.com` / `ns2.vercel-dns.com`. Escolhi delegação de
+nameservers (não registros A/CNAME avulsos) porque a Vercel passa a cuidar de
+tudo — apex, www, TLS e renovações de registro DNS — sem manutenção manual.
+
+Quando propagar: `vercel domains verify cavlrv.com.br`, conferir TLS e
+cabeçalhos com `curl -I https://cavlrv.com.br`, e **fazer um redeploy** — o
+canonical, og:url, sitemap e JSON-LD são resolvidos no build via
+`VERCEL_PROJECT_PRODUCTION_URL` (a lição de 2026-08-11: metadado não muda com
+o domínio, muda com o build seguinte ao domínio).
