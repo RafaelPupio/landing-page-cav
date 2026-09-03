@@ -68,3 +68,4 @@ next to this file. Open the quarter you need, never the whole history.
 - `2026-09-02` cavlrv.com.br no ar: a cadeia completa, com uma surpresa no meio
 - `2026-09-02` Duas ideias novas de landing, em canvas editável (exploração, não decisão)
 - `2026-09-02` Santa Ceia, agenda do mês e o "Ç" que não era um Ç
+- `2026-09-02` Canal do YouTube corrigido e menu do celular que recolhe
