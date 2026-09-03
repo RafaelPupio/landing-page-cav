@@ -147,6 +147,12 @@ export const siteSchema = z.object({
   }),
   acoesRapidas: z.array(z.object({
     rotulo: z.string().min(1),
+    // Segunda linha do cartão, menor. Vazio some, em vez de deixar espaço morto.
+    detalhe: z.string(),
+    // Divide os atalhos em duas faixas: as ações da igreja em cima, as redes embaixo.
+    grupo: z.enum(['principal', 'rede'], {
+      error: 'Use "principal" para os atalhos da igreja (mapa, credo, horários) ou "rede" para Instagram, YouTube e Spotify.',
+    }),
     // Link interno sempre como "#ancora" ou "/caminho" — nunca com o domínio completo
     // (ex.: "https://arvoredavidalrv.com.br/algo"), senão o link do próprio site é tratado
     // como externo e abre numa aba nova por engano.
@@ -154,7 +160,7 @@ export const siteSchema = z.object({
       /^(#[^\s]+|\/[^\s]*|https?:\/\/[^\s]+|mailto:[^\s]+|tel:[^\s]+)$/,
       'Link inválido em "acoesRapidas". Use um dos formatos aceitos: âncora interna (ex.: #visita), caminho interno (ex.: /contato), link completo (ex.: https://exemplo.com.br), e-mail (ex.: mailto:contato@exemplo.com.br) ou telefone (ex.: tel:+5511999999999).',
     ),
-    icone: z.enum(['mapa', 'relogio', 'instagram', 'youtube']),
+    icone: z.enum(['mapa', 'relogio', 'credo', 'ceia', 'instagram', 'youtube', 'spotify']),
   })).min(1),
   historia: z.object({
     rotulo: z.string().min(1),

@@ -66,8 +66,8 @@ describe('Hero', () => {
 
 describe('AcoesRapidas', () => {
   const ACOES = [
-    { rotulo: 'Como chegar', href: '#visita', icone: 'mapa' as const },
-    { rotulo: 'Instagram', href: 'https://instagram.com/x', icone: 'instagram' as const },
+    { rotulo: 'Como chegar', detalhe: '', grupo: 'principal' as const, href: '#visita', icone: 'mapa' as const },
+    { rotulo: 'Instagram', detalhe: '', grupo: 'rede' as const, href: 'https://instagram.com/x', icone: 'instagram' as const },
   ]
 
   it('renderiza um link por ação', () => {
@@ -101,9 +101,9 @@ describe('AcoesRapidas', () => {
   // heurística frágil por acidente.
   it('não põe target em mailto:, tel: ou caminho relativo interno', () => {
     const acoesSemAlvoExterno = [
-      { rotulo: 'E-mail', href: 'mailto:contato@arvoredavida.org', icone: 'mapa' as const },
-      { rotulo: 'Telefone', href: 'tel:+5511999999999', icone: 'relogio' as const },
-      { rotulo: 'Contato', href: '/contato', icone: 'instagram' as const },
+      { rotulo: 'E-mail', detalhe: '', grupo: 'principal' as const, href: 'mailto:contato@arvoredavida.org', icone: 'mapa' as const },
+      { rotulo: 'Telefone', detalhe: '', grupo: 'principal' as const, href: 'tel:+5511999999999', icone: 'relogio' as const },
+      { rotulo: 'Contato', detalhe: '', grupo: 'rede' as const, href: '/contato', icone: 'instagram' as const },
     ]
     render(<AcoesRapidas acoes={acoesSemAlvoExterno} />)
     expect(screen.getByRole('link', { name: /E-mail/ })).not.toHaveAttribute('target')
@@ -113,9 +113,75 @@ describe('AcoesRapidas', () => {
 
   it('põe target em URL absoluta http(s) de terceiro', () => {
     const acoesComExterno = [
-      { rotulo: 'YouTube', href: 'https://youtube.com/@x', icone: 'youtube' as const },
+      { rotulo: 'YouTube', detalhe: '', grupo: 'rede' as const, href: 'https://youtube.com/@x', icone: 'youtube' as const },
     ]
     render(<AcoesRapidas acoes={acoesComExterno} />)
     expect(screen.getByRole('link', { name: /YouTube/ })).toHaveAttribute('target', '_blank')
+  })
+})
+
+describe('AcoesRapidas — duas faixas e cores das plataformas', () => {
+  const SETE = [
+    { rotulo: 'Como chegar', detalhe: '', grupo: 'principal' as const, href: '#visita', icone: 'mapa' as const },
+    { rotulo: 'No que cremos', detalhe: '', grupo: 'principal' as const, href: '#credo', icone: 'credo' as const },
+    { rotulo: 'Cultos', detalhe: 'Dom, 18h', grupo: 'principal' as const, href: '#visita', icone: 'relogio' as const },
+    { rotulo: 'Santa Ceia', detalhe: '1º dom, 8h', grupo: 'principal' as const, href: '#visita', icone: 'ceia' as const },
+    { rotulo: 'Instagram', detalhe: '', grupo: 'rede' as const, href: 'https://instagram.com/x', icone: 'instagram' as const },
+    { rotulo: 'YouTube', detalhe: '', grupo: 'rede' as const, href: 'https://youtube.com/@x', icone: 'youtube' as const },
+    { rotulo: 'Spotify', detalhe: '', grupo: 'rede' as const, href: 'https://open.spotify.com/user/x', icone: 'spotify' as const },
+  ]
+
+  it('separa em duas listas: os atalhos da igreja e as redes', () => {
+    const { container } = render(<AcoesRapidas acoes={SETE} />)
+    const listas = container.querySelectorAll('ul')
+    expect(listas).toHaveLength(2)
+    expect(listas[0].querySelectorAll('li')).toHaveLength(4)
+    expect(listas[1].querySelectorAll('li')).toHaveLength(3)
+  })
+
+  // Duas colunas no celular, não três: a 327px, três cartões dão 103px e metade
+  // dos rótulos quebra em duas linhas.
+  it('usa duas colunas no celular e quatro no desktop na faixa principal', () => {
+    const { container } = render(<AcoesRapidas acoes={SETE} />)
+    const principal = container.querySelectorAll('ul')[0].className
+    expect(principal).toContain('grid-cols-2')
+    expect(principal).toContain('md:grid-cols-4')
+    expect(container.querySelectorAll('ul')[1].className).toContain('grid-cols-3')
+  })
+
+  it('mostra o detalhe dentro do cartão do seu próprio rótulo', () => {
+    render(<AcoesRapidas acoes={SETE} />)
+    expect(screen.getByText('Cultos').closest('a')).toHaveTextContent('Dom, 18h')
+    expect(screen.getByText('Santa Ceia').closest('a')).toHaveTextContent('1º dom, 8h')
+    // Detalhe vazio não deixa espaço morto no cartão.
+    expect(screen.getByText('Como chegar').closest('a')?.textContent).toBe('Como chegar')
+  })
+
+  it('pinta YouTube e Spotify com as cores oficiais das plataformas', () => {
+    const { container } = render(<AcoesRapidas acoes={SETE} />)
+    const svgs = [...container.querySelectorAll('svg')]
+    const cor = (i: number) => svgs[i].getAttribute('fill')
+    expect(cor(5)).toBe('#FF0000')
+    expect(cor(6)).toBe('#1DB954')
+    // Os atalhos da igreja seguem herdando a cor do texto.
+    expect(cor(0)).toBe('currentColor')
+  })
+
+  // A ponta roxa oficial do Instagram (#833AB4) mede 2,74:1 sobre o fundo e reprova
+  // o mínimo de 3:1 para elemento gráfico. Clareada para #A855E8 (4,35:1).
+  it('usa gradiente no Instagram, com o roxo clareado por contraste', () => {
+    const { container } = render(<AcoesRapidas acoes={SETE} />)
+    const paradas = [...container.querySelectorAll('linearGradient stop')].map((s) =>
+      s.getAttribute('stop-color'),
+    )
+    expect(paradas).toContain('#A855E8')
+    expect(paradas).not.toContain('#833AB4')
+    expect(container.querySelectorAll('svg')[4].getAttribute('fill')).toContain('url(#')
+  })
+
+  it('não repete o id do gradiente no documento', () => {
+    const { container } = render(<AcoesRapidas acoes={SETE} />)
+    const ids = [...container.querySelectorAll('linearGradient')].map((g) => g.id)
+    expect(new Set(ids).size).toBe(ids.length)
   })
 })

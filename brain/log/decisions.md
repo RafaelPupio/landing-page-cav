@@ -70,3 +70,4 @@ next to this file. Open the quarter you need, never the whole history.
 - `2026-09-02` Santa Ceia, agenda do mês e o "Ç" que não era um Ç
 - `2026-09-02` Canal do YouTube corrigido e menu do celular que recolhe
 - `2026-09-02` Spotify no capítulo de Mensagens, com uma correção de expectativa
+- `2026-09-02` Atalhos do topo em duas faixas, redes com cor de plataforma

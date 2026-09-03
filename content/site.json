@@ -98,23 +98,52 @@
   "acoesRapidas": [
     {
       "rotulo": "Como chegar",
+      "detalhe": "",
+      "grupo": "principal",
       "href": "#visita",
       "icone": "mapa"
     },
     {
-      "rotulo": "Domingos, 18h",
+      "rotulo": "No que cremos",
+      "detalhe": "",
+      "grupo": "principal",
+      "href": "#credo",
+      "icone": "credo"
+    },
+    {
+      "rotulo": "Cultos",
+      "detalhe": "Dom, 18h",
+      "grupo": "principal",
       "href": "#visita",
       "icone": "relogio"
     },
     {
+      "rotulo": "Santa Ceia",
+      "detalhe": "1º dom, 8h",
+      "grupo": "principal",
+      "href": "#visita",
+      "icone": "ceia"
+    },
+    {
       "rotulo": "Instagram",
+      "detalhe": "",
+      "grupo": "rede",
       "href": "https://www.instagram.com/comunidadearvoredavida",
       "icone": "instagram"
     },
     {
       "rotulo": "YouTube",
+      "detalhe": "",
+      "grupo": "rede",
       "href": "https://www.youtube.com/@ÁrvoredaVida-u9t",
       "icone": "youtube"
+    },
+    {
+      "rotulo": "Spotify",
+      "detalhe": "",
+      "grupo": "rede",
+      "href": "https://open.spotify.com/user/brq25dmfptsgcspk7lso46k7i",
+      "icone": "spotify"
     }
   ],
   "historia": {

@@ -1,4 +1,4 @@
-# Status — atualizado 2026-08-18
+# Status — atualizado 2026-09-03
 
 ## Onde estamos
 
@@ -13,9 +13,13 @@
 - [x] Revisão final de branch, sem bloqueadores
 - [x] Capítulos de mensagens, generosidade e primeira visita (PR #2, mergeado 2026-08-10)
 - [x] Auditoria de segurança + endurecimento (2026-08-17) — ver [[log/decisions]]
-- [x] Deploy — produção no ar em <https://landing-page-cav.vercel.app> (verificado 2026-08-18)
+- [x] Deploy — produção no ar em <https://cavlrv.com.br> (verificado 2026-09-02)
+- [x] Santa Ceia, bloco de agenda do mês e o "Ç" corrigido (PR #8, mergeado 2026-09-02)
+- [x] Canal do YouTube correto e menu do celular que recolhe (PR #9, mergeado 2026-09-02)
+- [x] Botão do Spotify em Mensagens, rodapé e `sameAs` (PR #10, mergeado 2026-09-02)
+- [ ] Atalhos do topo em duas faixas, redes com cor de plataforma — **PR #11 aberto, aguardando o Rafael**
 
-Suíte: **133 testes**, 17 arquivos. `npm run build` e `npm run lint` limpos.
+Suíte: **159 testes**, 19 arquivos. `npm run build` e `npm run lint` limpos.
 
 ## Segurança
 
