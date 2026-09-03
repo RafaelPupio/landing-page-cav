@@ -87,3 +87,21 @@ Derivados no repositório, todos gerados a partir da variante branca com o alfa 
 O caminho do emblema vive em `hero.emblema` no `content/site.json`, então dá para trocar ou remover pelo `/editar`. Campo vazio não renderiza imagem — mesma regra de degradação do resto.
 
 **Logo animado, em uso desde 2026-08-10.** `public/logo-animado.mp4` é `Logo Motion Árvore da Vida - 2.mp4` cortado de 3s a 8s (os 4 primeiros segundos são quase pretos) e comprimido pelo `avconvert` do macOS: **9,9 MB → 820 KB**. O fundo do arquivo é preto, então o hero usa `mix-blend-screen` — o preto some e sobra o brilho. Quem prefere menos movimento não vê e **não baixa**: o `src` só é montado depois de confirmar a preferência no cliente.
+
+
+## Cores das plataformas nos atalhos (2026-09-02)
+
+Os três ícones de rede usam as cores oficiais. Medido sobre o fundo `#131A08`, contra o mínimo de **3:1** que a WCAG 1.4.11 exige de elemento gráfico:
+
+| Plataforma | Cor | Razão | |
+|---|---|---|---|
+| YouTube | `#FF0000` oficial | 4,45:1 | passa |
+| Spotify | `#1DB954` oficial | 6,89:1 | passa |
+| Instagram — laranja | `#F77737` oficial | 6,49:1 | passa |
+| Instagram — rosa | `#E1306C` oficial | 4,11:1 | passa |
+| Instagram — roxo oficial | `#833AB4` | **2,74:1** | **reprova** |
+| Instagram — roxo usado | `#A855E8` | 4,35:1 | passa |
+
+**A ponta roxa do gradiente do Instagram foi clareada**, e é a única cor que não é a oficial da marca. Trocá-la de volta para `#833AB4` reintroduz a falha. Travado por teste em `tests/components/hero.test.tsx`.
+
+Os atalhos da própria igreja (mapa, credo, relógio, cálice) seguem em `currentColor` — creme. A cor é o que separa "sai do site" de "vai para uma seção daqui".
