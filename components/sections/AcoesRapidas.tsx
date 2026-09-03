@@ -39,7 +39,7 @@ function Icone({ icone }: { icone: Icone }) {
   const cor = icone === 'instagram' ? `url(#${idGradiente})` : (COR_DA_PLATAFORMA[icone] ?? 'currentColor')
 
   return (
-    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" fill={cor}>
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill={cor}>
       {icone === 'instagram' && (
         <defs>
           <linearGradient id={idGradiente} x1="0" y1="1" x2="1" y2="0">
@@ -68,13 +68,13 @@ function Cartao({ acao }: { acao: Acao }) {
       <a
         href={acao.href}
         {...(externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        className="flex h-full flex-col items-start gap-3 rounded-2xl border border-creme/30 p-4 text-sm font-semibold text-creme transition hover:border-creme focus-visible:anel-de-foco"
+        className="flex h-full flex-col items-center justify-center gap-1.5 rounded-xl border border-creme/30 px-2 py-3 text-center text-[13px] font-semibold leading-tight text-creme transition hover:border-creme focus-visible:anel-de-foco"
       >
         <Icone icone={acao.icone} />
         <span>
           {acao.rotulo}
           {acao.detalhe && (
-            <span className="mt-0.5 block text-xs font-light text-creme/90">{acao.detalhe}</span>
+            <span className="mt-0.5 block text-[11px] font-light text-creme/90">{acao.detalhe}</span>
           )}
         </span>
       </a>
