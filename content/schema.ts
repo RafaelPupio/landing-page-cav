@@ -65,11 +65,24 @@ export const contatoSchema = z.object({
   email: z.string(),
 })
 
+// Link opcional: vazio é válido e significa "não renderize o bloco" (regra de degradação).
+// Mesmos formatos aceitos em acoesRapidas.href — link interno nunca leva o domínio completo.
+const linkOpcional = z.union([
+  z.literal(''),
+  z.string().regex(
+    /^(#[^\s]+|\/[^\s]*|https?:\/\/[^\s]+|mailto:[^\s]+|tel:[^\s]+)$/,
+    'Link inválido. Use um dos formatos aceitos: âncora interna (ex.: #visita), caminho interno (ex.: /contato), link completo (ex.: https://exemplo.com.br), e-mail (ex.: mailto:contato@exemplo.com.br) ou telefone (ex.: tel:+5511999999999). Deixe em branco para o bloco não aparecer.',
+  ),
+])
+
 export const redesSchema = z.object({
   instagram: z.string().url(),
   youtube: z.string().url(),
   instagramRotulo: z.string().min(1),
   youtubeRotulo: z.string().min(1),
+  // Opcional: vazio some do rodapé e do sameAs, em vez de virar link morto.
+  spotify: linkOpcional,
+  spotifyRotulo: z.string(),
 })
 
 export const declaracaoSchema = z.object({
@@ -82,16 +95,6 @@ export const grupoCredoSchema = z.object({
   nome: z.string().min(1),
   declaracoes: z.array(declaracaoSchema).min(1),
 })
-
-// Link opcional: vazio é válido e significa "não renderize o bloco" (regra de degradação).
-// Mesmos formatos aceitos em acoesRapidas.href — link interno nunca leva o domínio completo.
-const linkOpcional = z.union([
-  z.literal(''),
-  z.string().regex(
-    /^(#[^\s]+|\/[^\s]*|https?:\/\/[^\s]+|mailto:[^\s]+|tel:[^\s]+)$/,
-    'Link inválido. Use um dos formatos aceitos: âncora interna (ex.: #visita), caminho interno (ex.: /contato), link completo (ex.: https://exemplo.com.br), e-mail (ex.: mailto:contato@exemplo.com.br) ou telefone (ex.: tel:+5511999999999). Deixe em branco para o bloco não aparecer.',
-  ),
-])
 
 export const siteSchema = z.object({
   tema: temaSchema,
@@ -204,6 +207,15 @@ export const siteSchema = z.object({
       detalhe: z.string(),
       url: linkOpcional,
     })),
+    // Spotify. O perfil da igreja tem playlists de louvor, não pregações — por
+    // isso texto e introdução são separados dos do YouTube, que tem as mensagens.
+    // Perfil de usuário do Spotify NÃO é incorporável (embed/user devolve 404);
+    // só playlist, álbum, faixa, artista, podcast e episódio. Por isso o botão é
+    // o padrão, e spotifyEmbedUrl existe para quando quiserem destacar UMA playlist.
+    spotifyTexto: z.string(),
+    spotifyIntro: z.string(),
+    spotifyUrl: linkOpcional,
+    spotifyEmbedUrl: linkOpcional,
   }),
   generosidade: z.object({
     rotulo: z.string().min(1),

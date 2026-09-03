@@ -48,7 +48,9 @@
     "instagram": "https://www.instagram.com/comunidadearvoredavida",
     "youtube": "https://www.youtube.com/@ÁrvoredaVida-u9t",
     "instagramRotulo": "Instagram",
-    "youtubeRotulo": "YouTube"
+    "youtubeRotulo": "YouTube",
+    "spotify": "https://open.spotify.com/user/brq25dmfptsgcspk7lso46k7i",
+    "spotifyRotulo": "Spotify"
   },
   "faixaServico": {
     "texto": "Culto aos domingos, 18h · Av. das Emas, 2240W — Lucas do Rio Verde/MT"
@@ -322,7 +324,11 @@
     "intro": "As pregações dos nossos cultos ficam disponíveis no canal da comunidade. Se você ainda não veio, é uma boa forma de conhecer antes de visitar.",
     "canalTexto": "Ver as mensagens no YouTube",
     "canalUrl": "https://www.youtube.com/@ÁrvoredaVida-u9t",
-    "destaques": []
+    "destaques": [],
+    "spotifyTexto": "Ouvir no Spotify",
+    "spotifyUrl": "https://open.spotify.com/user/brq25dmfptsgcspk7lso46k7i",
+    "spotifyIntro": "As playlists de louvor da comunidade — as músicas dos nossos cultos.",
+    "spotifyEmbedUrl": ""
   },
   "generosidade": {
     "rotulo": "Semeadura e colheita",

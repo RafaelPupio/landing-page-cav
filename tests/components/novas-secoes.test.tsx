@@ -11,6 +11,10 @@ const MENSAGENS = {
   canalTexto: 'Ver as mensagens no YouTube',
   canalUrl: 'https://youtube.com/@exemplo',
   destaques: [],
+  spotifyTexto: '',
+  spotifyIntro: '',
+  spotifyUrl: '',
+  spotifyEmbedUrl: '',
 }
 
 const COM_DESTAQUES = {
@@ -48,6 +52,55 @@ describe('Mensagens', () => {
       const titulo = screen.getByRole('heading', { level: 3, name: destaque.titulo })
       expect(titulo.closest('li')).toHaveTextContent(destaque.detalhe)
     }
+  })
+
+  // Perfil de usuário do Spotify não é incorporável (embed/user devolve 404), então
+  // o padrão é botão. O iframe só existe quando a igreja escolher UMA playlist.
+  it('não mostra nada do Spotify enquanto não houver perfil cadastrado', () => {
+    const { container } = render(<Mensagens mensagens={MENSAGENS} />)
+    expect(screen.queryByRole('link', { name: /spotify/i })).not.toBeInTheDocument()
+    expect(container.querySelector('iframe')).toBeNull()
+  })
+
+  it('mostra o botão do Spotify ao lado do YouTube quando há perfil', () => {
+    render(
+      <Mensagens
+        mensagens={{
+          ...MENSAGENS,
+          spotifyTexto: 'Ouvir no Spotify',
+          spotifyUrl: 'https://open.spotify.com/user/abc',
+          spotifyIntro: 'As playlists de louvor.',
+        }}
+      />,
+    )
+    const spotify = screen.getByRole('link', { name: 'Ouvir no Spotify' })
+    expect(spotify).toHaveAttribute('href', 'https://open.spotify.com/user/abc')
+    expect(spotify).toHaveAttribute('rel', 'noopener noreferrer')
+    expect(screen.getByRole('link', { name: MENSAGENS.canalTexto })).toBeInTheDocument()
+    expect(screen.getByText('As playlists de louvor.')).toBeInTheDocument()
+  })
+
+  it('incorpora a playlist só quando há embed, com a mesma privacidade do mapa', () => {
+    const { container } = render(
+      <Mensagens
+        mensagens={{
+          ...MENSAGENS,
+          spotifyTexto: 'Ouvir no Spotify',
+          spotifyUrl: 'https://open.spotify.com/user/abc',
+          spotifyEmbedUrl: 'https://open.spotify.com/embed/playlist/xyz',
+        }}
+      />,
+    )
+    const frame = container.querySelector('iframe')
+    expect(frame).toHaveAttribute('src', 'https://open.spotify.com/embed/playlist/xyz')
+    expect(frame).toHaveAttribute('loading', 'lazy')
+    expect(frame).toHaveAttribute('referrerPolicy', 'no-referrer')
+  })
+
+  // O si= do link compartilhado é um token de rastreio de quem compartilhou.
+  it('o conteúdo real não publica o token de rastreio do Spotify', async () => {
+    const { site } = await import('@/content/load')
+    expect(site.mensagens.spotifyUrl).not.toContain('si=')
   })
 
   it('só transforma o destaque em link quando há url', () => {

@@ -35,6 +35,19 @@ export default function Rodape({
               {redes.youtubeRotulo}
             </a>
           </li>
+          {/* Vazio no JSON some daqui, em vez de virar link morto. */}
+          {redes.spotify && redes.spotifyRotulo && (
+          <li>
+              <a
+                href={redes.spotify}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded underline-offset-4 hover:underline focus-visible:anel-de-foco"
+              >
+                {redes.spotifyRotulo}
+              </a>
+            </li>
+          )}
         </ul>
       </div>
     </footer>
