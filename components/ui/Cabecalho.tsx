@@ -1,11 +1,12 @@
 import Image from 'next/image'
 import FaixaServico from '@/components/ui/FaixaServico'
+import MenuCelular from '@/components/ui/MenuCelular'
 import type { Site } from '@/content/schema'
 
 /**
  * Cabeçalho fixo, translúcido, com no máximo cinco âncoras e o botão de visita
- * sempre à mão. No celular os links vivem dentro de um <details> — menu sem
- * JavaScript, que abre pelo teclado e não quebra se a hidratação falhar.
+ * sempre à mão. No celular os links vivem no MenuCelular, que continua sendo um
+ * <details> nativo — abre pelo teclado e funciona antes da hidratação.
  */
 export default function Cabecalho({
   cabecalho,
@@ -54,28 +55,7 @@ export default function Cabecalho({
           {cabecalho.ctaTexto}
         </a>
 
-        <details className="relative md:hidden">
-          <summary
-            className="flex cursor-pointer list-none items-center rounded p-2 focus-visible:anel-de-foco [&::-webkit-details-marker]:hidden"
-            aria-label={cabecalho.menuRotulo}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </summary>
-          <ul className="absolute right-0 z-10 mt-3 w-56 rounded-2xl border border-creme/20 bg-superficie p-2 text-sm font-medium shadow-xl">
-            {cabecalho.itens.map((item, i) => (
-              <li key={i}>
-                <a
-                  href={item.ancora}
-                  className="block rounded-xl px-4 py-3 text-creme/90 hover:bg-creme/10 focus-visible:anel-de-foco"
-                >
-                  {item.rotulo}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </details>
+        <MenuCelular itens={cabecalho.itens} rotulo={cabecalho.menuRotulo} />
       </div>
     </header>
   )
