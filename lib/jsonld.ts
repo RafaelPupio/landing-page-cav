@@ -27,7 +27,9 @@ export function dadosDaIgreja(site: Site, url: string = site.site.url): Record<s
         opens: h.abre,
         closes: h.fecha,
       })),
-    sameAs: [site.redes.instagram, site.redes.youtube],
+    // Perfis oficiais da igreja. O Spotify entra só se cadastrado — sameAs com
+    // endereço vazio confunde o Google em vez de ajudar.
+    sameAs: [site.redes.instagram, site.redes.youtube, site.redes.spotify].filter(Boolean),
   }
 
   if (site.contato.latitude && site.contato.longitude) {

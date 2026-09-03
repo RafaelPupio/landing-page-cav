@@ -34,14 +34,48 @@ export default function Mensagens({ mensagens }: { mensagens: Site['mensagens'] 
         </ul>
       )}
 
-      <a
-        href={mensagens.canalUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-8 inline-block rounded-full bg-creme px-6 py-3 font-semibold text-verde-escuro transition hover:opacity-90 focus-visible:anel-de-foco"
-      >
-        {mensagens.canalTexto}
-      </a>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a
+          href={mensagens.canalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block rounded-full bg-creme px-6 py-3 font-semibold text-verde-escuro transition hover:opacity-90 focus-visible:anel-de-foco"
+        >
+          {mensagens.canalTexto}
+        </a>
+        {/* Degradação: sem perfil cadastrado, nem botão nem introdução aparecem. */}
+        {mensagens.spotifyUrl && mensagens.spotifyTexto && (
+          <a
+            href={mensagens.spotifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-full border border-creme/25 px-6 py-3 font-semibold text-creme transition hover:border-creme focus-visible:anel-de-foco"
+          >
+            {mensagens.spotifyTexto}
+          </a>
+        )}
+      </div>
+
+      {mensagens.spotifyUrl && mensagens.spotifyIntro && (
+        <p className="mt-4 text-sm font-light leading-relaxed text-creme/90">
+          {mensagens.spotifyIntro}
+        </p>
+      )}
+
+      {/* Um perfil do Spotify não pode ser incorporado — só playlist, podcast ou
+          episódio. Este campo existe para destacar UMA playlist quando a igreja
+          escolher qual; vazio, sobra só o botão acima. */}
+      {mensagens.spotifyEmbedUrl && (
+        <iframe
+          src={mensagens.spotifyEmbedUrl}
+          title={mensagens.spotifyTexto || 'Playlist no Spotify'}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          allow="encrypted-media"
+          className="mt-6 h-40 w-full rounded-2xl border-0"
+        />
+      )}
+
     </Capitulo>
   )
 }

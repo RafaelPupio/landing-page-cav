@@ -33,8 +33,18 @@ describe('dadosDaIgreja', () => {
     ])
   })
 
-  it('aponta sameAs para Instagram e YouTube', () => {
-    expect(dados.sameAs).toEqual([site.redes.instagram, site.redes.youtube])
+  // sameAs é como o Google sabe que estes perfis são a mesma igreja. Endereço
+  // vazio ali confunde em vez de ajudar, então rede não cadastrada fica de fora.
+  it('aponta sameAs para os perfis oficiais cadastrados', () => {
+    expect(dados.sameAs).toEqual(
+      [site.redes.instagram, site.redes.youtube, site.redes.spotify].filter(Boolean),
+    )
+    expect(dados.sameAs).not.toContain('')
+  })
+
+  it('omite do sameAs a rede que não estiver cadastrada', () => {
+    const semSpotify = dadosDaIgreja({ ...site, redes: { ...site.redes, spotify: '' } })
+    expect(semSpotify.sameAs).toEqual([site.redes.instagram, site.redes.youtube])
   })
 
   it('omite campos opcionais vazios', () => {

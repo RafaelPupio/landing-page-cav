@@ -112,6 +112,8 @@ describe('Rodape', () => {
           youtube: 'https://youtube.com/y',
           instagramRotulo: 'Instagram',
           youtubeRotulo: 'YouTube',
+          spotify: '',
+          spotifyRotulo: '',
         }}
       />,
     )
@@ -119,5 +121,27 @@ describe('Rodape', () => {
     expect(ig).toHaveAttribute('href', 'https://instagram.com/x')
     expect(ig).toHaveAttribute('rel', 'noopener noreferrer')
     expect(screen.getByRole('link', { name: 'YouTube' })).toHaveAttribute('href', 'https://youtube.com/y')
+    // Rede não cadastrada não vira link morto no rodapé.
+    expect(screen.queryByRole('link', { name: 'Spotify' })).not.toBeInTheDocument()
+  })
+
+  it('mostra o Spotify no rodapé quando cadastrado', () => {
+    render(
+      <Rodape
+        nome="Comunidade Árvore da Vida"
+        texto=""
+        redes={{
+          instagram: 'https://instagram.com/x',
+          youtube: 'https://youtube.com/y',
+          instagramRotulo: 'Instagram',
+          youtubeRotulo: 'YouTube',
+          spotify: 'https://open.spotify.com/user/abc',
+          spotifyRotulo: 'Spotify',
+        }}
+      />,
+    )
+    const sp = screen.getByRole('link', { name: 'Spotify' })
+    expect(sp).toHaveAttribute('href', 'https://open.spotify.com/user/abc')
+    expect(sp).toHaveAttribute('rel', 'noopener noreferrer')
   })
 })
