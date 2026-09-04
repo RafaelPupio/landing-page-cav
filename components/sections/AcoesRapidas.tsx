@@ -12,8 +12,10 @@ const ICONES: Record<Icone, string> = {
     'M12 7.4a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2Zm0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6ZM17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Zm3.4 15a3.4 3.4 0 0 1-3.4 3.4H7A3.4 3.4 0 0 1 3.6 17V7A3.4 3.4 0 0 1 7 3.6h10A3.4 3.4 0 0 1 20.4 7v10Z',
   youtube:
     'M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15V9l5.2 3L10 15Z',
+  // Traçado oficial da marca (simple-icons). O anterior era desenho à mão: as três
+  // ondas saíam finas demais e a 20px o ícone lia como um disco verde riscado.
   spotify:
-    'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 14.4a.8.8 0 0 1-1.1.3c-3-1.8-6.7-2.2-11.1-1.2a.8.8 0 1 1-.3-1.5c4.8-1.1 9-.6 12.3 1.4.4.2.5.7.2 1Zm1.2-2.7a1 1 0 0 1-1.3.3c-3.4-2.1-8.6-2.7-12.6-1.5a1 1 0 1 1-.6-1.9c4.6-1.4 10.3-.7 14.2 1.7.5.3.6.9.3 1.4Zm.1-2.9C14.8 8.4 8.5 8.2 4.9 9.3a1.2 1.2 0 1 1-.7-2.3C8.4 5.7 15.3 5.9 19.4 8.3a1.2 1.2 0 0 1-1.3 2Z',
+    'M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0m5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02m1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2m.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z',
 }
 
 /**
@@ -30,6 +32,15 @@ const GRADIENTE_INSTAGRAM = ['#FCAF45', '#F77737', '#E1306C', '#A855E8']
 const COR_DA_PLATAFORMA: Partial<Record<Icone, string>> = {
   youtube: '#FF0000',
   spotify: '#1DB954',
+}
+
+/**
+ * Ajuste ótico. O traçado oficial do Spotify preenche a caixa inteira (24×24 de
+ * tinta), enquanto Instagram desenha 20×20 e YouTube 20×14 dentro da mesma caixa.
+ * Sem encolher, o Spotify fica 20% maior que os vizinhos e domina a faixa.
+ */
+const AJUSTE_OTICO: Partial<Record<Icone, string>> = {
+  spotify: 'translate(2 2) scale(0.8333)',
 }
 
 function Icone({ icone }: { icone: Icone }) {
@@ -54,7 +65,7 @@ function Icone({ icone }: { icone: Icone }) {
         </defs>
       )}
       {/* evenodd recorta os subcaminhos internos: sem ele o relógio vira um disco sólido. */}
-      <path d={ICONES[icone]} fillRule="evenodd" />
+      <path d={ICONES[icone]} fillRule="evenodd" transform={AJUSTE_OTICO[icone]} />
     </svg>
   )
 }
