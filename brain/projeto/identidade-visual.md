@@ -105,3 +105,13 @@ Os três ícones de rede usam as cores oficiais. Medido sobre o fundo `#131A08`,
 **A ponta roxa do gradiente do Instagram foi clareada**, e é a única cor que não é a oficial da marca. Trocá-la de volta para `#833AB4` reintroduz a falha. Travado por teste em `tests/components/hero.test.tsx`.
 
 Os atalhos da própria igreja (mapa, credo, relógio, cálice) seguem em `currentColor` — creme. A cor é o que separa "sai do site" de "vai para uma seção daqui".
+
+**Traçados dos ícones (2026-09-03).** O do Spotify é o oficial da marca (simple-icons);
+a primeira versão era desenho à mão e a 20px lia como um disco verde riscado. Logo de
+plataforma se copia da fonte, não se desenha de memória.
+
+O traçado oficial preenche a `viewBox` inteira (24×24 de tinta) enquanto Instagram
+desenha 20×20 e YouTube 20×14 na mesma caixa — por isso o Spotify leva
+`AJUSTE_OTICO` (`translate(2 2) scale(0.8333)`) em `AcoesRapidas.tsx`, e só ele.
+Com o ajuste os três medem 16,7px de largura renderizada. Trocar o traçado sem
+recalcular esse encolhimento devolve o Spotify 20% maior que os vizinhos.

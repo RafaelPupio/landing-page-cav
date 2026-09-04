@@ -179,6 +179,17 @@ describe('AcoesRapidas — duas faixas e cores das plataformas', () => {
     expect(container.querySelectorAll('svg')[4].getAttribute('fill')).toContain('url(#')
   })
 
+  // O traçado oficial do Spotify preenche a caixa 24×24 inteira, enquanto Instagram
+  // e YouTube deixam folga. Sem o encolhimento o Spotify fica 20% maior que os
+  // vizinhos — medido no navegador: 24px de tinta contra 20px dos outros dois.
+  it('encolhe só o Spotify, para os três ícones de rede terem a mesma presença', () => {
+    const { container } = render(<AcoesRapidas acoes={SETE} />)
+    const caminho = (i: number) => container.querySelectorAll('svg')[i].querySelector('path')
+    expect(caminho(6)).toHaveAttribute('transform', 'translate(2 2) scale(0.8333)')
+    expect(caminho(4)).not.toHaveAttribute('transform')
+    expect(caminho(5)).not.toHaveAttribute('transform')
+  })
+
   it('não repete o id do gradiente no documento', () => {
     const { container } = render(<AcoesRapidas acoes={SETE} />)
     const ids = [...container.querySelectorAll('linearGradient')].map((g) => g.id)
